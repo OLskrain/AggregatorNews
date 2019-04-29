@@ -31,15 +31,15 @@
             android:id="@+id/loadingProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center"/>
+            android:layout_gravity="top|center"
+            android:elevation="@dimen/refresh_elevation"/>
 
-        <TextView
-            android:id="@+id/ProbText"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/channel_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-
-        <include layout="@layout/item_list" />
     </FrameLayout>
     
     <android.support.design.widget.FloatingActionButton
@@ -49,6 +49,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add_new_channel_24dp" />
-
 
 </android.support.design.widget.CoordinatorLayout>

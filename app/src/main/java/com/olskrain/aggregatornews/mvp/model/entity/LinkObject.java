@@ -7,13 +7,26 @@ import java.util.List;
  * Created by Andrey Ievlev on 27,Апрель,2019
  */
 
-public class RssLinkObject {
+public class LinkObject {
     private List<String> linkList = new ArrayList<>();
     private static final String RSS_LINK = "https://news.yandex.ru/auto.rss";
+    private static final String RSS_LINK2 = "https://news.yandex.ru/world.html?from=rss";
+    private static final String RSS_LINK3 = "https://news.yandex.ru/gadgets.html?from=rss";
 
     //Todo: потом заменить на  добавление на кнопку
-    public RssLinkObject() {
+    public LinkObject() {
         addLink(RSS_LINK);
+        addLink(RSS_LINK2);
+        addLink(RSS_LINK3);
+        addLink(RSS_LINK3);
+        addLink(RSS_LINK3);
+        addLink(RSS_LINK3);
+        addLink(RSS_LINK3);
+        addLink(RSS_LINK3);
+        addLink(RSS_LINK3);
+        addLink(RSS_LINK3);
+        addLink(RSS_LINK3);
+        addLink(RSS_LINK3);
     }
 
     public List<String> getLinkList() {

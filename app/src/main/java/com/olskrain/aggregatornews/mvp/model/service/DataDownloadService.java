@@ -12,7 +12,7 @@ public class DataDownloadService extends IntentService {
     public static final String ACTION_RESPONSE = "com.olskrain.aggregatornews.mvp.model.RESPONSE";
     public static final String EXTRA_KEY_OUT = "EXTRA_OUT";
 
-//    public static final String ACTION_UPDATE = "ru.alexanderklimov.intentservice.UPDATE";
+//    public static final String ACTION_UPDATE = "rcom.olskrain.aggregatornews.mvp.model.UPDATE";
 //    public static final String EXTRA_KEY_UPDATE = "EXTRA_UPDATE";
 
     public DataDownloadService() {
@@ -32,11 +32,10 @@ public class DataDownloadService extends IntentService {
         String responseServer = httpDataHandler.getHTTPData(link);
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
 
 
         // возвращаем результат

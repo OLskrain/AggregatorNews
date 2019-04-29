@@ -28,15 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.DetailActivity"
-            android:label="@string/title_item_detail"
-            android:parentActivityName=".ui.activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.olskrain.aggregatornews.ui.activity.MainActivity" />
-        </activity>
     </application>
 
 </manifest>

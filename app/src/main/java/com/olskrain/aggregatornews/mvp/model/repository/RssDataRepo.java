@@ -9,7 +9,7 @@ import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.NetworkStatus;
 import com.olskrain.aggregatornews.mvp.model.cache.ICache;
 import com.olskrain.aggregatornews.mvp.model.cache.RssDataCache;
-import com.olskrain.aggregatornews.mvp.model.entity.RssLinkObject;
+import com.olskrain.aggregatornews.mvp.model.entity.LinkObject;
 import com.olskrain.aggregatornews.mvp.model.service.DataDownloadService;
 
 /**
@@ -17,17 +17,27 @@ import com.olskrain.aggregatornews.mvp.model.service.DataDownloadService;
  */
 public class RssDataRepo {
 
+    public interface ICallback {
+        void callingBack(String s);
+    }
+
     private ICache cache;
+    private ICallback callback;
     private String result;
 
     public RssDataRepo() {
         cache = new RssDataCache();
     }
 
+    public void registerCallBack(ICallback callback) {
+        this.callback = callback;
+    }
+
+
     public String getRssData() {
         if (NetworkStatus.isOnline()) {
 
-           startService();
+            startService();
 
             // регистрируем BroadcastReceiver
             BroadcastReceiver brFromService = new BroadcastReceiver() {
@@ -35,6 +45,7 @@ public class RssDataRepo {
                 public void onReceive(Context context, Intent intent) {
                     //Todo: сюда прилетели данные и мы потом должны их обработать
                     result = intent.getStringExtra(DataDownloadService.EXTRA_KEY_OUT);
+                    callback.callingBack(result);
                 }
             };
 
@@ -48,21 +59,11 @@ public class RssDataRepo {
         return result;
     }
 
-    private void startService(){
+    private void startService() {
         //Todo:потом делать через кеш
-        RssLinkObject rssLink = new RssLinkObject();
+        LinkObject rssLink = new LinkObject();
 
         Intent intentDataDownloadService = new Intent(App.getInstance(), DataDownloadService.class);
         App.getInstance().startService(intentDataDownloadService.putExtra("RssLinkList", rssLink.getLinkList().get(0)));
     }
-
-//    public boolean isMyServiceRunning() {
-//        ActivityManager manager = (ActivityManager) App.getInstance().getSystemService(Context.ACTIVITY_SERVICE);
-//        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-//            if (DataDownloadService.class.getName().equals(service.service.getClassName())) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 }

@@ -1,23 +1,19 @@
 package com.olskrain.aggregatornews.ui.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.olskrain.aggregatornews.R;
-import com.olskrain.aggregatornews.mvp.model.repository.RssDataRepo;
-import com.olskrain.aggregatornews.mvp.model.service.DataDownloadService;
 import com.olskrain.aggregatornews.mvp.presenter.MainPresenter;
 import com.olskrain.aggregatornews.mvp.view.MainView;
+import com.olskrain.aggregatornews.ui.adapter.ChannelListRVAdapter;
 
 import timber.log.Timber;
 
@@ -30,8 +26,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private Toolbar mainToolbar;
     private ProgressBar loadingProgressBar;
     private FloatingActionButton addNewChannel;
-    private TextView probText;
+    private RecyclerView channelListRecyclerView;
 
+    private ChannelListRVAdapter channelListRVAdapter;
     private MainPresenter mainPresenter;
 
     @Override
@@ -39,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mainPresenter = new MainPresenter(this);
         initUi();
         initOnClick();
     }
@@ -48,23 +46,26 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setSupportActionBar(mainToolbar);
         mainToolbar.setTitle(getTitle());
 
+        //Todo: разобраться с ра=ботой прогресбара или заменить
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
         hideLoading();
-
         addNewChannel = findViewById(R.id.add_new_channel_fab);
-        probText = findViewById(R.id.ProbText);
 
-        mainPresenter = new MainPresenter(this);
-
+        channelListRecyclerView = findViewById(R.id.channel_list);
+        channelListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        channelListRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        channelListRVAdapter = new ChannelListRVAdapter(mainPresenter.channelListPresenter);
+        channelListRecyclerView.setAdapter(channelListRVAdapter);
     }
 
 
     private void initOnClick() {
         //Todo: потом сменить назначение кнопки, а пока проверяем работу сервера
         addNewChannel.setOnClickListener(view -> {
-            probText.setText("");
+
             mainPresenter.loadInfo();
             //mainPresenter.addNewChannel();
+
         });
     }
 
@@ -80,12 +81,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void hideLoading() {
-        loadingProgressBar.setVisibility(View.GONE);
+        loadingProgressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void showText(String text) {
-        probText.setText(text);
+
     }
 
     @Override
