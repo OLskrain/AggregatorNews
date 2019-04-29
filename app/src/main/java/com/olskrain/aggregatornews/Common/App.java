@@ -1,4 +1,4 @@
-package com.olskrain.aggregatornews;
+package com.olskrain.aggregatornews.Common;
 
 import android.app.Application;
 
@@ -14,6 +14,7 @@ public class App extends Application {
 
         Timber.plant(new Timber.DebugTree());
     }
+
 
     public static App getInstance() {
         return instance;

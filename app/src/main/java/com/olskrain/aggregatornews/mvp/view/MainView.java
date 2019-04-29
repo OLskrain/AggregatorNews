@@ -8,4 +8,10 @@ import android.view.View;
 
 public interface MainView {
     void addNewChannel();
+
+    void showLoading();
+
+    void hideLoading();
+
+    void showText(String text);
 }

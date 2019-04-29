@@ -27,9 +27,21 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"/>
+
+        <TextView
+            android:id="@+id/ProbText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
         <include layout="@layout/item_list" />
     </FrameLayout>
-
+    
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_new_channel_fab"
         android:layout_width="wrap_content"
