@@ -1,12 +1,10 @@
 package com.olskrain.aggregatornews.data.cache;
 
-import com.olskrain.aggregatornews.domain.entities.Channel;
+import java.util.List;
 
 /**
  * Created by Andrey Ievlev on 30,Апрель,2019
  */
 public interface IChannelCache {
-    void putChannel(Channel channel);
-
-    Channel getChannel(String url);
+    String putData(List channelsList);
 }

@@ -12,10 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentationn.presenter.MainPresenter;
 import com.olskrain.aggregatornews.presentationn.ui.adapter.ChannelListRVAdapter;
-import com.olskrain.aggregatornews.presentationn.ui.view.MainView;
+import com.olskrain.aggregatornews.presentationn.ui.view.IMainView;
 
 import timber.log.Timber;
 
@@ -23,7 +24,8 @@ import timber.log.Timber;
  * Created by Andrey Ievlev on 22,Апрель,2019
  */
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements IMainView {
+    public static final String LINK = "https://news.yandex.ru/gadgets.html?from=rss";
 
     private Toolbar mainToolbar;
     private ProgressBar loadingProgressBar;
@@ -31,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private RecyclerView channelListRecyclerView;
 
     private ChannelListRVAdapter channelListRVAdapter;
-
     private MainPresenter mainPresenter;
 
     @Override
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setSupportActionBar(mainToolbar);
         mainToolbar.setTitle(getTitle());
 
-        //Todo: разобраться с ра=ботой прогресбара или заменить
+        //Todo: разобраться с работой прогресбара или заменить
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
         hideLoading();
         addNewChannel = findViewById(R.id.add_new_channel_fab);
@@ -76,13 +77,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private void initOnClick() {
         addNewChannel.setOnClickListener(view -> {
-            mainPresenter.addNewChannel();
+            mainPresenter.actionsChannelsList(Command.ADD_CHANNEL, LINK);
         });
-    }
-
-    @Override
-    public void addNewChannel() {
-        Timber.d("rty добавление канала");
     }
 
     @Override
@@ -96,9 +92,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void showText(String text) {
-
+    public void displayMessages(String message) {
+        Timber.d("rty " + message);
     }
+
 
     @Override
     protected void onDestroy() { //отписываемся тут, чтобы данные обновились если пользователь свернул прилодение

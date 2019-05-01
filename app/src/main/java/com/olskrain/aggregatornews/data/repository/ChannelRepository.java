@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.olskrain.aggregatornews.Common.App;
-import com.olskrain.aggregatornews.Common.NetworkStatus;
-import com.olskrain.aggregatornews.data.cache.IChannelCache;
 import com.olskrain.aggregatornews.data.cache.ChannelCache;
-import com.olskrain.aggregatornews.domain.entities.Channel;
-import com.olskrain.aggregatornews.domain.entities.ChannelsList;
+import com.olskrain.aggregatornews.data.cache.IChannelCache;
 import com.olskrain.aggregatornews.data.service.DataDownloadService;
+import com.olskrain.aggregatornews.domain.entities.Channel;
+
+import java.util.List;
 
 /**
  * Created by Andrey Ievlev on 27,Апрель,2019
@@ -36,17 +36,22 @@ public class ChannelRepository implements IChannelRepository {
     }
 
     @Override
-    public Channel getData(ChannelsList links) {
-        if (NetworkStatus.isOnline()) {
-            //startService(links);
-            registerBroadcastReceiver();
-            //return cache.getChannel();
-            return null;
-        } else {
-            //return cache.getLinks(url);
-            return null;
-        }
+    public String putChannelsList(List channelsList) {
+       return cache.putData(channelsList);
     }
+
+//    @Override
+//    public Channel getData(ChannelsList links) {
+//        if (NetworkStatus.isOnline()) {
+//            //startService(links);
+//            registerBroadcastReceiver();
+//            //return cache.getChannel();
+//            return null;
+//        } else {
+//            //return cache.getLinks(url);
+//            return null;
+//        }
+//    }
 
 //    private void startService(ChannelsList links) {
 //        Intent intentDataDownloadService = new Intent(App.getInstance(), DataDownloadService.class);
@@ -71,7 +76,7 @@ public class ChannelRepository implements IChannelRepository {
              * Потом мы это кешируем в БД
              * cache.putLink({@link Channel});
              * А сам {@link Channel}
-             * отправляем в презентер через callback.callingBack({@link Channel});
+             * отправляем в презентер через callback.callingBackSendMessage({@link Channel});
             */
 
             callback.callingBack(result);
