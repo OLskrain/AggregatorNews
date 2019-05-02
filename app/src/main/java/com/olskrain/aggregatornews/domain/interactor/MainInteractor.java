@@ -1,8 +1,7 @@
 package com.olskrain.aggregatornews.domain.interactor;
 
-import com.olskrain.aggregatornews.Common.Command;
-import com.olskrain.aggregatornews.data.repository.ChannelRepository;
-import com.olskrain.aggregatornews.data.repository.IChannelRepository;
+import com.olskrain.aggregatornews.data.repository.ChannelsListRepository;
+import com.olskrain.aggregatornews.data.repository.IChannelsListRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,37 +13,45 @@ import java.util.List;
 public class MainInteractor {
 
     public interface ICallback {
-        void callingBackSendMessage(String message);
+        void sendMessageStatusCallingBack(String message);
+        void sendChannelsListCallingBack(List<String> channelsList);
     }
 
-    private IChannelRepository channelRepository;
-    private List<String> channelsList;
+    private IChannelsListRepository channelRepository;
     private ICallback callback;
+    private List<String> channelsList;
 
     public MainInteractor() {
         channelsList = new ArrayList<>();
-        channelRepository = new ChannelRepository();
+        channelRepository = new ChannelsListRepository();
     }
 
     public void registerCallBack(ICallback callback) {
         this.callback = callback;
     }
 
-    public String actionsChannelsList(Command command, String url){
-        switch (command){
-            case ADD_CHANNEL:
-                channelsList.add(url);
-                callback.callingBackSendMessage("Канал добавлен");
-                break;
-            case DELETE_CHANNEL:
-                channelsList.remove(url);
-                callback.callingBackSendMessage("Канал Удален");
-                break;
-            case DELETE_ALL_CHANNELS:
-                channelsList.clear();
-                callback.callingBackSendMessage("Список каналов очищен");
-                break;
-        }
+    public String addNewChannel(String url){
+        channelsList.add(url);
+        callback.sendMessageStatusCallingBack("Канал добавлен");
+        callback.sendChannelsListCallingBack(channelsList);
         return channelRepository.putChannelsList(channelsList);
+    }
+
+    public String deleteChannel(String url){
+        channelsList.remove(url);
+        callback.sendMessageStatusCallingBack("Канал Удален");
+        callback.sendChannelsListCallingBack(channelsList);
+        return channelRepository.putChannelsList(channelsList);
+    }
+
+    public String deleteAllChannels(){
+        channelsList.clear();
+        callback.sendMessageStatusCallingBack("Список каналов очищен");
+        callback.sendChannelsListCallingBack(channelsList);
+        return channelRepository.putChannelsList(channelsList);
+    }
+
+    public List<String> refreshChannelsList() {
+            return channelsList = channelRepository.getChannelsList();
     }
 }

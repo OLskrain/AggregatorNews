@@ -10,12 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
-import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentationn.presenter.MainPresenter;
-import com.olskrain.aggregatornews.presentationn.ui.adapter.ChannelListRVAdapter;
+import com.olskrain.aggregatornews.presentationn.ui.adapter.ChannelsListRVAdapter;
 import com.olskrain.aggregatornews.presentationn.ui.view.IMainView;
 
 import timber.log.Timber;
@@ -32,7 +32,10 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     private FloatingActionButton addNewChannel;
     private RecyclerView channelListRecyclerView;
 
-    private ChannelListRVAdapter channelListRVAdapter;
+    private Button deleteChannel;
+    private Button deleteAllChannels;
+
+    private ChannelsListRVAdapter channelsListRVAdapter;
     private MainPresenter mainPresenter;
 
     @Override
@@ -43,6 +46,13 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         mainPresenter = new MainPresenter(this);
         initUi();
         initOnClick();
+
+        if (savedInstanceState == null){
+            mainPresenter.refreshChannelsList();
+        } else {
+            //Todo: вернуть состояние при перевороте
+            Timber.d("rtySAVE второй запуск");
+        }
     }
 
     private void initUi() {
@@ -58,8 +68,11 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         channelListRecyclerView = findViewById(R.id.channel_list);
         channelListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         channelListRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        channelListRVAdapter = new ChannelListRVAdapter(mainPresenter.channelListPresenter);
-        channelListRecyclerView.setAdapter(channelListRVAdapter);
+        channelsListRVAdapter = new ChannelsListRVAdapter(mainPresenter.channelListPresenter);
+        channelListRecyclerView.setAdapter(channelsListRVAdapter);
+
+        deleteChannel = findViewById(R.id.delete_channel);
+        deleteAllChannels = findViewById(R.id.delete_all_channels);
     }
 
     @Override
@@ -70,14 +83,23 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.refresh_menu)
-            mainPresenter.loadInfo();
+        if (item.getItemId() == R.id.refresh_menu){
+            //mainPresenter.refreshChannelsList(Command.REFRESH_CHANNELS);
+        }
         return true;
     }
 
     private void initOnClick() {
         addNewChannel.setOnClickListener(view -> {
-            mainPresenter.actionsChannelsList(Command.ADD_CHANNEL, LINK);
+            mainPresenter.addNewChannel(LINK);
+        });
+
+        deleteChannel.setOnClickListener(view -> {
+            mainPresenter.deleteChannel(LINK);
+        });
+
+        deleteAllChannels.setOnClickListener(view -> {
+            mainPresenter.deleteAllChannels();
         });
     }
 
@@ -96,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         Timber.d("rty " + message);
     }
 
+    @Override
+    public void refreshChannelsListRVAdapter() {
+        channelsListRVAdapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onDestroy() { //отписываемся тут, чтобы данные обновились если пользователь свернул прилодение

@@ -15,22 +15,23 @@ import com.olskrain.aggregatornews.presentationn.ui.view.item.IChannelListItemVi
 /**
  * Created by Andrey Ievlev on 29,Апрель,2019
  */
-public class ChannelListRVAdapter extends RecyclerView.Adapter<ChannelListRVAdapter.ViewHolder> {
+
+public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAdapter.ViewHolder> {
 
     private IChannelListPresenter presenter;
 
-    public ChannelListRVAdapter(IChannelListPresenter presenter) {
+    public ChannelsListRVAdapter(IChannelListPresenter presenter) {
         this.presenter = presenter;
     }
 
     @NonNull
     @Override
-    public ChannelListRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public ChannelsListRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_channel, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChannelListRVAdapter.ViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull ChannelsListRVAdapter.ViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
         viewHolder.position = position;
         presenter.bindView(viewHolder);
     }

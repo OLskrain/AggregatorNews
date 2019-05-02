@@ -21,10 +21,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ProgressBar
@@ -34,13 +35,31 @@
             android:layout_gravity="top|center"
             android:elevation="@dimen/refresh_elevation"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/delete_channel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DELETE"/>
+
+            <Button
+                android:id="@+id/delete_all_channels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DELETE_ALL"/>
+
+        </LinearLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/channel_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    </FrameLayout>
+    </LinearLayout>
     
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_new_channel_fab"

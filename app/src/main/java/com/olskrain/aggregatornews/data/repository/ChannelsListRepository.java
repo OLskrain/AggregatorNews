@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.olskrain.aggregatornews.Common.App;
-import com.olskrain.aggregatornews.data.cache.ChannelCache;
-import com.olskrain.aggregatornews.data.cache.IChannelCache;
+import com.olskrain.aggregatornews.data.cache.ChannelsListCache;
+import com.olskrain.aggregatornews.data.cache.IChannelsListCache;
 import com.olskrain.aggregatornews.data.service.DataDownloadService;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 
@@ -17,18 +17,18 @@ import java.util.List;
  * Created by Andrey Ievlev on 27,Апрель,2019
  */
 
-public class ChannelRepository implements IChannelRepository {
+public class ChannelsListRepository implements IChannelsListRepository {
 
     public interface ICallback {
         void callingBack(String s);
     }
 
-    private IChannelCache cache;
+    private IChannelsListCache cache;
     private ICallback callback;
     private String result;
 
-    public ChannelRepository() {
-        cache = new ChannelCache();
+    public ChannelsListRepository() {
+        cache = new ChannelsListCache();
     }
 
     public void registerCallBack(ICallback callback) {
@@ -39,6 +39,12 @@ public class ChannelRepository implements IChannelRepository {
     public String putChannelsList(List channelsList) {
        return cache.putData(channelsList);
     }
+
+    @Override
+    public List<String> getChannelsList() {
+        return cache.getData();
+    }
+
 
 //    @Override
 //    public Channel getData(ChannelsList links) {
@@ -76,7 +82,7 @@ public class ChannelRepository implements IChannelRepository {
              * Потом мы это кешируем в БД
              * cache.putLink({@link Channel});
              * А сам {@link Channel}
-             * отправляем в презентер через callback.callingBackSendMessage({@link Channel});
+             * отправляем в презентер через callback.sendMessageStatusCallingBack({@link Channel});
             */
 
             callback.callingBack(result);
