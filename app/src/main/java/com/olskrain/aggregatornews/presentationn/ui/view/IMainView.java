@@ -5,12 +5,5 @@ package com.olskrain.aggregatornews.presentationn.ui.view;
  */
 
 public interface IMainView {
-
-    void showLoading();
-
-    void hideLoading();
-
-    void displayMessages(String message);
-
-    void refreshChannelsListRVAdapter();
+    void goToFragment (int buttonID);
 }

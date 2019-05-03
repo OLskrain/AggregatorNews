@@ -1,43 +1,29 @@
 package com.olskrain.aggregatornews.presentationn.ui.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
 
 import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentationn.presenter.MainPresenter;
-import com.olskrain.aggregatornews.presentationn.ui.adapter.ChannelsListRVAdapter;
+import com.olskrain.aggregatornews.presentationn.ui.fragment.AllChannelsListFragment;
+import com.olskrain.aggregatornews.presentationn.ui.fragment.FavoriteChannelsListFragment;
+import com.olskrain.aggregatornews.presentationn.ui.fragment.OtherFragment;
 import com.olskrain.aggregatornews.presentationn.ui.view.IMainView;
-
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 22,Апрель,2019
  */
 
 public class MainActivity extends AppCompatActivity implements IMainView {
-    public static final String LINK = "https://news.yandex.ru/auto.html?from=rss";
+    private static final String FRAGMENT_TAG = "43ddDcdd-c9e0-4794-B7e6-cf05af49fbf0";
 
-    private Toolbar mainToolbar;
-    private ProgressBar loadingProgressBar;
-    private FloatingActionButton addNewChannel;
-    private RecyclerView channelListRecyclerView;
-
-    private Button deleteChannel;
-    private Button deleteAllChannels;
-
-    private ChannelsListRVAdapter channelsListRVAdapter;
     private MainPresenter mainPresenter;
+    private BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,78 +31,58 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         setContentView(R.layout.activity_main);
 
         mainPresenter = new MainPresenter(this);
-        initUi();
-        initOnClick();
-
-        mainPresenter.refreshChannelsList();
+        initUi(savedInstanceState);
     }
 
-    private void initUi() {
-        mainToolbar = findViewById(R.id.am_toolbar);
-        setSupportActionBar(mainToolbar);
-        mainToolbar.setTitle(getTitle());
+    private void initUi(Bundle savedInstanceState) {
+        navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //Todo: разобраться с работой прогресбара или заменить
-        loadingProgressBar = findViewById(R.id.loadingProgressBar);
-        hideLoading();
-        addNewChannel = findViewById(R.id.add_new_channel_fab);
-
-        channelListRecyclerView = findViewById(R.id.channel_list);
-        channelListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        channelListRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        channelsListRVAdapter = new ChannelsListRVAdapter(mainPresenter.channelListPresenter);
-        channelListRecyclerView.setAdapter(channelsListRVAdapter);
-
-        deleteChannel = findViewById(R.id.delete_channel);
-        deleteAllChannels = findViewById(R.id.delete_all_channels);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.refresh_menu) {
-            //mainPresenter.refreshChannelsList(Command.REFRESH_CHANNELS);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, new AllChannelsListFragment(), FRAGMENT_TAG)
+                    .commit();
         }
-        return true;
+
     }
 
-    private void initOnClick() {
-        addNewChannel.setOnClickListener(view -> {
-            mainPresenter.addNewChannel(LINK);
-        });
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-        deleteChannel.setOnClickListener(view -> {
-            mainPresenter.deleteChannel(LINK);
-        });
-
-        deleteAllChannels.setOnClickListener(view -> {
-            mainPresenter.deleteAllChannels();
-        });
-    }
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            if (item.getItemId() == R.id.navigation_home ||
+                    item.getItemId() == R.id.navigation_favorite ||
+                    item.getItemId() == R.id.navigation_other) {
+                mainPresenter.goToFragment(item.getItemId());
+                return true;
+            }
+            return false;
+        }
+    };
 
     @Override
-    public void showLoading() {
-        loadingProgressBar.setVisibility(View.VISIBLE);
+    public void goToFragment(int buttonID) {
+        switch (buttonID) {
+            case R.id.navigation_home:
+                addFragment(new AllChannelsListFragment());
+                break;
+            case R.id.navigation_favorite:
+                addFragment(new FavoriteChannelsListFragment());
+                break;
+            case R.id.navigation_other:
+                addFragment(new OtherFragment());
+                break;
+        }
     }
 
-    @Override
-    public void hideLoading() {
-        loadingProgressBar.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void displayMessages(String message) {
-        Timber.d("rty " + message);
-    }
-
-    @Override
-    public void refreshChannelsListRVAdapter() {
-        channelsListRVAdapter.notifyDataSetChanged();
+    public void addFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack("")
+                .commit();
     }
 
     @Override
