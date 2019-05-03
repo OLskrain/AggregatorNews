@@ -34,7 +34,7 @@ public class HTTPDataHandler {
             }
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //TOdo: обработать ошибки
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

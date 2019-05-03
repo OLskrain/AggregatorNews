@@ -1,13 +1,13 @@
 package com.olskrain.aggregatornews.data.repository;
 
-import java.util.List;
+import com.olskrain.aggregatornews.Common.Command;
 
 /**
  * Created by Andrey Ievlev on 30,Апрель,2019
  */
 
 public interface IChannelsListRepository {
-    String putChannelsList(List channelsList);
+    void putUpdatedData(Command command, String url);
 
-    List<String> getChannelsList();
+    void getChannelsList();
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentationn.presenter.MainPresenter;
 import com.olskrain.aggregatornews.presentationn.ui.adapter.ChannelsListRVAdapter;
@@ -25,7 +26,7 @@ import timber.log.Timber;
  */
 
 public class MainActivity extends AppCompatActivity implements IMainView {
-    public static final String LINK = "https://news.yandex.ru/gadgets.html?from=rss";
+    public static final String LINK = "https://news.yandex.ru/auto.html?from=rss";
 
     private Toolbar mainToolbar;
     private ProgressBar loadingProgressBar;
@@ -47,12 +48,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         initUi();
         initOnClick();
 
-        if (savedInstanceState == null){
-            mainPresenter.refreshChannelsList();
-        } else {
-            //Todo: вернуть состояние при перевороте
-            Timber.d("rtySAVE второй запуск");
-        }
+        mainPresenter.refreshChannelsList();
     }
 
     private void initUi() {
@@ -83,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.refresh_menu){
+        if (item.getItemId() == R.id.refresh_menu) {
             //mainPresenter.refreshChannelsList(Command.REFRESH_CHANNELS);
         }
         return true;
@@ -124,8 +120,9 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     }
 
     @Override
-    protected void onDestroy() { //отписываемся тут, чтобы данные обновились если пользователь свернул прилодение
+    protected void onDestroy() { //TODO: отписываемся тут, чтобы данные обновились если пользователь свернул прилодение
         super.onDestroy();
+        App.getDbHelper().close();
         //unregisterReceiver(myBroadcastReceiver);
     }
 }

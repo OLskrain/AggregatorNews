@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Andrey Ievlev on 22,Апрель,2019
  */
 
-public class MainPresenter implements MainInteractor.ICallback {
+public class MainPresenter implements MainInteractor.IResponseDBCallback {
     public class ChannelListPresenter implements IChannelListPresenter { //презентер для списка
         @Override
         public void bindView(IChannelListItemView rowView) {
@@ -36,26 +36,24 @@ public class MainPresenter implements MainInteractor.ICallback {
         this.channelListPresenter = new ChannelListPresenter();
     }
 
-    public void addNewChannel(String url){
-        mainView.displayMessages(mainInteractor.addNewChannel(url));
+    public void addNewChannel(String urlChannel) {
+        mainInteractor.addNewChannel(urlChannel);
         mainView.refreshChannelsListRVAdapter();
     }
 
-    public void deleteChannel(String url){
-        mainView.displayMessages(mainInteractor.deleteChannel(url));
+    public void deleteChannel(String urlChannel) {
+        mainInteractor.deleteChannel(urlChannel);
         mainView.refreshChannelsListRVAdapter();
     }
 
-    public void deleteAllChannels(){
-        mainView.displayMessages(mainInteractor.deleteAllChannels());
+    public void deleteAllChannels() {
+        mainInteractor.deleteAllChannels();
         mainView.refreshChannelsListRVAdapter();
     }
 
     public void refreshChannelsList() {
         mainView.showLoading();
-        channelsListLocal = mainInteractor.refreshChannelsList();
-        mainView.refreshChannelsListRVAdapter();
-        mainView.hideLoading();
+        mainInteractor.refreshChannelsList();
     }
 
     @Override
@@ -67,5 +65,6 @@ public class MainPresenter implements MainInteractor.ICallback {
     public void sendChannelsListCallingBack(List<String> channelsList) {
         channelsListLocal = channelsList;
         mainView.refreshChannelsListRVAdapter();
+        mainView.hideLoading();
     }
 }

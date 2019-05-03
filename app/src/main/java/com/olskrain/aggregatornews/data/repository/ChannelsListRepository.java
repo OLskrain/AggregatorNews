@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.olskrain.aggregatornews.Common.App;
+import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.data.cache.ChannelsListCache;
 import com.olskrain.aggregatornews.data.cache.IChannelsListCache;
 import com.olskrain.aggregatornews.data.service.DataDownloadService;
@@ -17,34 +18,45 @@ import java.util.List;
  * Created by Andrey Ievlev on 27,Апрель,2019
  */
 
-public class ChannelsListRepository implements IChannelsListRepository {
+public class ChannelsListRepository implements IChannelsListRepository, ChannelsListCache.IResponseDBCallback {
 
-    public interface ICallback {
-        void callingBack(String s);
+    public interface IResponseDBCallback {
+        void sendMessageStatusCallingBack(String message);
+        void sendChannelsListCallingBack(List<String> channelsList);
     }
 
     private IChannelsListCache cache;
-    private ICallback callback;
+    private IResponseDBCallback callback;
     private String result;
 
     public ChannelsListRepository() {
         cache = new ChannelsListCache();
+        ((ChannelsListCache) cache).registerCallBack(this);
     }
 
-    public void registerCallBack(ICallback callback) {
+    public void registerCallBack(IResponseDBCallback callback) {
         this.callback = callback;
     }
 
     @Override
-    public String putChannelsList(List channelsList) {
-       return cache.putData(channelsList);
+    public void putUpdatedData(Command command, String urlChannel) {
+        cache.updateDatabase(command, urlChannel);
     }
 
     @Override
-    public List<String> getChannelsList() {
-        return cache.getData();
+    public void getChannelsList() {
+        cache.getData();
     }
 
+    @Override
+    public void sendMessageStatusCallingBack(String message) {
+        callback.sendMessageStatusCallingBack(message);
+    }
+
+    @Override
+    public void sendChannelsListCallingBack(List<String> channelsList) {
+        callback.sendChannelsListCallingBack(channelsList);
+    }
 
 //    @Override
 //    public Channel getData(ChannelsList links) {
@@ -69,6 +81,7 @@ public class ChannelsListRepository implements IChannelsListRepository {
         IntentFilter intentFilter = new IntentFilter(DataDownloadService.ACTION_RESPONSE);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         App.getInstance().registerReceiver(responseService, intentFilter);
+
     }
 
     private class ResponseService extends BroadcastReceiver {
@@ -83,9 +96,9 @@ public class ChannelsListRepository implements IChannelsListRepository {
              * cache.putLink({@link Channel});
              * А сам {@link Channel}
              * отправляем в презентер через callback.sendMessageStatusCallingBack({@link Channel});
-            */
+             */
 
-            callback.callingBack(result);
+            // callback.callingBack(result);
         }
     }
 }
