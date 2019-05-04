@@ -39,7 +39,7 @@ public class AllChannelsListFragment extends Fragment implements IAllChannelsLis
         return fragment;
     }
 
-    public static final String LINK = "https://news.yandex.ru/auto.html?from=rss";
+    public static final String LINK = "https://news.yandex.ru/auto.rss";
 
     private Toolbar allChannelsListToolbar;
     private ProgressBar loadingProgressBar;

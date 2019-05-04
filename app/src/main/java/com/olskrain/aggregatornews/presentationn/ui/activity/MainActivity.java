@@ -86,9 +86,14 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     }
 
     @Override
-    protected void onDestroy() { //TODO: отписываемся тут, чтобы данные обновились если пользователь свернул прилодение
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
         App.getDbHelper().close();
-        //unregisterReceiver(myBroadcastReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //unregisterReceiver(App.getResponseServiceBroadcast());
     }
 }

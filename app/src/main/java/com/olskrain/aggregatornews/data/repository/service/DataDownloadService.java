@@ -1,20 +1,21 @@
-package com.olskrain.aggregatornews.data.service;
+package com.olskrain.aggregatornews.data.repository.service;
 
 import android.app.IntentService;
 import android.content.Intent;
 
+import com.olskrain.aggregatornews.Common.XmlRssParser;
 import com.olskrain.aggregatornews.data.api.HTTPDataHandler;
+import com.olskrain.aggregatornews.domain.entities.Channel;
 
 import timber.log.Timber;
 
 public class DataDownloadService extends IntentService {
-
     public static final String ACTION_RESPONSE = "com.olskrain.aggregatornews.mvp.model.RESPONSE";
     public static final String EXTRA_KEY_OUT = "EXTRA_OUT";
-
+    private static final String DATA_DOWNLOAD_SERVICE = "DataDownloadService";
 
     public DataDownloadService() {
-        super("DataDownloadService");
+        super(DATA_DOWNLOAD_SERVICE);
     }
 
     @Override
@@ -25,17 +26,13 @@ public class DataDownloadService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        //link = intent.getParcelableExtra("LinksList");
+        String urlChannel = intent.getStringExtra("Url");
         HTTPDataHandler httpDataHandler = new HTTPDataHandler();
-        //Todo: переделать для списка
-        String responseServer = httpDataHandler.getHTTPData("https://news.yandex.ru/auto.rss");
-        Timber.d("rty " + responseServer);
+        String responseServer = httpDataHandler.getHTTPData(urlChannel);
 
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        XmlRssParser xmlRssParser = new XmlRssParser();
+        Channel channel = xmlRssParser.parseData(urlChannel, responseServer);
+        //TODO: тут продолжить и передать объект
 
         // возвращаем результат
         Intent responseIntent = new Intent();

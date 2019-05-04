@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".data.service.DataDownloadService"
+            android:name=".data.repository.service.DataDownloadService"
             android:exported="false"></service>
 
         <activity

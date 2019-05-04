@@ -1,8 +1,8 @@
 package com.olskrain.aggregatornews.domain.interactor;
 
 import com.olskrain.aggregatornews.Common.Command;
-import com.olskrain.aggregatornews.data.repository.ChannelsListRepository;
-import com.olskrain.aggregatornews.data.repository.IChannelsListRepository;
+import com.olskrain.aggregatornews.data.repository.AllChannelsListRepository;
+import com.olskrain.aggregatornews.data.repository.IAllChannelsListRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,21 +11,21 @@ import java.util.List;
  * Created by Andrey Ievlev on 01,Май,2019
  */
 
-public class MainInteractor implements ChannelsListRepository.IResponseDBCallback {
+public class MainInteractor implements AllChannelsListRepository.IResponseDBCallback {
 
     public interface IResponseDBCallback {
         void sendMessageStatusCallingBack(String message);
         void sendChannelsListCallingBack(List<String> channelsList);
     }
 
-    private IChannelsListRepository channelRepository;
+    private IAllChannelsListRepository channelRepository;
     private IResponseDBCallback callback;
     private List<String> channelsList;
 
     public MainInteractor() {
         channelsList = new ArrayList<>();
-        channelRepository = new ChannelsListRepository();
-        ((ChannelsListRepository) channelRepository).registerCallBack(this);
+        channelRepository = new AllChannelsListRepository();
+        ((AllChannelsListRepository) channelRepository).registerCallBack(this);
     }
 
     public void registerCallBack(IResponseDBCallback callback) {

@@ -11,14 +11,16 @@ public class Feed {
     private String author;
     private String description;
     private String image;
+    private String lastBuildDate;
 
-    public Feed(String url, String title, String link, String author, String description, String image) {
+    public Feed(String url, String title, String link, String author, String description, String image, String lastBuildDate) {
         this.url = url;
         this.title = title;
         this.link = link;
         this.author = author;
         this.description = description;
         this.image = image;
+        this.lastBuildDate = lastBuildDate;
     }
 
     public String getUrl() {
@@ -67,5 +69,13 @@ public class Feed {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getLastBuildDate() {
+        return lastBuildDate;
+    }
+
+    public void setLastBuildDate(String lastBuildDate) {
+        this.lastBuildDate = lastBuildDate;
     }
 }
