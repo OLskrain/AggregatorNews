@@ -58,6 +58,11 @@ public class AllChannelsListRepository implements IAllChannelsListRepository, Ch
         }
     }
 
+    private void startService(String urlChannel) {
+        Intent intentDataDownloadService = new Intent(App.getInstance(), DataDownloadService.class);
+        App.getInstance().startService(intentDataDownloadService.putExtra("Url", urlChannel));
+    }
+
     @Override
     public void sendMessageStatusCallingBack(String message) {
         callback.sendMessageStatusCallingBack(message);
@@ -66,10 +71,5 @@ public class AllChannelsListRepository implements IAllChannelsListRepository, Ch
     @Override
     public void sendChannelsListCallingBack(List<String> channelsList) {
         callback.sendChannelsListCallingBack(channelsList);
-    }
-
-    private void startService(String urlChannel) {
-        Intent intentDataDownloadService = new Intent(App.getInstance(), DataDownloadService.class);
-        App.getInstance().startService(intentDataDownloadService.putExtra("Url", urlChannel));
     }
 }

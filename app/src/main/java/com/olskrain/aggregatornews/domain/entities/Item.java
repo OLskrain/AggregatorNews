@@ -1,12 +1,15 @@
 package com.olskrain.aggregatornews.domain.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * Created by Andrey Ievlev on 29,Апрель,2019
  */
 
-public class Item {
+public class Item implements Parcelable {
     private String title;
     private String pubDate;
     private String link;
@@ -30,6 +33,48 @@ public class Item {
         this.enclosure = enclosure;
         this.categories = categories;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(title);
+        parcel.writeString(pubDate);
+        parcel.writeString(link);
+        parcel.writeString(guid);
+        parcel.writeString(author);
+        parcel.writeString(thumbnail);
+        parcel.writeString(description);
+        parcel.writeString(content);
+        parcel.writeStringList(categories);
+    }
+
+    private Item(Parcel parcel) {
+        title = parcel.readString();
+        pubDate = parcel.readString();
+        link = parcel.readString();
+        guid = parcel.readString();
+        author = parcel.readString();
+        thumbnail = parcel.readString();
+        description = parcel.readString();
+        content = parcel.readString();
+        categories = parcel.createStringArrayList();
+    }
+
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel parcel) {
+            return new Item(parcel);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
 
     public String getTitle() {
         return title;

@@ -1,10 +1,13 @@
 package com.olskrain.aggregatornews.domain.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Andrey Ievlev on 29,Апрель,2019
  */
 
-public class Feed {
+public class Feed implements Parcelable {
     private String url;
     private String title;
     private String link;
@@ -22,6 +25,44 @@ public class Feed {
         this.image = image;
         this.lastBuildDate = lastBuildDate;
     }
+
+    private Feed(Parcel parcel) {
+        url = parcel.readString();
+        title = parcel.readString();
+        link = parcel.readString();
+        author = parcel.readString();
+        description = parcel.readString();
+        image = parcel.readString();
+        lastBuildDate = parcel.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(url);
+        parcel.writeString(title);
+        parcel.writeString(link);
+        parcel.writeString(author);
+        parcel.writeString(description);
+        parcel.writeString(image);
+        parcel.writeString(lastBuildDate);
+    }
+
+    public static final Creator<Feed> CREATOR = new Creator<Feed>() {
+        @Override
+        public Feed createFromParcel(Parcel parcel) {
+            return new Feed(parcel);
+        }
+
+        @Override
+        public Feed[] newArray(int size) {
+            return new Feed[size];
+        }
+    };
 
     public String getUrl() {
         return url;

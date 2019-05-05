@@ -11,12 +11,11 @@ import com.olskrain.aggregatornews.domain.entities.Channel;
  */
 
 public class ResponseServiceBroadcast extends BroadcastReceiver {
-    private Channel channel;
+    private static final String EXTRA_KEY_OUT = "EXTRA_OUT";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //Todo: решить проблему с накапливание ответов
-        //channel = intent.getParcelableExtra(DataDownloadService.EXTRA_KEY_OUT);
+        Channel channel = intent.getParcelableExtra(EXTRA_KEY_OUT);
 
         /** тут мы отправляем ответ от сервера на парсинг в отдельный класс
          * Он возвашает нам объект {@link Channel}
