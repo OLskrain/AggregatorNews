@@ -31,12 +31,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         setContentView(R.layout.activity_main);
 
         mainPresenter = new MainPresenter(this);
-        initUi(savedInstanceState);
-    }
-
-    private void initUi(Bundle savedInstanceState) {
-        navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        initUi();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
@@ -44,7 +39,11 @@ public class MainActivity extends AppCompatActivity implements IMainView {
                     .replace(R.id.container, new AllChannelsListFragment(), FRAGMENT_TAG)
                     .commit();
         }
+    }
 
+    private void initUi() {
+        navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

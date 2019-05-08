@@ -11,18 +11,15 @@ import java.util.List;
  */
 
 public class Channel implements Parcelable {
-    private String status;
     private Feed feed;
     private List<Item> items = new ArrayList<>(); //нужна инициализация для десериализации
 
-    public Channel(String status, Feed feed, List<Item> items) {
-        this.status = status;
+    public Channel(Feed feed, List<Item> items) {
         this.feed = feed;
         this.items = items;
     }
 
     private Channel(Parcel parcel) {
-        status = parcel.readString();
         feed = parcel.readParcelable(Feed.class.getClassLoader());
         parcel.readTypedList(items, Item.CREATOR);
     }
@@ -34,7 +31,6 @@ public class Channel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeString(status);
         parcel.writeParcelable(feed, flags);
         parcel.writeTypedList(items);
     }
@@ -50,14 +46,6 @@ public class Channel implements Parcelable {
             return new Channel[size];
         }
     };
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public Feed getFeed() {
         return feed;

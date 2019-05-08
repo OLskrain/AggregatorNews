@@ -17,9 +17,29 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("create table channelsList("
-                + "id integer primary key autoincrement,"
-                + "channel text" + ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE channaldf("
+                + "id integer PRIMARY KEY,"
+                + "url text,"
+                + "title_feed text,"
+                + "link_feed text,"
+                + "author_feed text,"
+                + "description_feed text,"
+                + "image text,"
+                + "lastbuilddate text" + ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE itemdfg("
+                + "id integer PRIMARY KEY,"
+                + "title text,"
+                + "pubDate text,"
+                + "link text,"
+                + "guid text,"
+                + "author text,"
+                + "thumbnail text,"
+                + "description text,"
+                + "content text,"
+                + "id_feed integer NOT NULL,"
+                + " FOREIGN KEY (id_feed) REFERENCES channaldf(id) ON DELETE CASCADE);");
     }
 
     @Override

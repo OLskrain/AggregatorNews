@@ -7,4 +7,6 @@
     <string name="title_home">Home</string>
     <string name="title_favorite">Favorite</string>
     <string name="title_other">Other</string>
+    <string name="item1">delete</string>
+    <string name="item2">я еще не придумал))</string>
 </resources>

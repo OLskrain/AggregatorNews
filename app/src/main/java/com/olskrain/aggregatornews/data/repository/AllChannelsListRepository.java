@@ -8,27 +8,36 @@ import com.olskrain.aggregatornews.Common.NetworkStatus;
 import com.olskrain.aggregatornews.data.cache.ChannelsListCache;
 import com.olskrain.aggregatornews.data.cache.IChannelsListCache;
 import com.olskrain.aggregatornews.data.repository.service.DataDownloadService;
+import com.olskrain.aggregatornews.domain.entities.Channel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Andrey Ievlev on 27,Апрель,2019
  */
 
-public class AllChannelsListRepository implements IAllChannelsListRepository, ChannelsListCache.IResponseDBCallback {
+public class AllChannelsListRepository implements IAllChannelsListRepository,
+        ChannelsListCache.IResponseDBCallback, ResponseServiceBroadcast.IResponseServerCallback {
 
     public interface IResponseDBCallback {
         void sendMessageStatusCallingBack(String message);
 
-        void sendChannelsListCallingBack(List<String> channelsList);
+        void sendChannelsListCallingBack(List<Channel> channelsList);
     }
 
     private IChannelsListCache cache;
     private IResponseDBCallback callback;
+    private ResponseServiceBroadcast responseServiceBroadcast;
+
+    List<Channel> channelsList = new ArrayList<>(); //временно для подмены
 
     public AllChannelsListRepository() {
         cache = new ChannelsListCache();
+        //responseServiceBroadcast = new ResponseServiceBroadcast();
         ((ChannelsListCache) cache).registerCallBack(this);
+        App.getResponseServiceBroadcast().registerCallBack(this);
+        //responseServiceBroadcast.registerCallBack(this);
     }
 
     public void registerCallBack(IResponseDBCallback callback) {
@@ -36,12 +45,21 @@ public class AllChannelsListRepository implements IAllChannelsListRepository, Ch
     }
 
     @Override
-    public void putUpdatedData(Command command, String urlChannel) {
-        if (command.equals(Command.ADD_CHANNEL)) {
-            getChannel(urlChannel);
-        }
-        //тут потом мы должны положить объект канала
-        cache.updateDatabase(command, urlChannel);
+    public void putUpdatedData(Command command, List<Channel> channelsList) {
+         cache.updateDatabase(command, channelsList);
+//        /**
+//         * Временная подмена данных
+//         */
+//        if (command.equals(Command.ADD_CHANNEL)) {
+//            channelsList.add(channel);
+//            sendChannelsListCallingBack(channelsList);
+//        } else if (command.equals(Command.DELETE_CHANNEL)) {
+//            channelsList.remove(0);
+//            sendChannelsListCallingBack(channelsList);
+//        } else if (command.equals(Command.DELETE_ALL_CHANNELS)) {
+//            channelsList.clear();
+//            sendChannelsListCallingBack(channelsList);
+//        }
     }
 
     @Override
@@ -69,7 +87,14 @@ public class AllChannelsListRepository implements IAllChannelsListRepository, Ch
     }
 
     @Override
-    public void sendChannelsListCallingBack(List<String> channelsList) {
+    public void sendChannelsListCallingBack(List<Channel> channelsList) {
         callback.sendChannelsListCallingBack(channelsList);
+    }
+
+    @Override
+    public void sendChannelCallingBack(Channel channel) {
+        List<Channel> channelsList = new ArrayList<>();
+        channelsList.add(channel);
+        putUpdatedData(Command.ADD_CHANNEL, channelsList);
     }
 }

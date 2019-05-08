@@ -18,7 +18,6 @@ import java.util.List;
  */
 
 public class XmlRssParser {
-    private static final String STATUS_OK = "ok";
     private static final String CHANNEL = "channel";
     private static final String ITEM = "item";
     private static final String TITLE = "title";
@@ -53,7 +52,7 @@ public class XmlRssParser {
                 }
                 xpp.next();
             }
-            channel = new Channel(STATUS_OK, feed, currentItemList);
+            channel = new Channel(feed, currentItemList);
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         } catch (IOException e) {

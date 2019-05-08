@@ -9,4 +9,5 @@ public interface IChannelListItemView {
     int getPos();
 
     void setTitle(String title);
+    void setLastBuildDate(String lastBuildDate);
 }

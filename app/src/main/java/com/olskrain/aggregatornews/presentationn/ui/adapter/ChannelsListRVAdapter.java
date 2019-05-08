@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.olskrain.aggregatornews.R;
@@ -43,12 +44,16 @@ public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAd
 
     public class ViewHolder extends RecyclerView.ViewHolder implements IChannelListItemView {
 
-        int position = 0;
-        TextView channel;
+        private int position = 0;
+        private TextView channelTitle;
+        private TextView lastBuildDate;
+        private ImageView contextItemMenu;
 
         ViewHolder(View itemView) {
             super(itemView);
-            channel = itemView.findViewById(R.id.channel_name);
+            channelTitle = itemView.findViewById(R.id.channel_title);
+            lastBuildDate = itemView.findViewById(R.id.last_build_date);
+            contextItemMenu = itemView.findViewById(R.id.context_item_menu);
 
         }
 
@@ -59,7 +64,13 @@ public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAd
 
         @Override
         public void setTitle(String title) {
-            channel.setText(title);
+            this.channelTitle.setText(title);
         }
+
+        @Override
+        public void setLastBuildDate(String lastBuildDate) {
+            this.lastBuildDate.setText(lastBuildDate);
+        }
+
     }
 }

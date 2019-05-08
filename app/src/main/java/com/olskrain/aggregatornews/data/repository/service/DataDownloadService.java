@@ -33,11 +33,11 @@ public class DataDownloadService extends IntentService {
         XmlRssParser xmlRssParser = new XmlRssParser();
         Channel channel = xmlRssParser.parseData(urlChannel, responseServer);
 
-        Intent responseIntent = new Intent();
-        responseIntent.setAction(ACTION_RESPONSE);
-        responseIntent.addCategory(Intent.CATEGORY_DEFAULT); //Todo: посмотреть категории
-        responseIntent.putExtra(EXTRA_KEY_OUT, channel);
-        sendBroadcast(responseIntent);
+        Intent responseServerIntent = new Intent();
+        responseServerIntent.setAction(ACTION_RESPONSE);
+        responseServerIntent.addCategory(Intent.CATEGORY_DEFAULT); //Todo: посмотреть категории
+        responseServerIntent.putExtra(EXTRA_KEY_OUT, channel);
+        sendBroadcast(responseServerIntent);
     }
 
     @Override

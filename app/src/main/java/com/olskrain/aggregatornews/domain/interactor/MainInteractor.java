@@ -3,6 +3,7 @@ package com.olskrain.aggregatornews.domain.interactor;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.data.repository.AllChannelsListRepository;
 import com.olskrain.aggregatornews.data.repository.IAllChannelsListRepository;
+import com.olskrain.aggregatornews.domain.entities.Channel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,12 @@ public class MainInteractor implements AllChannelsListRepository.IResponseDBCall
 
     public interface IResponseDBCallback {
         void sendMessageStatusCallingBack(String message);
-        void sendChannelsListCallingBack(List<String> channelsList);
+        void sendChannelsListCallingBack(List<Channel> channelsList);
     }
 
     private IAllChannelsListRepository channelRepository;
     private IResponseDBCallback callback;
-    private List<String> channelsList;
+    private List<Channel> channelsList;
 
     public MainInteractor() {
         channelsList = new ArrayList<>();
@@ -33,20 +34,14 @@ public class MainInteractor implements AllChannelsListRepository.IResponseDBCall
     }
 
     public void addNewChannel(String urlChannel) {
-        channelsList.add(urlChannel);
-        callback.sendMessageStatusCallingBack("Канал добавлен");
-        channelRepository.putUpdatedData(Command.ADD_CHANNEL, urlChannel);
+        channelRepository.getChannel(urlChannel);
     }
 
     public void deleteChannel(String urlChannel) {
-        channelsList.remove(urlChannel);
-        callback.sendMessageStatusCallingBack("Канал Удален");
-        channelRepository.putUpdatedData(Command.DELETE_CHANNEL, urlChannel);
+        channelRepository.putUpdatedData(Command.DELETE_CHANNEL, channelsList);
     }
 
     public void deleteAllChannels() {
-        channelsList.clear();
-        callback.sendMessageStatusCallingBack("Список каналов очищен");
         channelRepository.putUpdatedData(Command.DELETE_ALL_CHANNELS, null);
     }
 
@@ -60,8 +55,8 @@ public class MainInteractor implements AllChannelsListRepository.IResponseDBCall
     }
 
     @Override
-    public void sendChannelsListCallingBack(List<String> channelsList) {
-        //this.channelsList = channelsList;
+    public void sendChannelsListCallingBack(List<Channel> channelsList) {
+        this.channelsList = channelsList;
         callback.sendChannelsListCallingBack(channelsList);
     }
 }
