@@ -16,7 +16,7 @@ public class ResponseServiceBroadcast extends BroadcastReceiver {
         void sendChannelCallingBack(Channel channel);
     }
 
-    private static final String EXTRA_KEY_OUT = "EXTRA_OUT";
+    private static final String EXTRA_KEY_OUT = "extra key out";
     private IResponseServerCallback callback;
 
     public void registerCallBack(IResponseServerCallback callback) {

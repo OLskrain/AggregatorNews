@@ -1,6 +1,5 @@
 package com.olskrain.aggregatornews.data.repository;
 
-import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
  */
 
 public interface IAllChannelsListRepository {
-    void putUpdatedData(Command command, List<Channel> channelsList);
+    void putUpdatedData(List<Channel> channelsList);
 
     void getChannelsList();
 

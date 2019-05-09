@@ -91,8 +91,13 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        //unregisterReceiver(App.getResponseServiceBroadcast());
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        //unregisterReceiver(App.getResponseServiceBroadcast());
     }
 }

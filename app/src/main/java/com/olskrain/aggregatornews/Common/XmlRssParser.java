@@ -2,7 +2,7 @@ package com.olskrain.aggregatornews.Common;
 
 import com.olskrain.aggregatornews.domain.entities.Channel;
 import com.olskrain.aggregatornews.domain.entities.Feed;
-import com.olskrain.aggregatornews.domain.entities.Item;
+import com.olskrain.aggregatornews.domain.entities.ItemNew;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -33,8 +33,8 @@ public class XmlRssParser {
 
     private Channel channel;
     private Feed feed;
-    private Item item;
-    private List<Item> currentItemList = new ArrayList<>();
+    private ItemNew item;
+    private List<ItemNew> currentItemList = new ArrayList<>();
     private String current;
 
     public Channel parseData(String urlChannel, String responseServer) {
@@ -158,7 +158,7 @@ public class XmlRssParser {
                 }
                 xpp.next();
             }
-            item = new Item(title, pubDate, link, guid, author, thumbnail, description, content, null, null);
+            item = new ItemNew(title, pubDate, link, guid, author, thumbnail, description, content, null, null);
             currentItemList.add(item);
         } catch (IOException e) {
             e.printStackTrace();

@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Andrey Ievlev on 29,Апрель,2019
  */
 
-public class Item implements Parcelable {
+public class ItemNew implements Parcelable {
     private String title;
     private String pubDate;
     private String link;
@@ -21,7 +21,7 @@ public class Item implements Parcelable {
     private Object enclosure;
     private List<String> categories;
 
-    public Item(String title, String pubDate, String link, String guid, String author, String thumbnail, String description, String content, Object enclosure, List<String> categories) {
+    public ItemNew(String title, String pubDate, String link, String guid, String author, String thumbnail, String description, String content, Object enclosure, List<String> categories) {
         this.title = title;
         this.pubDate = pubDate;
         this.link = link;
@@ -52,7 +52,7 @@ public class Item implements Parcelable {
         parcel.writeStringList(categories);
     }
 
-    private Item(Parcel parcel) {
+    private ItemNew(Parcel parcel) {
         title = parcel.readString();
         pubDate = parcel.readString();
         link = parcel.readString();
@@ -64,15 +64,15 @@ public class Item implements Parcelable {
         categories = parcel.createStringArrayList();
     }
 
-    public static final Creator<Item> CREATOR = new Creator<Item>() {
+    public static final Creator<ItemNew> CREATOR = new Creator<ItemNew>() {
         @Override
-        public Item createFromParcel(Parcel parcel) {
-            return new Item(parcel);
+        public ItemNew createFromParcel(Parcel parcel) {
+            return new ItemNew(parcel);
         }
 
         @Override
-        public Item[] newArray(int size) {
-            return new Item[size];
+        public ItemNew[] newArray(int size) {
+            return new ItemNew[size];
         }
     };
 

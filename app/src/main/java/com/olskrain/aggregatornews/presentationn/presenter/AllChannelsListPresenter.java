@@ -1,21 +1,19 @@
 package com.olskrain.aggregatornews.presentationn.presenter;
 
 import com.olskrain.aggregatornews.domain.entities.Channel;
-import com.olskrain.aggregatornews.domain.interactor.MainInteractor;
+import com.olskrain.aggregatornews.domain.interactor.ChannelsListUseCase;
 import com.olskrain.aggregatornews.presentationn.presenter.list.IChannelListPresenter;
 import com.olskrain.aggregatornews.presentationn.ui.view.IAllChannelsListView;
 import com.olskrain.aggregatornews.presentationn.ui.view.item.IChannelListItemView;
 
 import java.util.List;
 
-import timber.log.Timber;
-
 /**
  * Created by Andrey Ievlev on 03,Май,2019
  */
 
-public class AllChannelsListPresenter implements MainInteractor.IResponseDBCallback {
-    public class ChannelListPresenter implements IChannelListPresenter { //презентер для списка
+public class AllChannelsListPresenter implements ChannelsListUseCase.IResponseDBCallback {
+    public class ChannelListPresenter implements IChannelListPresenter {
         @Override
         public void bindView(IChannelListItemView rowView) {
             String channelTitle = channelsListLocal.get(rowView.getPos()).getFeed().getTitle();
@@ -32,46 +30,53 @@ public class AllChannelsListPresenter implements MainInteractor.IResponseDBCallb
 
     public ChannelListPresenter ChannelListPresenter;
     private IAllChannelsListView allChannelsListView;
-    private MainInteractor mainInteractor;
+    private ChannelsListUseCase channelsListUseCase;
     private List<Channel> channelsListLocal;
 
     public AllChannelsListPresenter(IAllChannelsListView view) {
         this.allChannelsListView = view;
-        this.mainInteractor = new MainInteractor();
-        mainInteractor.registerCallBack(this);
+        this.channelsListUseCase = new ChannelsListUseCase();
+        channelsListUseCase.registerCallBack(this);
         this.ChannelListPresenter = new ChannelListPresenter();
     }
 
     public void addNewChannel(String urlChannel) {
-        mainInteractor.addNewChannel(urlChannel);
+        allChannelsListView.showLoading();
+        channelsListUseCase.addNewChannel(urlChannel);
         allChannelsListView.refreshChannelsListRVAdapter();
     }
 
-    public void deleteChannel(String urlChannel) {
-        mainInteractor.deleteChannel(urlChannel);
+    public void deleteChannel(int channelPosition) {
+        //сюда нужно передовать позицию элемента в списке
+        allChannelsListView.showLoading();
+        channelsListUseCase.deleteChannel(channelPosition);
         allChannelsListView.refreshChannelsListRVAdapter();
     }
 
     public void deleteAllChannels() {
-        mainInteractor.deleteAllChannels();
+        allChannelsListView.showLoading();
+        channelsListUseCase.deleteAllChannels();
         allChannelsListView.refreshChannelsListRVAdapter();
     }
 
     public void refreshChannelsList() {
         allChannelsListView.showLoading();
-        mainInteractor.refreshChannelsList();
+        channelsListUseCase.refreshChannelsList();
+    }
+
+    public void putChannelsList(){
+        channelsListUseCase.putChannelsList();
     }
 
     @Override
     public void sendMessageStatusCallingBack(String message) {
         allChannelsListView.displayMessages(message);
+        allChannelsListView.hideLoading();
     }
 
     @Override
     public void sendChannelsListCallingBack(List<Channel> channelsList) {
         channelsListLocal = channelsList;
-        Timber.d("rty " + channelsListLocal.size());
-       // Timber.d("rty " + channelsListLocal.get(0).getItems().size());
         allChannelsListView.refreshChannelsListRVAdapter();
         allChannelsListView.hideLoading();
     }

@@ -1,6 +1,5 @@
 package com.olskrain.aggregatornews.data.cache;
 
-import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
  */
 
 public interface IChannelsListCache {
-    void updateDatabase(Command command, List<Channel> channelsList);
+    void updateDatabase(List<Channel> channelsList);
 
     void getData();
 }

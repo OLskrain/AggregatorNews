@@ -11,7 +11,7 @@ import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 import com.olskrain.aggregatornews.domain.entities.Feed;
-import com.olskrain.aggregatornews.domain.entities.Item;
+import com.olskrain.aggregatornews.domain.entities.ItemNew;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,8 @@ public class ChannelsListCache implements IChannelsListCache {
         void sendChannelsListCallingBack(List<Channel> channelsList);
     }
 
-    private static final String TABLE_FEED = "channaldf";
-    private static final String TABLE_ITEM = "itemdfg";
+    private static final String TABLE_FEED = "channel";
+    private static final String TABLE_ITEM_New = "itemNew";
     private static final String COLUMN_URL = "url";
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_TITLE_FEED = "title_feed";
@@ -62,34 +62,15 @@ public class ChannelsListCache implements IChannelsListCache {
     }
 
     @Override
-    public void updateDatabase(Command command, List<Channel> channelsList) {
-        @SuppressLint("StaticFieldLeak") AsyncTask<ArrayMap<Command, List<Channel>>, String, String> loadRSSAsync = new AsyncTask<ArrayMap<Command, List<Channel>>, String, String>() {
+    public void updateDatabase(List<Channel> channelsList) {
+        @SuppressLint("StaticFieldLeak") AsyncTask<List<Channel>, String, String> loadRSSAsync = new AsyncTask<List<Channel>, String, String>() {
 
             @Override
-            protected String doInBackground(ArrayMap<Command, List<Channel>>... requestParameters) {
-                Command command = requestParameters[0].keyAt(0);
-                List<Channel> channelsList = requestParameters[0].get(command);
+            protected String doInBackground(List<Channel>... channelsList) {
 
                 SQLiteDatabase connectDB = App.getDbHelper().getWritableDatabase();
                 connectDB.execSQL("PRAGMA foreign_keys=ON");
-
-                switch (command) {
-                    case ADD_CHANNEL:
-                    case REFRESH_CHANNELS:
-                        updateChannelsList(channelsList, command, connectDB);
-                        break;
-                    case DELETE_CHANNEL:
-                        //TODO:
-                        //String feedUrl = channelsList.get(0).getFeed().getUrl();
-                        String feedUrl = "https://news.yandex.ru/auto.rss";
-                        connectDB.delete(TABLE_FEED, COLUMN_URL + " = ?", new String[]{feedUrl});
-                        break;
-                    case DELETE_ALL_CHANNELS:
-                        connectDB.delete(TABLE_FEED, null, null);
-                        break;
-                    default:
-                        break;
-                }
+                updateChannelsList(channelsList[0], connectDB);
                 return STATUS_UPDATE_DB;
             }
 
@@ -98,11 +79,9 @@ public class ChannelsListCache implements IChannelsListCache {
                 App.getDbHelper().close();
                 callback.sendMessageStatusCallingBack(statusUpdateDB);
                 requestParameters.clear();
-                getData();
             }
         };
-        requestParameters.put(command, channelsList);
-        loadRSSAsync.execute(requestParameters);
+        loadRSSAsync.execute(channelsList);
     }
 
     @Override
@@ -124,7 +103,9 @@ public class ChannelsListCache implements IChannelsListCache {
         loadRSSAsync.execute();
     }
 
-    private void updateChannelsList(List<Channel> channelsList, Command command, SQLiteDatabase connectDB) {
+    private void updateChannelsList(List<Channel> channelsList, SQLiteDatabase connectDB) {
+        connectDB.delete(TABLE_FEED, null, null);
+
         for (int i = 0; i < channelsList.size(); i++) {
             String feedUrl = channelsList.get(i).getFeed().getUrl();
             String feedTitle = channelsList.get(i).getFeed().getTitle();
@@ -133,37 +114,21 @@ public class ChannelsListCache implements IChannelsListCache {
             String feedDescription = channelsList.get(i).getFeed().getDescription();
             String feedImage = channelsList.get(i).getFeed().getImage();
             String feedLastBuildDate = channelsList.get(i).getFeed().getLastBuildDate();
-            List<Item> itemsList = channelsList.get(i).getItems();
-            int idFeed = 0;
-            switch (command) {
-                case ADD_CHANNEL:
-                    idFeed = (int) insertFeed(connectDB, TABLE_FEED, feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
-                    break;
-                case REFRESH_CHANNELS:
-                    //TODO: метод на обновление
-                    break;
-                default:
-                    break;
-            }
-            for (int j = 0; j < itemsList.size(); j++) {
-                String itemTitle = itemsList.get(j).getTitle();
-                String itemPubDate = itemsList.get(j).getPubDate();
-                String itemLink = itemsList.get(j).getLink();
-                String itemGuid = itemsList.get(j).getGuid();
-                String itemAuthor = itemsList.get(j).getAuthor();
-                String itemThumbnail = itemsList.get(j).getThumbnail();
-                String itemDescription = itemsList.get(j).getDescription();
-                String itemContent = itemsList.get(j).getContent();
-                switch (command) {
-                    case ADD_CHANNEL:
-                        insertItem(connectDB, TABLE_ITEM, idFeed, itemTitle, itemPubDate, itemLink, itemGuid, itemAuthor, itemThumbnail, itemDescription, itemContent);
-                        break;
-                    case REFRESH_CHANNELS:
-                        //TODO: метод на обновление
-                        break;
-                    default:
-                        break;
-                }
+            List<ItemNew> itemNewsList = channelsList.get(i).getItemNew();
+
+            int idFeed = (int) insertFeed(connectDB, TABLE_FEED, feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
+
+            for (int j = 0; j < itemNewsList.size(); j++) {
+                String itemNewTitle = itemNewsList.get(j).getTitle();
+                String itemNewPubDate = itemNewsList.get(j).getPubDate();
+                String itemNewLink = itemNewsList.get(j).getLink();
+                String itemNewGuid = itemNewsList.get(j).getGuid();
+                String itemNewAuthor = itemNewsList.get(j).getAuthor();
+                String itemNewThumbnail = itemNewsList.get(j).getThumbnail();
+                String itemNewDescription = itemNewsList.get(j).getDescription();
+                String itemNewContent = itemNewsList.get(j).getContent();
+
+                insertItemNew(connectDB, TABLE_ITEM_New, idFeed, itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent);
             }
         }
     }
@@ -181,8 +146,8 @@ public class ChannelsListCache implements IChannelsListCache {
         return connectDB.insert(table, null, contentValues);
     }
 
-    private void insertItem(SQLiteDatabase connectDB, String table, int idFeed, String title, String pubDate, String link,
-                            String guid, String author, String thumbnail, String description, String content) {
+    private void insertItemNew(SQLiteDatabase connectDB, String table, int idFeed, String title, String pubDate, String link,
+                               String guid, String author, String thumbnail, String description, String content) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_TITLE, title);
@@ -201,16 +166,16 @@ public class ChannelsListCache implements IChannelsListCache {
         List<Channel> channelsList = new ArrayList<>();
         Cursor cursor;
 
-        String relatedTables = TABLE_ITEM + " as IM inner join " + TABLE_FEED + " as FD on IM.id_feed = FD.id";
+        String relatedTables = TABLE_ITEM_New + " as IM inner join " + TABLE_FEED + " as FD on IM.id_feed = FD.id";
         cursor = connectDB.query(relatedTables, null, null, null, null, null, null);
-        List<Item> itemList = new ArrayList<>();
+        List<ItemNew> itemNewsList = new ArrayList<>();
         Feed feed = null;
         Channel channel = null;
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 String feedUrl = null, feedTitle = null, feedLink = null, feedAuthor = null, feedDescription = null, feedImage = null, feedLastBuildDate = null;
-                String itemTitle = null, itemPubDate = null, itemLink = null, itemGuid = null, itemAuthor = null, itemThumbnail = null, itemDescription = null, itemContent = null;
+                String itemNewTitle = null, itemNewPubDate = null, itemNewLink = null, itemNewGuid = null, itemNewAuthor = null, itemNewThumbnail = null, itemNewDescription = null, itemNewContent = null;
                 int currentId = 2;
                 int id = 0;
                 do {
@@ -241,44 +206,45 @@ public class ChannelsListCache implements IChannelsListCache {
                                 feedLastBuildDate = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
                             case COLUMN_TITLE:
-                                itemTitle = cursor.getString(cursor.getColumnIndex(cn));
+                                itemNewTitle = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
                             case COLUMN_PUB_DATE:
-                                itemPubDate = cursor.getString(cursor.getColumnIndex(cn));
+                                itemNewPubDate = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
                             case COLUMN_LINK:
-                                itemLink = cursor.getString(cursor.getColumnIndex(cn));
+                                itemNewLink = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
                             case COLUMN_GUID:
-                                itemGuid = cursor.getString(cursor.getColumnIndex(cn));
+                                itemNewGuid = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
                             case COLUMN_AUTHOR:
-                                itemAuthor = cursor.getString(cursor.getColumnIndex(cn));
+                                itemNewAuthor = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
                             case COLUMN_THUMBNAIL:
-                                itemThumbnail = cursor.getString(cursor.getColumnIndex(cn));
+                                itemNewThumbnail = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
                             case COLUMN_DESCRIPTION:
-                                itemDescription = cursor.getString(cursor.getColumnIndex(cn));
+                                itemNewDescription = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
                             case COLUMN_CONTENT:
-                                itemContent = cursor.getString(cursor.getColumnIndex(cn));
+                                itemNewContent = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
                             default:
                                 break;
                         }
 
                     }
-
+                    Timber.d("rty " + id);
                     if (currentId > id) {
+
                         feed = new Feed(feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
-                        Item item = new Item(itemTitle, itemPubDate, itemLink, itemGuid, itemAuthor, itemThumbnail, itemDescription, itemContent, null, null);
-                        itemList.add(item);
+                        ItemNew item = new ItemNew(itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent, null, null);
+                        itemNewsList.add(item);
                     }
                     if (currentId == id) {
-                        channel = new Channel(feed, itemList);
+                        channel = new Channel(feed, itemNewsList);
                         channelsList.add(channel);
-                        itemList.clear();
+                        itemNewsList.clear();
                         currentId++;
                     }
 

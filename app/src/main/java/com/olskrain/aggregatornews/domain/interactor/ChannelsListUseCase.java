@@ -1,6 +1,5 @@
 package com.olskrain.aggregatornews.domain.interactor;
 
-import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.data.repository.AllChannelsListRepository;
 import com.olskrain.aggregatornews.data.repository.IAllChannelsListRepository;
 import com.olskrain.aggregatornews.domain.entities.Channel;
@@ -12,7 +11,7 @@ import java.util.List;
  * Created by Andrey Ievlev on 01,Май,2019
  */
 
-public class MainInteractor implements AllChannelsListRepository.IResponseDBCallback {
+public class ChannelsListUseCase implements AllChannelsListRepository.IResponseDBCallback {
 
     public interface IResponseDBCallback {
         void sendMessageStatusCallingBack(String message);
@@ -23,7 +22,7 @@ public class MainInteractor implements AllChannelsListRepository.IResponseDBCall
     private IResponseDBCallback callback;
     private List<Channel> channelsList;
 
-    public MainInteractor() {
+    public ChannelsListUseCase() {
         channelsList = new ArrayList<>();
         channelRepository = new AllChannelsListRepository();
         ((AllChannelsListRepository) channelRepository).registerCallBack(this);
@@ -37,22 +36,35 @@ public class MainInteractor implements AllChannelsListRepository.IResponseDBCall
         channelRepository.getChannel(urlChannel);
     }
 
-    public void deleteChannel(String urlChannel) {
-        channelRepository.putUpdatedData(Command.DELETE_CHANNEL, channelsList);
+    public void deleteChannel(int position) {
+        channelsList.remove(position);
+        sendChannelsListCallingBack(channelsList);
     }
 
     public void deleteAllChannels() {
-        channelRepository.putUpdatedData(Command.DELETE_ALL_CHANNELS, null);
+        channelsList.clear();
+        sendChannelsListCallingBack(channelsList);
     }
 
     public void refreshChannelsList() {
         channelRepository.getChannelsList();
+        sendChannelsListCallingBack(channelsList);
+    }
+
+    public void putChannelsList(){
+        channelRepository.putUpdatedData(channelsList);
     }
 
     @Override
     public void sendMessageStatusCallingBack(String message) {
         callback.sendMessageStatusCallingBack(message);
     }
+
+//    @Override
+//    public void sendChannelCallingBack(Channel channel) {
+//        channelsList.add(channel);
+//        sendChannelsListCallingBack(channelsList);
+//    }
 
     @Override
     public void sendChannelsListCallingBack(List<Channel> channelsList) {

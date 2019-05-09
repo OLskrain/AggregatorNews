@@ -39,13 +39,18 @@ public class AllChannelsListFragment extends Fragment implements IAllChannelsLis
         return fragment;
     }
 
-    public static final String LINK = "https://news.yandex.ru/auto.rss";
+    public static final String CHANNEL_ONE = "https://news.yandex.ru/auto.rss";
+    public static final String CHANNEL_TWO = "https://news.yandex.ru/business.rss";
+    public static final String CHANNEL_THREE = "https://news.yandex.ru/world.rss";
 
     private Toolbar allChannelsListToolbar;
     private ProgressBar loadingProgressBar;
     private FloatingActionButton addNewChannel;
     private RecyclerView allChannelsListRecyclerView;
 
+    private Button addChannelOne;
+    private Button addChannelTwo;
+    private Button addChannelThree;
     private Button deleteChannel;
     private Button deleteAllChannels;
 
@@ -72,7 +77,6 @@ public class AllChannelsListFragment extends Fragment implements IAllChannelsLis
             ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(allChannelsListToolbar);
         }
 
-        //Todo: разобраться с работой прогресбара или заменить
         loadingProgressBar = view.findViewById(R.id.all_list_loading_progressBar);
         addNewChannel = view.findViewById(R.id.add_new_channel_fab);
 
@@ -82,16 +86,29 @@ public class AllChannelsListFragment extends Fragment implements IAllChannelsLis
         allChannelsListRVAdapter = new ChannelsListRVAdapter(allChannelsListPresenter.ChannelListPresenter);
         allChannelsListRecyclerView.setAdapter(allChannelsListRVAdapter);
 
-        deleteChannel = view.findViewById(R.id.delete_channel);
+        addChannelOne = view.findViewById(R.id.add_channel_one);
+        addChannelTwo = view.findViewById(R.id.add_channel_two);
+        addChannelThree = view.findViewById(R.id.add_channel_three);
+
+        deleteChannel = view.findViewById(R.id.delete_channel_one);
         deleteAllChannels = view.findViewById(R.id.delete_all_channels);
     }
 
     private void initOnClick() {
-        addNewChannel.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(LINK));
+        //addNewChannel.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_FOUR));
 
-        deleteChannel.setOnClickListener(view -> allChannelsListPresenter.deleteChannel(LINK));
+        addChannelOne.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_ONE));
+        addChannelTwo.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_TWO));
+        addChannelThree.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_THREE));
 
+        deleteChannel.setOnClickListener(view -> allChannelsListPresenter.deleteChannel(0));
         deleteAllChannels.setOnClickListener(view -> allChannelsListPresenter.deleteAllChannels());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        allChannelsListPresenter.putChannelsList();
     }
 
     @Override
