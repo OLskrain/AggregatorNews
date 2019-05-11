@@ -2,6 +2,7 @@ package com.olskrain.aggregatornews.presentationn.presenter;
 
 import com.olskrain.aggregatornews.domain.entities.Channel;
 import com.olskrain.aggregatornews.domain.usecase.ChannelsListUseCase;
+import com.olskrain.aggregatornews.domain.usecase.IChannelsListUseCase;
 import com.olskrain.aggregatornews.presentationn.presenter.list.IChannelListPresenter;
 import com.olskrain.aggregatornews.presentationn.ui.view.IAllChannelsListView;
 import com.olskrain.aggregatornews.presentationn.ui.view.item.IChannelListItemView;
@@ -30,7 +31,7 @@ public class AllChannelsListPresenter implements ChannelsListUseCase.IResponseDB
 
     public ChannelListPresenter channelListPresenter;
     private IAllChannelsListView allChannelsListView;
-    private ChannelsListUseCase channelsListUseCase;
+    private IChannelsListUseCase channelsListUseCase;
     private List<Channel> channelsListLocal;
 
     public AllChannelsListPresenter(IAllChannelsListView view) {

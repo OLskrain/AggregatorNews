@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Andrey Ievlev on 10,Май,2019
  */
 
-public class NewsListUseCase implements NewsListRepository.IResponseDBCallback {
+public class NewsListUseCase implements INewsListUseCase, NewsListRepository.IResponseDBCallback {
 
     public interface IResponseDBCallback {
         void sendMessageStatusCallingBack(String message);
@@ -26,13 +26,16 @@ public class NewsListUseCase implements NewsListRepository.IResponseDBCallback {
         ((NewsListRepository) newsListRepository).registerCallBack(this);
     }
 
+    @Override
     public void registerCallBack(IResponseDBCallback callback) {
         this.callback = callback;
     }
 
+    @Override
     public void refreshNewsList() {
         newsListRepository.getChannelsList();
     }
+
 
     @Override
     public void sendMessageStatusCallingBack(String message) {

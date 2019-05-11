@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     private static final String ALL_CHANNEL_FRAGMENT_TAG = "43ddDcdd-c9e0-4794-B7e6-cf05af49fbf0";
     private static final String FAVORITE_CHANNEL_FRAGMENT_TAG = "43dbDcdd-c5e0-4794-B7e6-cb05af49fbf0";
     private static final String OTHER_FRAGMENT_TAG = "43ddDcdd-c9e0-i794-B3e6-cf05wf49fbf0";
-
+    private static final int PERMISSION_REQUEST_CODE = 156;
     private MainActivityPresenter mainPresenter;
     private BottomNavigationView navigation;
 
@@ -35,12 +35,17 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         mainPresenter = new MainActivityPresenter(this);
         initUi();
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, AllChannelsListFragment.getInstance(AllChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
-                    .commit();
-        }
+//        if (ContextCompat.checkSelfPermission(App.getInstance(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
+//                || ActivityCompat.checkSelfPermission(App.getInstance(), Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+//            requestPermission(savedInstanceState);
+//        } else {
+            if (savedInstanceState == null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, AllChannelsListFragment.getInstance(AllChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
+                        .commit();
+            }
+       // }
     }
 
     private void initUi() {
@@ -85,6 +90,51 @@ public class MainActivity extends AppCompatActivity implements IMainView {
                 .addToBackStack("")
                 .commit();
     }
+
+//    private void requestPermission(Bundle savedInstanceState) {
+//        if (ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.READ_CONTACTS)
+//                != PackageManager.PERMISSION_GRANTED) {
+//
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.READ_CONTACTS)) {
+//
+//            } else {
+//                ActivityCompat.requestPermissions(this,
+//                    new String[]{
+//                           // Manifest.permission.INTERNET,
+//                            Manifest.permission.ACCESS_NETWORK_STATE
+//                    },
+//                    PERMISSION_REQUEST_CODE);
+//            }
+//        } else {
+//            if (savedInstanceState == null) {
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.container, AllChannelsListFragment.getInstance(AllChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
+//                        .commit();
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        switch (requestCode) {
+//            case PERMISSION_REQUEST_CODE: {
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                        getSupportFragmentManager()
+//                                .beginTransaction()
+//                                .replace(R.id.container, AllChannelsListFragment.getInstance(AllChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
+//                                .commit();
+//
+//                } else {
+//                    Timber.d("rty ОТключить функциональность если нет разрешения");
+//                }
+//                return;
+//            }
+//        }
+//    }
 
     @Override
     protected void onPause() {

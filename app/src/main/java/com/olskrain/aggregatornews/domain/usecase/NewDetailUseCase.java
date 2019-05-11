@@ -6,7 +6,8 @@ import com.olskrain.aggregatornews.data.repository.NewDetailRepository;
 /**
  * Created by Andrey Ievlev on 11,Май,2019
  */
-public class NewDetailUseCase implements NewDetailRepository.IResponseServerCallback {
+
+public class NewDetailUseCase implements INewDetailUseCase, NewDetailRepository.IResponseServerCallback {
 
     public interface IResponseServerCallback {
         void sendMessageStatusCallingBack(String message);
@@ -21,10 +22,12 @@ public class NewDetailUseCase implements NewDetailRepository.IResponseServerCall
         ((NewDetailRepository) this.newsDetailRepository).registerCallBack(this);
     }
 
+    @Override
     public void registerCallBack(IResponseServerCallback callback) {
         this.callback = callback;
     }
 
+    @Override
     public void getWebPage() {
         newsDetailRepository.getWebPage();
     }

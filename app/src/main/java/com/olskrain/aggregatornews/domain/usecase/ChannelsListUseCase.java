@@ -10,10 +10,11 @@ import java.util.List;
  * Created by Andrey Ievlev on 01,Май,2019
  */
 
-public class ChannelsListUseCase implements AllChannelsListRepository.IResponseDBCallback {
+public class ChannelsListUseCase implements IChannelsListUseCase, AllChannelsListRepository.IResponseDBCallback {
 
     public interface IResponseDBCallback {
         void sendMessageStatusCallingBack(String message);
+
         void sendChannelsListCallingBack(List<Channel> channelsList);
     }
 
@@ -31,25 +32,30 @@ public class ChannelsListUseCase implements AllChannelsListRepository.IResponseD
         this.callback = callback;
     }
 
+    @Override
     public void addNewChannel(String urlChannel) {
         channelRepository.getChannel(urlChannel);
     }
 
+    @Override
     public void deleteChannel(int position) {
         channelsList.remove(position);
         sendChannelsListCallingBack(channelsList);
     }
 
+    @Override
     public void deleteAllChannels() {
         channelsList.clear();
         sendChannelsListCallingBack(channelsList);
     }
 
+    @Override
     public void refreshChannelsList() {
         channelRepository.getChannelsList();
         sendChannelsListCallingBack(channelsList);
     }
 
+    @Override
     public void putChannelsList() {
         channelRepository.putUpdatedData(channelsList);
     }
