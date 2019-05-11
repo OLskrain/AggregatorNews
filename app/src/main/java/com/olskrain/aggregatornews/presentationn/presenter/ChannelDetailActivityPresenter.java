@@ -15,7 +15,7 @@ public class ChannelDetailActivityPresenter {
     }
 
     public void doToAllChannelsList() {
-        iChannelDetailView.doToAllChannelsList();
+        iChannelDetailView.goToAllChannelsList();
     }
 }
 

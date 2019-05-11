@@ -18,12 +18,12 @@ public class NewsListUseCase implements NewsListRepository.IResponseDBCallback {
     }
 
     private IResponseDBCallback callback;
-    private INewsListRepository iNewsListRepository;
+    private INewsListRepository newsListRepository;
     private List<ItemNew> newList;
 
     public NewsListUseCase(int channelPosition) {
-        this.iNewsListRepository = new NewsListRepository(channelPosition);
-        ((NewsListRepository) iNewsListRepository).registerCallBack(this);
+        this.newsListRepository = new NewsListRepository(channelPosition);
+        ((NewsListRepository) newsListRepository).registerCallBack(this);
     }
 
     public void registerCallBack(IResponseDBCallback callback) {
@@ -31,7 +31,7 @@ public class NewsListUseCase implements NewsListRepository.IResponseDBCallback {
     }
 
     public void refreshNewsList() {
-        iNewsListRepository.getChannelsList();
+        newsListRepository.getChannelsList();
     }
 
     @Override

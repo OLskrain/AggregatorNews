@@ -21,7 +21,8 @@ public class HTTPDataHandler {
         try {
             URL url = new URL(urlString);
             urlConnection = (HttpURLConnection) url.openConnection();
-
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 

@@ -32,19 +32,19 @@ public class ChannelDetailFragmentPresenter implements NewsListUseCase.IResponse
     }
 
     public NewsListPresenter newsListPresenter;
-    private IChannelDetailFragmentView iChannelDetailFragmentView;
+    private IChannelDetailFragmentView channelDetailFragmentView;
     private NewsListUseCase newsListUseCase;
     private List<ItemNew> newsListLocal;
 
     public ChannelDetailFragmentPresenter(IChannelDetailFragmentView view, int channelPosition) {
-        this.iChannelDetailFragmentView = view;
+        this.channelDetailFragmentView = view;
         this.newsListPresenter = new NewsListPresenter();
         this.newsListUseCase = new NewsListUseCase(channelPosition);
         this.newsListUseCase.registerCallBack(this);
     }
 
     public void refreshNewsList() {
-        iChannelDetailFragmentView.showLoading();
+        channelDetailFragmentView.showLoading();
         newsListUseCase.refreshNewsList();
     }
 
@@ -56,8 +56,8 @@ public class ChannelDetailFragmentPresenter implements NewsListUseCase.IResponse
     @Override
     public void sendNewsListCallingBack(List<ItemNew> newsList) {
         newsListLocal = newsList;
-        iChannelDetailFragmentView.refreshChannelsListRVAdapter();
-        iChannelDetailFragmentView.hideLoading();
+        channelDetailFragmentView.refreshChannelsListRVAdapter();
+        channelDetailFragmentView.hideLoading();
     }
 }
 

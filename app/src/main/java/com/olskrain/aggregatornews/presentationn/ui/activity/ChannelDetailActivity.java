@@ -19,6 +19,7 @@ import com.olskrain.aggregatornews.presentationn.ui.view.IChannelDetailActivityV
 
 @SuppressLint("Registered")
 public class ChannelDetailActivity extends AppCompatActivity implements IChannelDetailActivityView {
+
     private static final String NEW_FRAGMENT_TAG = "43ddDldd-c9e8-4554-B7e6-cf05jf49dbf0";
     private Toolbar toolbar;
     private ActionBar actionBar;
@@ -63,7 +64,7 @@ public class ChannelDetailActivity extends AppCompatActivity implements IChannel
     }
 
     @Override
-    public void doToAllChannelsList() {
+    public void goToAllChannelsList() {
         navigateUpTo(new Intent(this, MainActivity.class));
     }
 }

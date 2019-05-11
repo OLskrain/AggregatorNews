@@ -1,6 +1,7 @@
 package com.olskrain.aggregatornews.presentationn.ui.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentationn.presenter.list.INewsListPresenter;
+import com.olskrain.aggregatornews.presentationn.ui.activity.NewDetailActivity;
 import com.olskrain.aggregatornews.presentationn.ui.view.item.INewsListItemView;
 
 /**
@@ -36,11 +38,13 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ne
         viewHolder.position = position;
         presenter.bindView(viewHolder);
 
-        //TODO: доделать пассивную реализацию
+        //TODO: доделать пассивную реализацию.
+        //данная реализация временная
         viewHolder.itemView.setOnClickListener(view -> {
-//            Intent intent = new Intent(view.getContext(), ChannelDetailActivity.class);
-//            intent.putExtra(ChannelDetailFragment.ARG_CDF_ID, position);
-//            view.getContext().startActivity(intent);
+            Intent intent = new Intent(view.getContext(), NewDetailActivity.class);
+            String s = "https://news.yandex.ru/";
+            intent.putExtra("url new", s);
+            view.getContext().startActivity(intent);
         });
     }
 
