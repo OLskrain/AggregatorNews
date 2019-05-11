@@ -3,7 +3,6 @@ package com.olskrain.aggregatornews.presentationn.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -33,19 +32,19 @@ public class AllChannelsListFragment extends Fragment implements IAllChannelsLis
 
     public static AllChannelsListFragment getInstance(String arg) {
         AllChannelsListFragment fragment = new AllChannelsListFragment();
-        Bundle args = new Bundle();
-        args.putString("arg", arg);
-        fragment.setArguments(args);
+        Bundle arguments = new Bundle();
+        arguments.putString("arg", arg);
+        fragment.setArguments(arguments);
         return fragment;
     }
 
+    public static final String ARG_ACLF_ID = "allChannelListId";
     public static final String CHANNEL_ONE = "https://news.yandex.ru/auto.rss";
     public static final String CHANNEL_TWO = "https://news.yandex.ru/business.rss";
     public static final String CHANNEL_THREE = "https://news.yandex.ru/world.rss";
 
     private Toolbar allChannelsListToolbar;
     private ProgressBar loadingProgressBar;
-    private FloatingActionButton addNewChannel;
     private RecyclerView allChannelsListRecyclerView;
 
     private Button addChannelOne;
@@ -78,12 +77,11 @@ public class AllChannelsListFragment extends Fragment implements IAllChannelsLis
         }
 
         loadingProgressBar = view.findViewById(R.id.all_list_loading_progressBar);
-        addNewChannel = view.findViewById(R.id.add_new_channel_fab);
 
         allChannelsListRecyclerView = view.findViewById(R.id.all_channels_list);
         allChannelsListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         allChannelsListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        allChannelsListRVAdapter = new ChannelsListRVAdapter(allChannelsListPresenter.ChannelListPresenter);
+        allChannelsListRVAdapter = new ChannelsListRVAdapter(allChannelsListPresenter.channelListPresenter);
         allChannelsListRecyclerView.setAdapter(allChannelsListRVAdapter);
 
         addChannelOne = view.findViewById(R.id.add_channel_one);
@@ -95,8 +93,6 @@ public class AllChannelsListFragment extends Fragment implements IAllChannelsLis
     }
 
     private void initOnClick() {
-        //addNewChannel.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_FOUR));
-
         addChannelOne.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_ONE));
         addChannelTwo.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_TWO));
         addChannelThree.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_THREE));

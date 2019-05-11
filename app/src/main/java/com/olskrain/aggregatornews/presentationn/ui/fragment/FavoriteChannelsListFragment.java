@@ -20,12 +20,13 @@ public class FavoriteChannelsListFragment extends Fragment implements IFavoriteC
 
     public static FavoriteChannelsListFragment getInstance(String arg) {
         FavoriteChannelsListFragment fragment = new FavoriteChannelsListFragment();
-        Bundle args = new Bundle();
-        args.putString("arg", arg);
-        fragment.setArguments(args);
+        Bundle arguments = new Bundle();
+        arguments.putString("arg", arg);
+        fragment.setArguments(arguments);
         return fragment;
     }
 
+    public static final String ARG_FCLF_ID = "favoriteChannelListId";
     private FavoriteChannelsListPresenter favoriteChannelsListPresenter;
 
     @Nullable

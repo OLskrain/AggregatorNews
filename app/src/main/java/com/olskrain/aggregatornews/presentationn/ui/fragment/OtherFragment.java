@@ -20,12 +20,13 @@ public class OtherFragment extends Fragment implements IOtherView {
 
     public static OtherFragment getInstance(String arg) {
         OtherFragment fragment = new OtherFragment();
-        Bundle args = new Bundle();
-        args.putString("arg", arg);
-        fragment.setArguments(args);
+        Bundle arguments = new Bundle();
+        arguments.putString("arg", arg);
+        fragment.setArguments(arguments);
         return fragment;
     }
 
+    public static final String ARG_OF_ID = "otherId";
     private OtherPresenter otherPresenter;
 
     @Nullable

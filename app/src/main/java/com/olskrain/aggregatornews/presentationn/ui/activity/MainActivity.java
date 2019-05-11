@@ -9,7 +9,7 @@ import android.view.MenuItem;
 
 import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.R;
-import com.olskrain.aggregatornews.presentationn.presenter.MainPresenter;
+import com.olskrain.aggregatornews.presentationn.presenter.MainActivityPresenter;
 import com.olskrain.aggregatornews.presentationn.ui.fragment.AllChannelsListFragment;
 import com.olskrain.aggregatornews.presentationn.ui.fragment.FavoriteChannelsListFragment;
 import com.olskrain.aggregatornews.presentationn.ui.fragment.OtherFragment;
@@ -20,9 +20,11 @@ import com.olskrain.aggregatornews.presentationn.ui.view.IMainView;
  */
 
 public class MainActivity extends AppCompatActivity implements IMainView {
-    private static final String FRAGMENT_TAG = "43ddDcdd-c9e0-4794-B7e6-cf05af49fbf0";
+    private static final String ALL_CHANNEL_FRAGMENT_TAG = "43ddDcdd-c9e0-4794-B7e6-cf05af49fbf0";
+    private static final String FAVORITE_CHANNEL_FRAGMENT_TAG = "43dbDcdd-c5e0-4794-B7e6-cb05af49fbf0";
+    private static final String OTHER_FRAGMENT_TAG = "43ddDcdd-c9e0-i794-B3e6-cf05wf49fbf0";
 
-    private MainPresenter mainPresenter;
+    private MainActivityPresenter mainPresenter;
     private BottomNavigationView navigation;
 
     @Override
@@ -30,13 +32,13 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainPresenter = new MainPresenter(this);
+        mainPresenter = new MainActivityPresenter(this);
         initUi();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, new AllChannelsListFragment(), FRAGMENT_TAG)
+                    .replace(R.id.container, AllChannelsListFragment.getInstance(AllChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
                     .commit();
         }
     }
@@ -65,21 +67,21 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     public void goToFragment(int buttonID) {
         switch (buttonID) {
             case R.id.navigation_home:
-                addFragment(new AllChannelsListFragment());
+                addFragment(AllChannelsListFragment.getInstance(AllChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG);
                 break;
             case R.id.navigation_favorite:
-                addFragment(new FavoriteChannelsListFragment());
+                addFragment(FavoriteChannelsListFragment.getInstance(FavoriteChannelsListFragment.ARG_FCLF_ID), FAVORITE_CHANNEL_FRAGMENT_TAG);
                 break;
             case R.id.navigation_other:
-                addFragment(new OtherFragment());
+                addFragment(OtherFragment.getInstance(OtherFragment.ARG_OF_ID), OTHER_FRAGMENT_TAG);
                 break;
         }
     }
 
-    public void addFragment(Fragment fragment) {
+    public void addFragment(Fragment fragment, String tag) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, fragment)
+                .replace(R.id.container, fragment, tag)
                 .addToBackStack("")
                 .commit();
     }

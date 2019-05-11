@@ -21,7 +21,6 @@ public class AllChannelsListRepository implements IAllChannelsListRepository,
 
     public interface IResponseDBCallback {
         void sendMessageStatusCallingBack(String message);
-
         void sendChannelsListCallingBack(List<Channel> channelsList);
     }
 
@@ -33,10 +32,10 @@ public class AllChannelsListRepository implements IAllChannelsListRepository,
 
     private IChannelsListCache cache;
     private IResponseDBCallback callback;
-    private List<Channel> channelsList; //временно для подмены
+    private List<Channel> channelsList;
 
     public AllChannelsListRepository() {
-        cache = new ChannelsListCache();
+        this.cache = new ChannelsListCache();
         ((ChannelsListCache) cache).registerCallBack(this);
         App.getResponseServiceBroadcast().registerCallBack(this);
     }
@@ -78,8 +77,8 @@ public class AllChannelsListRepository implements IAllChannelsListRepository,
         if (NetworkStatus.isOnline()) {
             //TODo:сделать запрос на сервер, и если приходит ошибка то вызываем ке
             //String[] st = getUrlChannelList();
-           //startService(st);
-           cache.getData();
+            //startService(st);
+            cache.getData();
         } else {
             cache.getData();
         }

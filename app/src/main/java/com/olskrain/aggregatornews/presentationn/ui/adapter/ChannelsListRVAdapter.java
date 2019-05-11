@@ -1,6 +1,7 @@
 package com.olskrain.aggregatornews.presentationn.ui.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,13 +12,15 @@ import android.widget.TextView;
 
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentationn.presenter.list.IChannelListPresenter;
+import com.olskrain.aggregatornews.presentationn.ui.activity.ChannelDetailActivity;
+import com.olskrain.aggregatornews.presentationn.ui.fragment.ChannelDetailFragment;
 import com.olskrain.aggregatornews.presentationn.ui.view.item.IChannelListItemView;
 
 /**
  * Created by Andrey Ievlev on 29,Апрель,2019
  */
 
-public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAdapter.ViewHolder> {
+public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAdapter.ChannelsListViewHolder> {
 
     private IChannelListPresenter presenter;
 
@@ -27,14 +30,22 @@ public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAd
 
     @NonNull
     @Override
-    public ChannelsListRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_channel, viewGroup, false));
+    public ChannelsListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        return new ChannelsListViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_channel, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChannelsListRVAdapter.ViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull ChannelsListViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
+
         viewHolder.position = position;
         presenter.bindView(viewHolder);
+
+        //TODO: доделать пассивную реализацию
+        viewHolder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), ChannelDetailActivity.class);
+            intent.putExtra(ChannelDetailFragment.ARG_CDF_ID, position);
+            view.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -42,19 +53,18 @@ public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAd
         return presenter.getChannelCount();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements IChannelListItemView {
+    public class ChannelsListViewHolder extends RecyclerView.ViewHolder implements IChannelListItemView {
 
         private int position = 0;
-        private TextView channelTitle;
-        private TextView lastBuildDate;
-        private ImageView contextItemMenu;
+        private final TextView channelTitle;
+        private final TextView lastBuildDate;
+        private final ImageView contextItemMenu;
 
-        ViewHolder(View itemView) {
+        ChannelsListViewHolder(View itemView) {
             super(itemView);
             channelTitle = itemView.findViewById(R.id.channel_title);
-            lastBuildDate = itemView.findViewById(R.id.last_build_date);
+            lastBuildDate = itemView.findViewById(R.id.last_build_date_channel);
             contextItemMenu = itemView.findViewById(R.id.context_item_menu);
-
         }
 
         @Override

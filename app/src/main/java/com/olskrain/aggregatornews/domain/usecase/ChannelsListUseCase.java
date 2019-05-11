@@ -1,10 +1,9 @@
-package com.olskrain.aggregatornews.domain.interactor;
+package com.olskrain.aggregatornews.domain.usecase;
 
 import com.olskrain.aggregatornews.data.repository.AllChannelsListRepository;
 import com.olskrain.aggregatornews.data.repository.IAllChannelsListRepository;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,9 +21,9 @@ public class ChannelsListUseCase implements AllChannelsListRepository.IResponseD
     private IResponseDBCallback callback;
     private List<Channel> channelsList;
 
-    public ChannelsListUseCase() {
-        channelsList = new ArrayList<>();
-        channelRepository = new AllChannelsListRepository();
+    public ChannelsListUseCase(List<Channel> channelsList) {
+        this.channelsList = channelsList;
+        this.channelRepository = new AllChannelsListRepository();
         ((AllChannelsListRepository) channelRepository).registerCallBack(this);
     }
 
@@ -51,7 +50,7 @@ public class ChannelsListUseCase implements AllChannelsListRepository.IResponseD
         sendChannelsListCallingBack(channelsList);
     }
 
-    public void putChannelsList(){
+    public void putChannelsList() {
         channelRepository.putUpdatedData(channelsList);
     }
 
@@ -59,12 +58,6 @@ public class ChannelsListUseCase implements AllChannelsListRepository.IResponseD
     public void sendMessageStatusCallingBack(String message) {
         callback.sendMessageStatusCallingBack(message);
     }
-
-//    @Override
-//    public void sendChannelCallingBack(Channel channel) {
-//        channelsList.add(channel);
-//        sendChannelsListCallingBack(channelsList);
-//    }
 
     @Override
     public void sendChannelsListCallingBack(List<Channel> channelsList) {

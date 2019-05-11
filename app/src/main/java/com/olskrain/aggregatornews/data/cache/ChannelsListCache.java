@@ -5,10 +5,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.util.ArrayMap;
 
 import com.olskrain.aggregatornews.Common.App;
-import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
@@ -26,7 +24,6 @@ public class ChannelsListCache implements IChannelsListCache {
 
     public interface IResponseDBCallback {
         void sendMessageStatusCallingBack(String message);
-
         void sendChannelsListCallingBack(List<Channel> channelsList);
     }
 
@@ -48,14 +45,14 @@ public class ChannelsListCache implements IChannelsListCache {
     private static final String COLUMN_THUMBNAIL = "thumbnail";
     private static final String COLUMN_CONTENT = "content";
     private static final String COLUMN_ID_FEED = "id_feed";
+    private static final String AS_T = " as IM ";
+    private static final String AS_V = " as FD ";
+    private static final String INNER_JOIN = "inner join ";
+    private static final String ON = "on ";
+    private static final String T_ID_V_ID = "IM.id_feed = FD.id";
     private static final String STATUS_UPDATE_DB = "Список каналов обновлен";
 
-    private ArrayMap<Command, List<Channel>> requestParameters;
     private IResponseDBCallback callback;
-
-    public ChannelsListCache() {
-        this.requestParameters = new ArrayMap<>();
-    }
 
     public void registerCallBack(IResponseDBCallback callback) {
         this.callback = callback;
@@ -78,7 +75,6 @@ public class ChannelsListCache implements IChannelsListCache {
             protected void onPostExecute(String statusUpdateDB) {
                 App.getDbHelper().close();
                 callback.sendMessageStatusCallingBack(statusUpdateDB);
-                requestParameters.clear();
             }
         };
         loadRSSAsync.execute(channelsList);
@@ -162,15 +158,16 @@ public class ChannelsListCache implements IChannelsListCache {
         connectDB.insert(table, null, contentValues);
     }
 
+    //TODO: исправить баг с неправильным прочтение из БД
     private List<Channel> buildChannelsList(SQLiteDatabase connectDB) {
         List<Channel> channelsList = new ArrayList<>();
         Cursor cursor;
 
-        String relatedTables = TABLE_ITEM_New + " as IM inner join " + TABLE_FEED + " as FD on IM.id_feed = FD.id";
+        String relatedTables = TABLE_ITEM_New + AS_T + INNER_JOIN + TABLE_FEED + AS_V + ON + T_ID_V_ID;
         cursor = connectDB.query(relatedTables, null, null, null, null, null, null);
         List<ItemNew> itemNewsList = new ArrayList<>();
         Feed feed = null;
-        Channel channel = null;
+        Channel channel;
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -234,7 +231,7 @@ public class ChannelsListCache implements IChannelsListCache {
                         }
 
                     }
-                    Timber.d("rty " + id);
+
                     if (currentId > id) {
 
                         feed = new Feed(feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
@@ -247,10 +244,10 @@ public class ChannelsListCache implements IChannelsListCache {
                         itemNewsList.clear();
                         currentId++;
                     }
-
                 } while (cursor.moveToNext());
             }
         } else {
+            //TODO: обработать ситуацию
             Timber.d("rty КУРСОР НУЛ");
         }
 

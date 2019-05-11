@@ -1,7 +1,7 @@
 package com.olskrain.aggregatornews.presentationn.presenter;
 
 import com.olskrain.aggregatornews.domain.entities.Channel;
-import com.olskrain.aggregatornews.domain.interactor.ChannelsListUseCase;
+import com.olskrain.aggregatornews.domain.usecase.ChannelsListUseCase;
 import com.olskrain.aggregatornews.presentationn.presenter.list.IChannelListPresenter;
 import com.olskrain.aggregatornews.presentationn.ui.view.IAllChannelsListView;
 import com.olskrain.aggregatornews.presentationn.ui.view.item.IChannelListItemView;
@@ -28,16 +28,16 @@ public class AllChannelsListPresenter implements ChannelsListUseCase.IResponseDB
         }
     }
 
-    public ChannelListPresenter ChannelListPresenter;
+    public ChannelListPresenter channelListPresenter;
     private IAllChannelsListView allChannelsListView;
     private ChannelsListUseCase channelsListUseCase;
     private List<Channel> channelsListLocal;
 
     public AllChannelsListPresenter(IAllChannelsListView view) {
         this.allChannelsListView = view;
-        this.channelsListUseCase = new ChannelsListUseCase();
-        channelsListUseCase.registerCallBack(this);
-        this.ChannelListPresenter = new ChannelListPresenter();
+        this.channelsListUseCase = new ChannelsListUseCase(channelsListLocal);
+        this.channelsListUseCase.registerCallBack(this);
+        this.channelListPresenter = new ChannelListPresenter();
     }
 
     public void addNewChannel(String urlChannel) {
@@ -47,7 +47,6 @@ public class AllChannelsListPresenter implements ChannelsListUseCase.IResponseDB
     }
 
     public void deleteChannel(int channelPosition) {
-        //сюда нужно передовать позицию элемента в списке
         allChannelsListView.showLoading();
         channelsListUseCase.deleteChannel(channelPosition);
         allChannelsListView.refreshChannelsListRVAdapter();
@@ -64,7 +63,7 @@ public class AllChannelsListPresenter implements ChannelsListUseCase.IResponseDB
         channelsListUseCase.refreshChannelsList();
     }
 
-    public void putChannelsList(){
+    public void putChannelsList() {
         channelsListUseCase.putChannelsList();
     }
 

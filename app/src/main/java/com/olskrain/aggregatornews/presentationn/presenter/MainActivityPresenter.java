@@ -6,10 +6,10 @@ import com.olskrain.aggregatornews.presentationn.ui.view.IMainView;
  * Created by Andrey Ievlev on 22,Апрель,2019
  */
 
-public class MainPresenter {
+public class MainActivityPresenter {
     private IMainView mainView;
 
-    public MainPresenter(IMainView view) {
+    public MainActivityPresenter(IMainView view) {
         this.mainView = view;
     }
 
