@@ -1,6 +1,6 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
-import com.olskrain.aggregatornews.data.repository.AllChannelsListRepository;
+import com.olskrain.aggregatornews.data.repository.ChannelsListRepository;
 import com.olskrain.aggregatornews.data.repository.IAllChannelsListRepository;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 
@@ -10,12 +10,11 @@ import java.util.List;
  * Created by Andrey Ievlev on 01,Май,2019
  */
 
-public class ChannelsListUseCase implements IChannelsListUseCase, AllChannelsListRepository.IResponseDBCallback {
+public class ChannelsListUseCase implements IChannelsListUseCase, ChannelsListRepository.IResponseDBCallback {
 
     public interface IResponseDBCallback {
-        void sendMessageStatusCallingBack(String message);
-
-        void sendChannelsListCallingBack(List<Channel> channelsList);
+        void onMessageStatus(String message);
+        void onChannelsList(List<Channel> channelsList);
     }
 
     private IAllChannelsListRepository channelRepository;
@@ -24,8 +23,8 @@ public class ChannelsListUseCase implements IChannelsListUseCase, AllChannelsLis
 
     public ChannelsListUseCase(List<Channel> channelsList) {
         this.channelsList = channelsList;
-        this.channelRepository = new AllChannelsListRepository();
-        ((AllChannelsListRepository) channelRepository).registerCallBack(this);
+        this.channelRepository = new ChannelsListRepository();
+        ((ChannelsListRepository) channelRepository).registerCallBack(this);
     }
 
     public void registerCallBack(IResponseDBCallback callback) {
@@ -40,19 +39,19 @@ public class ChannelsListUseCase implements IChannelsListUseCase, AllChannelsLis
     @Override
     public void deleteChannel(int position) {
         channelsList.remove(position);
-        sendChannelsListCallingBack(channelsList);
+        onChannelsList(channelsList);
     }
 
     @Override
     public void deleteAllChannels() {
         channelsList.clear();
-        sendChannelsListCallingBack(channelsList);
+        onChannelsList(channelsList);
     }
 
     @Override
     public void refreshChannelsList() {
         channelRepository.getChannelsList();
-        sendChannelsListCallingBack(channelsList);
+        onChannelsList(channelsList);
     }
 
     @Override
@@ -61,13 +60,13 @@ public class ChannelsListUseCase implements IChannelsListUseCase, AllChannelsLis
     }
 
     @Override
-    public void sendMessageStatusCallingBack(String message) {
-        callback.sendMessageStatusCallingBack(message);
+    public void onMessageStatus(String message) {
+        callback.onMessageStatus(message);
     }
 
     @Override
-    public void sendChannelsListCallingBack(List<Channel> channelsList) {
+    public void onChannelsList(List<Channel> channelsList) {
         this.channelsList = channelsList;
-        callback.sendChannelsListCallingBack(channelsList);
+        callback.onChannelsList(channelsList);
     }
 }

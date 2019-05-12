@@ -10,8 +10,8 @@ import com.olskrain.aggregatornews.data.repository.NewDetailRepository;
 public class NewDetailUseCase implements INewDetailUseCase, NewDetailRepository.IResponseServerCallback {
 
     public interface IResponseServerCallback {
-        void sendMessageStatusCallingBack(String message);
-        void sendWebPageCallingBack(String webPage);
+        void onMessageStatus(String message);
+        void onWebPage(String webPage);
     }
 
     private IResponseServerCallback callback;
@@ -33,12 +33,12 @@ public class NewDetailUseCase implements INewDetailUseCase, NewDetailRepository.
     }
 
     @Override
-    public void sendMessageStatusCallingBack(String message) {
-        callback.sendMessageStatusCallingBack(message);
+    public void onMessageStatus(String message) {
+        callback.onMessageStatus(message);
     }
 
     @Override
-    public void sendWebPageCallingBack(String webPage) {
-        callback.sendWebPageCallingBack(webPage);
+    public void onWebPage(String webPage) {
+        callback.onWebPage(webPage);
     }
 }

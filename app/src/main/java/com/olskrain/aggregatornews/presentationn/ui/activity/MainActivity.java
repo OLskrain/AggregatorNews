@@ -7,10 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentationn.presenter.MainActivityPresenter;
-import com.olskrain.aggregatornews.presentationn.ui.fragment.AllChannelsListFragment;
+import com.olskrain.aggregatornews.presentationn.ui.fragment.ChannelsListFragment;
 import com.olskrain.aggregatornews.presentationn.ui.fragment.FavoriteChannelsListFragment;
 import com.olskrain.aggregatornews.presentationn.ui.fragment.OtherFragment;
 import com.olskrain.aggregatornews.presentationn.ui.view.IMainView;
@@ -39,13 +38,13 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 //                || ActivityCompat.checkSelfPermission(App.getInstance(), Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
 //            requestPermission(savedInstanceState);
 //        } else {
-            if (savedInstanceState == null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, AllChannelsListFragment.getInstance(AllChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
-                        .commit();
-            }
-       // }
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, ChannelsListFragment.getInstance(ChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
+                    .commit();
+        }
+        // }
     }
 
     private void initUi() {
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     public void goToFragment(int buttonID) {
         switch (buttonID) {
             case R.id.navigation_home:
-                addFragment(AllChannelsListFragment.getInstance(AllChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG);
+                addFragment(ChannelsListFragment.getInstance(ChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG);
                 break;
             case R.id.navigation_favorite:
                 addFragment(FavoriteChannelsListFragment.getInstance(FavoriteChannelsListFragment.ARG_FCLF_ID), FAVORITE_CHANNEL_FRAGMENT_TAG);
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 //            if (savedInstanceState == null) {
 //                getSupportFragmentManager()
 //                        .beginTransaction()
-//                        .replace(R.id.container, AllChannelsListFragment.getInstance(AllChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
+//                        .replace(R.id.container, ChannelsListFragment.getInstance(ChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
 //                        .commit();
 //            }
 //        }
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 //
 //                        getSupportFragmentManager()
 //                                .beginTransaction()
-//                                .replace(R.id.container, AllChannelsListFragment.getInstance(AllChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
+//                                .replace(R.id.container, ChannelsListFragment.getInstance(ChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG)
 //                                .commit();
 //
 //                } else {
@@ -139,13 +138,15 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     @Override
     protected void onPause() {
         super.onPause();
-        App.getDbHelper().close();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //unregisterReceiver(App.getResponseServiceBroadcast());
+//        if (App.getResponseServiceBroadcast()!= null) {
+////            unregisterReceiver(App.getResponseServiceBroadcast());
+////        }
+////       // unregisterReceiver(App.getResponseServiceBroadcast());
     }
 
     @Override

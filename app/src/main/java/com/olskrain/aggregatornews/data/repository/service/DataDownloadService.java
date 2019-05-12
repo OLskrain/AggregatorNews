@@ -23,9 +23,9 @@ public class DataDownloadService extends IntentService {
         HTTPDataHandler httpDataHandler = new HTTPDataHandler();
         XmlRssParser xmlRssParser = new XmlRssParser();
 
-        for (int i = 0; i < urlsChannel.length; i++) {
-            String responseServer = httpDataHandler.getHTTPData(urlsChannel[i]);
-            Channel channel = xmlRssParser.parseData(urlsChannel[i], responseServer);
+        for (final String anUrlsChannel : urlsChannel) {
+            String responseServer = httpDataHandler.getHTTPData(anUrlsChannel);
+            Channel channel = xmlRssParser.parseData(anUrlsChannel, responseServer);
 
             Intent responseServerIntent = new Intent();
             responseServerIntent.setAction(ACTION_RESPONSE);

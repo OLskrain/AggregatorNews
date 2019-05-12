@@ -13,8 +13,8 @@ import com.olskrain.aggregatornews.data.api.HTTPDataHandler;
 public class NewDetailRepository implements INewsDetailRepository{
 
     public interface IResponseServerCallback {
-        void sendMessageStatusCallingBack(String message);
-        void sendWebPageCallingBack(String webPage);
+        void onMessageStatus(String message);
+        void onWebPage(String webPage);
     }
 
     private static final String NO_CONNECTION = "Нет подключения";
@@ -34,7 +34,7 @@ public class NewDetailRepository implements INewsDetailRepository{
         if (NetworkStatus.isOnline()){
             getData(urlNew);
         } else {
-            callback.sendMessageStatusCallingBack(NO_CONNECTION);
+            callback.onMessageStatus(NO_CONNECTION);
         }
     }
 
@@ -50,7 +50,7 @@ public class NewDetailRepository implements INewsDetailRepository{
 
             @Override
             protected void onPostExecute(String webPage) {
-                callback.sendWebPageCallingBack(webPage);
+                callback.onWebPage(webPage);
             }
         };
         loadRSSAsync.execute(urlNew);

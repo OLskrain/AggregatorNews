@@ -28,12 +28,12 @@ public class NewDetailActivityPresenter implements NewDetailUseCase.IResponseSer
     }
 
     @Override
-    public void sendMessageStatusCallingBack(String message) {
+    public void onMessageStatus(String message) {
 
     }
 
     @Override
-    public void sendWebPageCallingBack(String webPage) {
+    public void onWebPage(String webPage) {
         newDetailActivityView.hideLoading();
         newDetailActivityView.sendWebPageData(webPage);
     }

@@ -14,8 +14,8 @@ import java.util.List;
 public class NewsListRepository implements INewsListRepository, ChannelsListCache.IResponseDBCallback {
 
     public interface IResponseDBCallback {
-        void sendMessageStatusCallingBack(String message);
-        void sendNewsListCallingBack(List<ItemNew> newsList);
+        void onMessageStatus(String message);
+        void onNewsList(List<ItemNew> newsList);
     }
 
     private IResponseDBCallback callback;
@@ -38,12 +38,12 @@ public class NewsListRepository implements INewsListRepository, ChannelsListCach
     }
 
     @Override
-    public void sendMessageStatusCallingBack(String message) {
+    public void onMessageStatus(String message) {
 
     }
 
     @Override
-    public void sendChannelsListCallingBack(List<Channel> channelsList) {
-        callback.sendNewsListCallingBack(channelsList.get(channelPosition).getItemNew());
+    public void onChannelsList(List<Channel> channelsList) {
+        callback.onNewsList(channelsList.get(channelPosition).getItemNew());
     }
 }

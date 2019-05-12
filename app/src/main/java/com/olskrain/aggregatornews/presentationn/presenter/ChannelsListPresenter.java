@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Andrey Ievlev on 03,Май,2019
  */
 
-public class AllChannelsListPresenter implements ChannelsListUseCase.IResponseDBCallback {
+public class ChannelsListPresenter implements ChannelsListUseCase.IResponseDBCallback {
     public class ChannelListPresenter implements IChannelListPresenter {
         @Override
         public void bindView(IChannelListItemView rowView) {
@@ -34,7 +34,7 @@ public class AllChannelsListPresenter implements ChannelsListUseCase.IResponseDB
     private IChannelsListUseCase channelsListUseCase;
     private List<Channel> channelsListLocal;
 
-    public AllChannelsListPresenter(IAllChannelsListView view) {
+    public ChannelsListPresenter(IAllChannelsListView view) {
         this.allChannelsListView = view;
         this.channelsListUseCase = new ChannelsListUseCase(channelsListLocal);
         this.channelsListUseCase.registerCallBack(this);
@@ -69,13 +69,13 @@ public class AllChannelsListPresenter implements ChannelsListUseCase.IResponseDB
     }
 
     @Override
-    public void sendMessageStatusCallingBack(String message) {
+    public void onMessageStatus(String message) {
         allChannelsListView.displayMessages(message);
         allChannelsListView.hideLoading();
     }
 
     @Override
-    public void sendChannelsListCallingBack(List<Channel> channelsList) {
+    public void onChannelsList(List<Channel> channelsList) {
         channelsListLocal = channelsList;
         allChannelsListView.refreshChannelsListRVAdapter();
         allChannelsListView.hideLoading();

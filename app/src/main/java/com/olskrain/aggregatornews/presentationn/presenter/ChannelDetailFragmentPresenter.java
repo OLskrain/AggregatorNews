@@ -49,12 +49,12 @@ public class ChannelDetailFragmentPresenter implements NewsListUseCase.IResponse
     }
 
     @Override
-    public void sendMessageStatusCallingBack(String message) {
+    public void onMessageStatus(String message) {
 
     }
 
     @Override
-    public void sendNewsListCallingBack(List<ItemNew> newsList) {
+    public void onNewsList(List<ItemNew> newsList) {
         newsListLocal = newsList;
         channelDetailFragmentView.refreshChannelsListRVAdapter();
         channelDetailFragmentView.hideLoading();

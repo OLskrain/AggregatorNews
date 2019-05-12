@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.olskrain.aggregatornews.R;
-import com.olskrain.aggregatornews.presentationn.presenter.AllChannelsListPresenter;
+import com.olskrain.aggregatornews.presentationn.presenter.ChannelsListPresenter;
 import com.olskrain.aggregatornews.presentationn.ui.adapter.ChannelsListRVAdapter;
 import com.olskrain.aggregatornews.presentationn.ui.view.IAllChannelsListView;
 
@@ -28,10 +28,10 @@ import timber.log.Timber;
  * Created by Andrey Ievlev on 03,Май,2019
  */
 
-public class AllChannelsListFragment extends Fragment implements IAllChannelsListView {
+public class ChannelsListFragment extends Fragment implements IAllChannelsListView {
 
-    public static AllChannelsListFragment getInstance(String arg) {
-        AllChannelsListFragment fragment = new AllChannelsListFragment();
+    public static ChannelsListFragment getInstance(String arg) {
+        ChannelsListFragment fragment = new ChannelsListFragment();
         Bundle arguments = new Bundle();
         arguments.putString("arg", arg);
         fragment.setArguments(arguments);
@@ -54,19 +54,19 @@ public class AllChannelsListFragment extends Fragment implements IAllChannelsLis
     private Button deleteAllChannels;
 
     private ChannelsListRVAdapter allChannelsListRVAdapter;
-    private AllChannelsListPresenter allChannelsListPresenter;
+    private ChannelsListPresenter channelsListPresenter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_list, container, false);
 
-        allChannelsListPresenter = new AllChannelsListPresenter(this);
+        channelsListPresenter = new ChannelsListPresenter(this);
 
         initUi(view);
         initOnClick();
 
-        allChannelsListPresenter.refreshChannelsList();
+        channelsListPresenter.refreshChannelsList();
         return view;
     }
 
@@ -81,7 +81,7 @@ public class AllChannelsListFragment extends Fragment implements IAllChannelsLis
         allChannelsListRecyclerView = view.findViewById(R.id.all_channels_list);
         allChannelsListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         allChannelsListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        allChannelsListRVAdapter = new ChannelsListRVAdapter(allChannelsListPresenter.channelListPresenter);
+        allChannelsListRVAdapter = new ChannelsListRVAdapter(channelsListPresenter.channelListPresenter);
         allChannelsListRecyclerView.setAdapter(allChannelsListRVAdapter);
 
         addChannelOne = view.findViewById(R.id.add_channel_one);
@@ -93,18 +93,18 @@ public class AllChannelsListFragment extends Fragment implements IAllChannelsLis
     }
 
     private void initOnClick() {
-        addChannelOne.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_ONE));
-        addChannelTwo.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_TWO));
-        addChannelThree.setOnClickListener(view -> allChannelsListPresenter.addNewChannel(CHANNEL_THREE));
+        addChannelOne.setOnClickListener(view -> channelsListPresenter.addNewChannel(CHANNEL_ONE));
+        addChannelTwo.setOnClickListener(view -> channelsListPresenter.addNewChannel(CHANNEL_TWO));
+        addChannelThree.setOnClickListener(view -> channelsListPresenter.addNewChannel(CHANNEL_THREE));
 
-        deleteChannel.setOnClickListener(view -> allChannelsListPresenter.deleteChannel(0));
-        deleteAllChannels.setOnClickListener(view -> allChannelsListPresenter.deleteAllChannels());
+        deleteChannel.setOnClickListener(view -> channelsListPresenter.deleteChannel(0));
+        deleteAllChannels.setOnClickListener(view -> channelsListPresenter.deleteAllChannels());
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        allChannelsListPresenter.putChannelsList();
+        channelsListPresenter.putChannelsList();
     }
 
     @Override

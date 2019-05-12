@@ -23,8 +23,8 @@ import timber.log.Timber;
 public class ChannelsListCache implements IChannelsListCache {
 
     public interface IResponseDBCallback {
-        void sendMessageStatusCallingBack(String message);
-        void sendChannelsListCallingBack(List<Channel> channelsList);
+        void onMessageStatus(String message);
+        void onChannelsList(List<Channel> channelsList);
     }
 
     private static final String TABLE_FEED = "channel";
@@ -74,7 +74,7 @@ public class ChannelsListCache implements IChannelsListCache {
             @Override
             protected void onPostExecute(String statusUpdateDB) {
                 App.getDbHelper().close();
-                callback.sendMessageStatusCallingBack(statusUpdateDB);
+                callback.onMessageStatus(statusUpdateDB);
             }
         };
         loadRSSAsync.execute(channelsList);
@@ -93,7 +93,7 @@ public class ChannelsListCache implements IChannelsListCache {
             @Override
             protected void onPostExecute(List<Channel> channelsList) {
                 App.getDbHelper().close();
-                callback.sendChannelsListCallingBack(channelsList);
+                callback.onChannelsList(channelsList);
             }
         };
         loadRSSAsync.execute();
@@ -233,11 +233,11 @@ public class ChannelsListCache implements IChannelsListCache {
                     }
 
                     if (currentId > id) {
-
                         feed = new Feed(feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
                         ItemNew item = new ItemNew(itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent, null, null);
                         itemNewsList.add(item);
                     }
+
                     if (currentId == id) {
                         channel = new Channel(feed, itemNewsList);
                         channelsList.add(channel);

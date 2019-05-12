@@ -16,12 +16,12 @@ import java.util.List;
  * Created by Andrey Ievlev on 27,Апрель,2019
  */
 
-public class AllChannelsListRepository implements IAllChannelsListRepository,
+public class ChannelsListRepository implements IAllChannelsListRepository,
         ChannelsListCache.IResponseDBCallback, ResponseServiceBroadcast.IResponseServerCallback {
 
     public interface IResponseDBCallback {
-        void sendMessageStatusCallingBack(String message);
-        void sendChannelsListCallingBack(List<Channel> channelsList);
+        void onMessageStatus(String message);
+        void onChannelsList(List<Channel> channelsList);
     }
 
     private static final String NO_CONNECTION = "Нет подключения к интернету!";
@@ -34,7 +34,7 @@ public class AllChannelsListRepository implements IAllChannelsListRepository,
     private IResponseDBCallback callback;
     private List<Channel> channelsList;
 
-    public AllChannelsListRepository() {
+    public ChannelsListRepository() {
         this.cache = new ChannelsListCache();
         ((ChannelsListCache) cache).registerCallBack(this);
         App.getResponseServiceBroadcast().registerCallBack(this);
@@ -92,7 +92,7 @@ public class AllChannelsListRepository implements IAllChannelsListRepository,
             currentUrlList[0] = urlChannel;
             startService(currentUrlList);
         } else {
-            sendMessageStatusCallingBack(NO_CONNECTION);
+            onMessageStatus(NO_CONNECTION);
         }
     }
 
@@ -102,20 +102,20 @@ public class AllChannelsListRepository implements IAllChannelsListRepository,
     }
 
     @Override
-    public void sendMessageStatusCallingBack(String message) {
-        callback.sendMessageStatusCallingBack(message);
+    public void onMessageStatus(String message) {
+        callback.onMessageStatus(message);
     }
 
     @Override
-    public void sendChannelsListCallingBack(List<Channel> channelsList) {
+    public void onChannelsList(List<Channel> channelsList) {
         this.channelsList = channelsList;
-        callback.sendChannelsListCallingBack(channelsList);
+        callback.onChannelsList(channelsList);
     }
 
     @Override
     public void sendChannelCallingBack(Channel channel) {
         channelsList.add(channel);
-        sendChannelsListCallingBack(channelsList);
+        onChannelsList(channelsList);
         putUpdatedData(channelsList);
     }
 }

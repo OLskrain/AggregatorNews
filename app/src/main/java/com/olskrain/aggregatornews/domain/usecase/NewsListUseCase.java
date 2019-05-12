@@ -13,8 +13,8 @@ import java.util.List;
 public class NewsListUseCase implements INewsListUseCase, NewsListRepository.IResponseDBCallback {
 
     public interface IResponseDBCallback {
-        void sendMessageStatusCallingBack(String message);
-        void sendNewsListCallingBack(List<ItemNew> newsList);
+        void onMessageStatus(String message);
+        void onNewsList(List<ItemNew> newsList);
     }
 
     private IResponseDBCallback callback;
@@ -38,13 +38,13 @@ public class NewsListUseCase implements INewsListUseCase, NewsListRepository.IRe
 
 
     @Override
-    public void sendMessageStatusCallingBack(String message) {
+    public void onMessageStatus(String message) {
 
     }
 
     @Override
-    public void sendNewsListCallingBack(List<ItemNew> newsList) {
+    public void onNewsList(List<ItemNew> newsList) {
         this.newList = newsList;
-        callback.sendNewsListCallingBack(newsList);
+        callback.onNewsList(newsList);
     }
 }
