@@ -45,11 +45,6 @@ public class ChannelsListCache implements IChannelsListCache {
     private static final String COLUMN_THUMBNAIL = "thumbnail";
     private static final String COLUMN_CONTENT = "content";
     private static final String COLUMN_ID_FEED = "id_feed";
-    private static final String AS_T = " as IM ";
-    private static final String AS_V = " as FD ";
-    private static final String INNER_JOIN = "inner join ";
-    private static final String ON = "on ";
-    private static final String T_ID_V_ID = "IM.id_feed = FD.id";
     private static final String STATUS_UPDATE_DB = "Список каналов обновлен";
 
     private IResponseDBCallback callback;
@@ -114,17 +109,19 @@ public class ChannelsListCache implements IChannelsListCache {
 
             int idFeed = (int) insertFeed(connectDB, TABLE_FEED, feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
 
-            for (int j = 0; j < itemNewsList.size(); j++) {
-                String itemNewTitle = itemNewsList.get(j).getTitle();
-                String itemNewPubDate = itemNewsList.get(j).getPubDate();
-                String itemNewLink = itemNewsList.get(j).getLink();
-                String itemNewGuid = itemNewsList.get(j).getGuid();
-                String itemNewAuthor = itemNewsList.get(j).getAuthor();
-                String itemNewThumbnail = itemNewsList.get(j).getThumbnail();
-                String itemNewDescription = itemNewsList.get(j).getDescription();
-                String itemNewContent = itemNewsList.get(j).getContent();
+            if (itemNewsList != null){
+                for (int j = 0; j < itemNewsList.size(); j++) {
+                    String itemNewTitle = itemNewsList.get(j).getTitle();
+                    String itemNewPubDate = itemNewsList.get(j).getPubDate();
+                    String itemNewLink = itemNewsList.get(j).getLink();
+                    String itemNewGuid = itemNewsList.get(j).getGuid();
+                    String itemNewAuthor = itemNewsList.get(j).getAuthor();
+                    String itemNewThumbnail = itemNewsList.get(j).getThumbnail();
+                    String itemNewDescription = itemNewsList.get(j).getDescription();
+                    String itemNewContent = itemNewsList.get(j).getContent();
 
-                insertItemNew(connectDB, TABLE_ITEM_New, idFeed, itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent);
+                    insertItemNew(connectDB, TABLE_ITEM_New, idFeed, itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent);
+                }
             }
         }
     }
@@ -163,24 +160,24 @@ public class ChannelsListCache implements IChannelsListCache {
         List<Channel> channelsList = new ArrayList<>();
         Cursor cursor;
 
-        String relatedTables = TABLE_ITEM_New + AS_T + INNER_JOIN + TABLE_FEED + AS_V + ON + T_ID_V_ID;
-        cursor = connectDB.query(relatedTables, null, null, null, null, null, null);
-        List<ItemNew> itemNewsList = new ArrayList<>();
+        //String relatedTables = TABLE_ITEM_New + AS_T + INNER_JOIN + TABLE_FEED + AS_V + ON + T_ID_V_ID;
+        cursor = connectDB.query(TABLE_FEED, null, null, null, null, null, null);
+        //List<ItemNew> itemNewsList = new ArrayList<>();
         Feed feed = null;
         Channel channel;
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 String feedUrl = null, feedTitle = null, feedLink = null, feedAuthor = null, feedDescription = null, feedImage = null, feedLastBuildDate = null;
-                String itemNewTitle = null, itemNewPubDate = null, itemNewLink = null, itemNewGuid = null, itemNewAuthor = null, itemNewThumbnail = null, itemNewDescription = null, itemNewContent = null;
-                int currentId = 2;
-                int id = 0;
+               // String itemNewTitle = null, itemNewPubDate = null, itemNewLink = null, itemNewGuid = null, itemNewAuthor = null, itemNewThumbnail = null, itemNewDescription = null, itemNewContent = null;
+//                int currentId = 2;
+                //int id;
                 do {
                     for (String cn : cursor.getColumnNames()) {
                         switch (cn) {
-                            case COLUMN_ID_FEED:
-                                id = cursor.getInt(cursor.getColumnIndex(cn));
-                                break;
+//                            case COLUMN_ID_FEED:
+//                                id = cursor.getInt(cursor.getColumnIndex(cn));
+//                                break;
                             case COLUMN_URL:
                                 feedUrl = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
@@ -202,48 +199,49 @@ public class ChannelsListCache implements IChannelsListCache {
                             case COLUMN_LAST_BUILD:
                                 feedLastBuildDate = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
-                            case COLUMN_TITLE:
-                                itemNewTitle = cursor.getString(cursor.getColumnIndex(cn));
-                                break;
-                            case COLUMN_PUB_DATE:
-                                itemNewPubDate = cursor.getString(cursor.getColumnIndex(cn));
-                                break;
-                            case COLUMN_LINK:
-                                itemNewLink = cursor.getString(cursor.getColumnIndex(cn));
-                                break;
-                            case COLUMN_GUID:
-                                itemNewGuid = cursor.getString(cursor.getColumnIndex(cn));
-                                break;
-                            case COLUMN_AUTHOR:
-                                itemNewAuthor = cursor.getString(cursor.getColumnIndex(cn));
-                                break;
-                            case COLUMN_THUMBNAIL:
-                                itemNewThumbnail = cursor.getString(cursor.getColumnIndex(cn));
-                                break;
-                            case COLUMN_DESCRIPTION:
-                                itemNewDescription = cursor.getString(cursor.getColumnIndex(cn));
-                                break;
-                            case COLUMN_CONTENT:
-                                itemNewContent = cursor.getString(cursor.getColumnIndex(cn));
-                                break;
+//                            case COLUMN_TITLE:
+//                                itemNewTitle = cursor.getString(cursor.getColumnIndex(cn));
+//                                break;
+//                            case COLUMN_PUB_DATE:
+//                                itemNewPubDate = cursor.getString(cursor.getColumnIndex(cn));
+//                                break;
+//                            case COLUMN_LINK:
+//                                itemNewLink = cursor.getString(cursor.getColumnIndex(cn));
+//                                break;
+//                            case COLUMN_GUID:
+//                                itemNewGuid = cursor.getString(cursor.getColumnIndex(cn));
+//                                break;
+//                            case COLUMN_AUTHOR:
+//                                itemNewAuthor = cursor.getString(cursor.getColumnIndex(cn));
+//                                break;
+//                            case COLUMN_THUMBNAIL:
+//                                itemNewThumbnail = cursor.getString(cursor.getColumnIndex(cn));
+//                                break;
+//                            case COLUMN_DESCRIPTION:
+//                                itemNewDescription = cursor.getString(cursor.getColumnIndex(cn));
+//                                break;
+//                            case COLUMN_CONTENT:
+//                                itemNewContent = cursor.getString(cursor.getColumnIndex(cn));
+//                                break;
                             default:
                                 break;
                         }
-
                     }
-
-                    if (currentId > id) {
-                        feed = new Feed(feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
-                        ItemNew item = new ItemNew(itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent, null, null);
-                        itemNewsList.add(item);
-                    }
-
-                    if (currentId == id) {
-                        channel = new Channel(feed, itemNewsList);
-                        channelsList.add(channel);
-                        itemNewsList.clear();
-                        currentId++;
-                    }
+                   // Timber.d("rty " + feedUrl+ " "+feedTitle+" "+feedLink+" "+feedAuthor+" "+feedDescription+" "+feedImage+" "+feedLastBuildDate);
+                    channel = new Channel("ok", new Feed(feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate), null);
+                    channelsList.add(channel);
+//                    if (currentId > id) {
+//
+//                        ItemNew item = new ItemNew(itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent, null, null);
+//                        itemNewsList.add(item);
+//                    }
+//
+//                    if (currentId == id) {
+//
+//
+//                        itemNewsList.clear();
+//                        currentId++;
+//                    }
                 } while (cursor.moveToNext());
             }
         } else {

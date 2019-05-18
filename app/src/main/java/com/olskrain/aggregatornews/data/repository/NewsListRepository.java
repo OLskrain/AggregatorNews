@@ -44,6 +44,6 @@ public class NewsListRepository implements INewsListRepository, ChannelsListCach
 
     @Override
     public void onChannelsList(List<Channel> channelsList) {
-        callback.onNewsList(channelsList.get(channelPosition).getItemNew());
+//        callback.onNewsList(channelsList.get(channelPosition).getItemNew());
     }
 }

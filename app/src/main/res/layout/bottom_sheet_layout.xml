@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/channels_list_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/darker_gray"
+    android:elevation="@dimen/elevation_16dp"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <TextView
+        android:id="@+id/channel_title_bs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8dp"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_marginBottom="@dimen/margin_8dp"
+        android:textSize="@dimen/text_size_18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/last_build_date_channel"
+        app:layout_constraintStart_toEndOf="@+id/channel_imageView_bs"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <ImageView
+        android:id="@+id/channel_imageView_bs"
+        android:layout_width="@dimen/width_0dp"
+        android:layout_height="@dimen/height_0dp"
+        android:layout_marginStart="@dimen/margin_start"
+        app:layout_constraintBottom_toBottomOf="@+id/last_build_date_channel"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/channel_title_bs"
+        app:srcCompat="@drawable/ic_newspaper" />
+
+    <TextView
+        android:id="@+id/last_build_date_channel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:textSize="@dimen/text_size_12sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/separator_bs_cl"
+        app:layout_constraintStart_toStartOf="@+id/channel_title_bs"
+        app:layout_constraintTop_toBottomOf="@+id/channel_title_bs" />
+
+    <TextView
+        android:id="@+id/separator_bs_cl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_separator_bs_cl"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:background="@android:color/holo_purple"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/channel_imageView_bs" />
+
+    <ImageView
+        android:id="@+id/add_favorite_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16dp"
+        app:layout_constraintEnd_toEndOf="@+id/channel_imageView_bs"
+        app:layout_constraintStart_toStartOf="@+id/channel_imageView_bs"
+        app:layout_constraintTop_toBottomOf="@+id/separator_bs_cl"
+        app:srcCompat="@drawable/ic_add_like_black_24dp" />
+
+    <ImageView
+        android:id="@+id/delete_channel_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginBottom="@dimen/margin_8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/share_channel_image"
+        app:layout_constraintStart_toStartOf="@+id/share_channel_image"
+        app:layout_constraintTop_toBottomOf="@+id/share_channel_image"
+        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+    <ImageView
+        android:id="@+id/share_channel_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16dp"
+        app:layout_constraintEnd_toEndOf="@+id/add_favorite_image"
+        app:layout_constraintStart_toStartOf="@+id/add_favorite_image"
+        app:layout_constraintTop_toBottomOf="@+id/add_favorite_image"
+        app:srcCompat="@drawable/ic_share_black_24dp" />
+
+    <TextView
+        android:id="@+id/share_channel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bottom_sheet_share"
+        app:layout_constraintBottom_toBottomOf="@+id/share_channel_image"
+        app:layout_constraintStart_toStartOf="@+id/last_build_date_channel"
+        app:layout_constraintTop_toTopOf="@+id/share_channel_image" />
+
+    <TextView
+        android:id="@+id/add_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bottom_sheet_add_to_favorites_list"
+        app:layout_constraintBottom_toBottomOf="@+id/add_favorite_image"
+        app:layout_constraintStart_toStartOf="@+id/last_build_date_channel"
+        app:layout_constraintTop_toTopOf="@+id/add_favorite_image" />
+
+    <TextView
+        android:id="@+id/delete_channel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bottom_sheet_delete_channel"
+        app:layout_constraintBottom_toBottomOf="@+id/delete_channel_image"
+        app:layout_constraintStart_toStartOf="@+id/last_build_date_channel"
+        app:layout_constraintTop_toTopOf="@+id/delete_channel_image" />
+
+</android.support.constraint.ConstraintLayout>
+
+

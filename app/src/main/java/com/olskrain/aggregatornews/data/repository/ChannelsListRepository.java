@@ -1,47 +1,48 @@
 package com.olskrain.aggregatornews.data.repository;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.NetworkStatus;
+import com.olskrain.aggregatornews.Common.XmlRssParser;
+import com.olskrain.aggregatornews.data.api.HTTPDataHandler;
 import com.olskrain.aggregatornews.data.cache.ChannelsListCache;
 import com.olskrain.aggregatornews.data.cache.IChannelsListCache;
-import com.olskrain.aggregatornews.data.repository.service.DataDownloadService;
 import com.olskrain.aggregatornews.domain.entities.Channel;
+import com.olskrain.aggregatornews.domain.entities.Feed;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Andrey Ievlev on 27,Апрель,2019
  */
 
-public class ChannelsListRepository implements IAllChannelsListRepository,
-        ChannelsListCache.IResponseDBCallback, ResponseServiceBroadcast.IResponseServerCallback {
+public class ChannelsListRepository implements IChannelsListRepository {
 
-    public interface IResponseDBCallback {
-        void onMessageStatus(String message);
-        void onChannelsList(List<Channel> channelsList);
-    }
 
     private static final String NO_CONNECTION = "Нет подключения к интернету!";
+    private static final String NO_CHANNEL = "no channel";
     private static final String EXTRA_KEY = "extra key";
     private static final String BUNCH_KEYS = "bunch keys";
     private static final String DEFAULT_VALUE_ = "value";
 
 
     private IChannelsListCache cache;
-    private IResponseDBCallback callback;
-    private List<Channel> channelsList;
+    private HTTPDataHandler httpDataHandler;
+    private XmlRssParser xmlRssParser;
+    private List<Feed> channelsList;
+    private int counter;
 
     public ChannelsListRepository() {
         this.cache = new ChannelsListCache();
-        ((ChannelsListCache) cache).registerCallBack(this);
-        App.getResponseServiceBroadcast().registerCallBack(this);
-    }
-
-    public void registerCallBack(IResponseDBCallback callback) {
-        this.callback = callback;
+        this.httpDataHandler = new HTTPDataHandler();
+        this.xmlRssParser = new XmlRssParser();
+        this.channelsList = new ArrayList<>();
+        //  App.getResponseServiceBroadcast().registerCallBack(this);
     }
 
     @Override
@@ -72,50 +73,64 @@ public class ChannelsListRepository implements IAllChannelsListRepository,
         return urlsChannel;
     }
 
+//    @Override
+//    public void getChannelsList() {
+//        if (NetworkStatus.isOnline()) {
+//            //TODo:сделать запрос на сервер, и если приходит ошибка то вызываем ке
+//            //String[] st = getUrlChannelList();
+//            //startService(st);
+//            cache.getData();
+//        } else {
+//            cache.getData();
+//        }
+//
+//    }
+
     @Override
-    public void getChannelsList() {
+    public Single<List<Feed>> getChannelsList(List<String> urlList) {
         if (NetworkStatus.isOnline()) {
-            //TODo:сделать запрос на сервер, и если приходит ошибка то вызываем ке
-            //String[] st = getUrlChannelList();
-            //startService(st);
-            cache.getData();
+            return Single.create(emitter -> {
+                HTTPDataHandler httpDataHandler = new HTTPDataHandler();
+                XmlRssParser xmlRssParser = new XmlRssParser();
+
+                for (int i = 0; i < urlList.size(); i++) {
+                    String responseServer = httpDataHandler.getHTTPData(urlList.get(i));
+                    Channel channel = xmlRssParser.parseData(urlList.get(i), responseServer);
+                    channelsList.add(channel.getFeed());
+                }
+
+                if (channelsList.isEmpty()) {
+                    emitter.onError(new RuntimeException("List пуст"));
+                } else {
+                   // cache.updateDatabase(channelsList);
+                    emitter.onSuccess(channelsList);
+                }
+            }).subscribeOn(Schedulers.io()).cast((Class<List<Feed>>) (Class) List.class);
         } else {
-            cache.getData();
-        }
-
-    }
-
-    @Override
-    public void getChannel(String urlChannel) {
-        if (NetworkStatus.isOnline()) {
-            String[] currentUrlList = new String[1];
-            currentUrlList[0] = urlChannel;
-            startService(currentUrlList);
-        } else {
-            onMessageStatus(NO_CONNECTION);
+            //Todo: если нет интернета
+            return null;
         }
     }
 
-    private void startService(String[] urlChannel) {
-        Intent intentDataDownloadService = new Intent(App.getInstance(), DataDownloadService.class);
-        App.getInstance().startService(intentDataDownloadService.putExtra(EXTRA_KEY, urlChannel));
-    }
-
-    @Override
     public void onMessageStatus(String message) {
-        callback.onMessageStatus(message);
+
     }
 
-    @Override
-    public void onChannelsList(List<Channel> channelsList) {
-        this.channelsList = channelsList;
-        callback.onChannelsList(channelsList);
-    }
-
-    @Override
-    public void sendChannelCallingBack(Channel channel) {
-        channelsList.add(channel);
-        onChannelsList(channelsList);
-        putUpdatedData(channelsList);
-    }
+//    @Override
+//    public void onMessageStatus(String message) {
+//        callback.onMessageStatus(message);
+//    }
+//
+//    @Override
+//    public void onChannelsList(List<Channel> channelsList) {
+//        this.channelsList = channelsList;
+//        callback.onChannelsList(channelsList);
+//    }
+//
+//    @Override
+//    public void sendChannelCallingBack(Channel channel) {
+//        channelsList.add(channel);
+//        onChannelsList(channelsList);
+//        putUpdatedData(channelsList);
+//    }
 }

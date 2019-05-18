@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">AggregatorNews</string>
     <string name="title_item_detail">Item Detail</string>
-    <string name="refresh_button_title">Refresh</string>
+    <string name="settings_button_title">settings</string>
 
-    <!--Навигация-->
-    <string name="title_home">Home</string>
-    <string name="title_favorite">Favorite</string>
-    <string name="title_other">Other</string>
-    <string name="item1">delete</string>
-    <string name="item2">я еще не придумал))</string>
+    <string name="channels_list_tab_title">All</string>
+    <string name="favorites_list_tab_title">Favorites</string>
+    <string name="fab_behavior_name">com.olskrain.aggregatornews.presentation.ui.FABHideOnScroll</string>
+
+    <!--Channel list bottom sheet-->
+    <string name="bottom_sheet_share">Share</string>
+    <string name="bottom_sheet_add_to_favorites_list">Add to favorites list</string>
+    <string name="bottom_sheet_delete_channel">Delete channel</string>
 </resources>

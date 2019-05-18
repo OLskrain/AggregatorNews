@@ -4,9 +4,9 @@
     >
 
     <item
-        android:id="@+id/refresh_menu"
-        android:icon="@drawable/ic_refresh_black_24dp"
+        android:id="@+id/settings_menu"
+        android:icon="@drawable/ic_settings_button_24dp"
         app:showAsAction="ifRoom"
-        android:title="@string/refresh_button_title"/>
+        android:title="@string/settings_button_title"/>
 
 </menu>

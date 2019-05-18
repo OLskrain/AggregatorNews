@@ -1,72 +1,67 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
-import com.olskrain.aggregatornews.data.repository.ChannelsListRepository;
-import com.olskrain.aggregatornews.data.repository.IAllChannelsListRepository;
-import com.olskrain.aggregatornews.domain.entities.Channel;
+import android.annotation.SuppressLint;
 
+import com.olskrain.aggregatornews.data.repository.ChannelsListRepository;
+import com.olskrain.aggregatornews.data.repository.IChannelsListRepository;
+import com.olskrain.aggregatornews.domain.entities.Channel;
+import com.olskrain.aggregatornews.domain.entities.Feed;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Andrey Ievlev on 01,Май,2019
  */
 
-public class ChannelsListUseCase implements IChannelsListUseCase, ChannelsListRepository.IResponseDBCallback {
+public class ChannelsListUseCase implements IChannelsListUseCase {
 
-    public interface IResponseDBCallback {
-        void onMessageStatus(String message);
-        void onChannelsList(List<Channel> channelsList);
-    }
+    private IChannelsListRepository channelRepository;
 
-    private IAllChannelsListRepository channelRepository;
-    private IResponseDBCallback callback;
-    private List<Channel> channelsList;
-
-    public ChannelsListUseCase(List<Channel> channelsList) {
-        this.channelsList = channelsList;
+    public ChannelsListUseCase() {
         this.channelRepository = new ChannelsListRepository();
-        ((ChannelsListRepository) channelRepository).registerCallBack(this);
     }
 
-    public void registerCallBack(IResponseDBCallback callback) {
-        this.callback = callback;
+    @SuppressLint("CheckResult")
+    @Override
+    public Single<List<Feed>> addNewChannel(String urlChannel) {
+        List<String> urlList = new ArrayList<>();
+        urlList.add(urlChannel);
+       return channelRepository.getChannelsList(urlList).observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public void addNewChannel(String urlChannel) {
-        channelRepository.getChannel(urlChannel);
-    }
-
-    @Override
-    public void deleteChannel(int position) {
+    public void deleteChannel(List<Channel> channelsList, int position) {
         channelsList.remove(position);
-        onChannelsList(channelsList);
+
     }
 
     @Override
-    public void deleteAllChannels() {
+    public void deleteAllChannels(List<Channel> channelsList) {
         channelsList.clear();
-        onChannelsList(channelsList);
+
     }
 
-    @Override
-    public void refreshChannelsList() {
-        channelRepository.getChannelsList();
-        onChannelsList(channelsList);
-    }
+//    @Override
+//    public void refreshChannelsList() {
+//        channelRepository.getChannelsList();
+//    }
 
     @Override
-    public void putChannelsList() {
+    public void putChannelsList(List<Channel> channelsList) {
         channelRepository.putUpdatedData(channelsList);
     }
 
-    @Override
-    public void onMessageStatus(String message) {
-        callback.onMessageStatus(message);
-    }
-
-    @Override
-    public void onChannelsList(List<Channel> channelsList) {
-        this.channelsList = channelsList;
-        callback.onChannelsList(channelsList);
-    }
+//    @Override
+//    public void onMessageStatus(String message) {
+//        callback.onMessageStatus(message);
+//    }
+//
+//    @Override
+//    public void onChannelsList(List<Channel> channelsList) {
+//        callback.onChannelsList(channelsList);
+//    }
 }

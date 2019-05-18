@@ -1,18 +1,24 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
+import com.olskrain.aggregatornews.domain.entities.Channel;
+import com.olskrain.aggregatornews.domain.entities.Feed;
+
+import java.util.List;
+
+import io.reactivex.Single;
+
 /**
  * Created by Andrey Ievlev on 11,Май,2019
  */
 public interface IChannelsListUseCase {
-    void addNewChannel(String urlChannel);
+    Single<List<Feed>> addNewChannel(String urlChannel);
 
-    void deleteChannel(int position);
+    void deleteChannel(List<Channel> channelsList, int position);
 
-    void deleteAllChannels();
+    void deleteAllChannels(List<Channel> channelsList);
 
-    void refreshChannelsList();
+   // void refreshChannelsList();
 
-    void putChannelsList();
+    void putChannelsList(List<Channel> channelsList);
 
-    void registerCallBack(ChannelsListUseCase.IResponseDBCallback callback);
 }

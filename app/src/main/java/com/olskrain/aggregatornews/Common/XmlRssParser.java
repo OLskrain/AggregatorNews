@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Andrey Ievlev on 04,Май,2019
  */
 
-public class XmlRssParser {
+public class XmlRssParser { //ToDo: обработать ошибки парсера
     private static final String CHANNEL = "channel";
     private static final String ITEM = "item";
     private static final String TITLE = "title";
@@ -30,6 +30,7 @@ public class XmlRssParser {
     private static final String GUID = "guid";
     private static final String THUMBNAIL = "thumbnail";
     private static final String CONTENT = "content";
+    private static final String STATUS_OK = "ok";
 
     private Channel channel;
     private Feed feed;
@@ -52,7 +53,7 @@ public class XmlRssParser {
                 }
                 xpp.next();
             }
-            channel = new Channel(feed, currentItemList);
+            channel = new Channel(STATUS_OK, feed, currentItemList);
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         } catch (IOException e) {

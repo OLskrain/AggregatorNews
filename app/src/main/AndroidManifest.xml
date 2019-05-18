@@ -14,12 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".data.repository.service.DataDownloadService"
-            android:exported="false"></service>
-
         <activity
-            android:name=".presentationn.ui.activity.MainActivity"
+            android:name=".presentation.ui.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,23 +25,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentationn.ui.activity.ChannelDetailActivity"
+            android:name=".presentation.ui.activity.ChannelDetailActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".presentationn.ui.activity.MainActivity"
+            android:parentActivityName=".presentation.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.olskrain.aggregatornews.presentationn.ui.activity.MainActivity" />
+                android:value="com.olskrain.aggregatornews.presentation.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".presentationn.ui.activity.NewDetailActivity"
+            android:name=".presentation.ui.activity.NewDetailActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".presentationn.ui.activity.ChannelDetailActivity"
+            android:parentActivityName=".presentation.ui.activity.ChannelDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.olskrain.aggregatornews.presentationn.ui.activity.ChannelDetailActivity" />
+                android:value="com.olskrain.aggregatornews.presentation.ui.activity.ChannelDetailActivity" />
         </activity>
     </application>
 
