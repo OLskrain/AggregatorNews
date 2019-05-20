@@ -4,7 +4,7 @@
 //import android.content.Intent;
 //
 //import com.olskrain.aggregatornews.Common.XmlRssParser;
-//import com.olskrain.aggregatornews.data.api.HTTPDataHandler;
+//import com.olskrain.aggregatornews.data.api.ServerDataSourse;
 //import com.olskrain.aggregatornews.domain.entities.Channel;
 //
 //public class DataDownloadService extends IntentService {
@@ -20,7 +20,7 @@
 //    @Override
 //    protected void onHandleIntent(Intent intent) {
 //        String[] urlsChannel = intent.getStringArrayExtra(EXTRA_KEY);
-//        HTTPDataHandler httpDataHandler = new HTTPDataHandler();
+//        ServerDataSourse httpDataHandler = new ServerDataSourse();
 //        XmlRssParser xmlRssParser = new XmlRssParser();
 //
 //        for (final String anUrlsChannel : urlsChannel) {

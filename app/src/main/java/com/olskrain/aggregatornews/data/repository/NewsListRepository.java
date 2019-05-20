@@ -2,7 +2,6 @@ package com.olskrain.aggregatornews.data.repository;
 
 import com.olskrain.aggregatornews.data.cache.ChannelsListCache;
 import com.olskrain.aggregatornews.data.cache.IChannelsListCache;
-import com.olskrain.aggregatornews.domain.entities.Channel;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  * Created by Andrey Ievlev on 10,Май,2019
  */
 
-public class NewsListRepository implements INewsListRepository, ChannelsListCache.IResponseDBCallback {
+public class NewsListRepository implements INewsListRepository {
 
     public interface IResponseDBCallback {
         void onMessageStatus(String message);
@@ -29,21 +28,21 @@ public class NewsListRepository implements INewsListRepository, ChannelsListCach
     public NewsListRepository(int channelPosition) {
         this.channelPosition = channelPosition;
         this.cache = new ChannelsListCache();
-        ((ChannelsListCache) cache).registerCallBack(this);
+        //((ChannelsListCache) cache).registerCallBack(this);
     }
 
     @Override
     public void getChannelsList() {
-        cache.getData();
+        cache.getChannelsList();
     }
 
-    @Override
-    public void onMessageStatus(String message) {
-
-    }
-
-    @Override
-    public void onChannelsList(List<Channel> channelsList) {
-//        callback.onNewsList(channelsList.get(channelPosition).getItemNew());
-    }
+//    @Override
+//    public void onMessageStatus(String message) {
+//
+//    }
+//
+//    @Override
+//    public void onChannelsList(List<Channel> channelsList) {
+////        callback.onNewsList(channelsList.get(channelPosition).getItemNew());
+//    }
 }

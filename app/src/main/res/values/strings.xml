@@ -11,4 +11,9 @@
     <string name="bottom_sheet_share">Share</string>
     <string name="bottom_sheet_add_to_favorites_list">Add to favorites list</string>
     <string name="bottom_sheet_delete_channel">Delete channel</string>
+
+    <!--Error message-->
+    <string name="error_connection">No internet connection</string>
+    <string name="error_no_channels">You have not added any channels</string>
+    <string name="error_failed_update">Failed to update the list</string>
 </resources>

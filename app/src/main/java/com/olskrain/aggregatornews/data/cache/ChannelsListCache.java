@@ -1,12 +1,11 @@
 package com.olskrain.aggregatornews.data.cache;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 
 import com.olskrain.aggregatornews.Common.App;
+import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
@@ -14,6 +13,9 @@ import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -22,13 +24,8 @@ import timber.log.Timber;
 
 public class ChannelsListCache implements IChannelsListCache {
 
-    public interface IResponseDBCallback {
-        void onMessageStatus(String message);
-        void onChannelsList(List<Channel> channelsList);
-    }
-
     private static final String TABLE_FEED = "channel";
-    private static final String TABLE_ITEM_New = "itemNew";
+    private static final String TABLE_ITEM_NEWS = "itemNew";
     private static final String COLUMN_URL = "url";
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_TITLE_FEED = "title_feed";
@@ -45,58 +42,52 @@ public class ChannelsListCache implements IChannelsListCache {
     private static final String COLUMN_THUMBNAIL = "thumbnail";
     private static final String COLUMN_CONTENT = "content";
     private static final String COLUMN_ID_FEED = "id_feed";
-    private static final String STATUS_UPDATE_DB = "Список каналов обновлен";
+    private static final String STATUS_DB_UPDATE = "Список каналов обновлен";
+    private static final String STATUS_DB_TRANSACTION_FAILED = "Транзакция не прошла";
+    private static final String ERROR_CACHE = "В базе нет данных";
 
-    private IResponseDBCallback callback;
+    @Override
+    public void updateDatabase(Command command, List<Channel> channelsList) {
+        SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
+        connectDB.execSQL("PRAGMA foreign_keys=ON");
 
-    public void registerCallBack(IResponseDBCallback callback) {
-        this.callback = callback;
+        switch (command) {
+            case ADD_CHANNEL:
+                addChannel(connectDB, channelsList);
+                break;
+            case DELETE_CHANNEL:
+                deleteChannel(connectDB, channelsList.get(0).getFeed().getUrl());
+                break;
+            case DELETE_ALL_CHANNELS:
+                deleteAllChannel(connectDB);
+                break;
+            case REFRESH_CHANNELS:
+                refreshChannel(connectDB, channelsList);
+                break;
+            default:
+                break;
+        }
+        App.getInstance().getDbHelper().close();
     }
 
     @Override
-    public void updateDatabase(List<Channel> channelsList) {
-        @SuppressLint("StaticFieldLeak") AsyncTask<List<Channel>, String, String> loadRSSAsync = new AsyncTask<List<Channel>, String, String>() {
+    public Single<List<Feed>> getChannelsList() {
+        return Single.create(emitter -> {
+            SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
+            connectDB.execSQL("PRAGMA foreign_keys=ON");
 
-            @Override
-            protected String doInBackground(List<Channel>... channelsList) {
-
-                SQLiteDatabase connectDB = App.getDbHelper().getWritableDatabase();
-                connectDB.execSQL("PRAGMA foreign_keys=ON");
-                updateChannelsList(channelsList[0], connectDB);
-                return STATUS_UPDATE_DB;
+            List<Feed> channelsList = buildChannelsList(connectDB);
+            if (channelsList.isEmpty()) {
+                emitter.onError(new RuntimeException(ERROR_CACHE));
+            } else {
+                emitter.onSuccess(channelsList);
             }
 
-            @Override
-            protected void onPostExecute(String statusUpdateDB) {
-                App.getDbHelper().close();
-                callback.onMessageStatus(statusUpdateDB);
-            }
-        };
-        loadRSSAsync.execute(channelsList);
+            App.getInstance().getDbHelper().close();
+        }).subscribeOn(Schedulers.io()).cast((Class<List<Feed>>) (Class) List.class);
     }
 
-    @Override
-    public void getData() {
-        @SuppressLint("StaticFieldLeak") AsyncTask<String, String, List<Channel>> loadRSSAsync = new AsyncTask<String, String, List<Channel>>() {
-
-            @Override
-            protected List<Channel> doInBackground(String... requestParameters) {
-                SQLiteDatabase connectDB = App.getDbHelper().getWritableDatabase();
-                return buildChannelsList(connectDB);
-            }
-
-            @Override
-            protected void onPostExecute(List<Channel> channelsList) {
-                App.getDbHelper().close();
-                callback.onChannelsList(channelsList);
-            }
-        };
-        loadRSSAsync.execute();
-    }
-
-    private void updateChannelsList(List<Channel> channelsList, SQLiteDatabase connectDB) {
-        connectDB.delete(TABLE_FEED, null, null);
-
+    private void addChannel(SQLiteDatabase connectDB, List<Channel> channelsList) {
         for (int i = 0; i < channelsList.size(); i++) {
             String feedUrl = channelsList.get(i).getFeed().getUrl();
             String feedTitle = channelsList.get(i).getFeed().getTitle();
@@ -109,7 +100,7 @@ public class ChannelsListCache implements IChannelsListCache {
 
             int idFeed = (int) insertFeed(connectDB, TABLE_FEED, feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
 
-            if (itemNewsList != null){
+            if (itemNewsList != null) {
                 for (int j = 0; j < itemNewsList.size(); j++) {
                     String itemNewTitle = itemNewsList.get(j).getTitle();
                     String itemNewPubDate = itemNewsList.get(j).getPubDate();
@@ -120,7 +111,7 @@ public class ChannelsListCache implements IChannelsListCache {
                     String itemNewDescription = itemNewsList.get(j).getDescription();
                     String itemNewContent = itemNewsList.get(j).getContent();
 
-                    insertItemNew(connectDB, TABLE_ITEM_New, idFeed, itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent);
+                    insertItemNew(connectDB, TABLE_ITEM_NEWS, idFeed, itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent);
                 }
             }
         }
@@ -139,7 +130,7 @@ public class ChannelsListCache implements IChannelsListCache {
         return connectDB.insert(table, null, contentValues);
     }
 
-    private void insertItemNew(SQLiteDatabase connectDB, String table, int idFeed, String title, String pubDate, String link,
+    private long insertItemNew(SQLiteDatabase connectDB, String table, int idFeed, String title, String pubDate, String link,
                                String guid, String author, String thumbnail, String description, String content) {
 
         ContentValues contentValues = new ContentValues();
@@ -152,32 +143,36 @@ public class ChannelsListCache implements IChannelsListCache {
         contentValues.put(COLUMN_DESCRIPTION, description);
         contentValues.put(COLUMN_CONTENT, content);
         contentValues.put(COLUMN_ID_FEED, idFeed);
-        connectDB.insert(table, null, contentValues);
+        return connectDB.insert(table, null, contentValues);
     }
 
-    //TODO: исправить баг с неправильным прочтение из БД
-    private List<Channel> buildChannelsList(SQLiteDatabase connectDB) {
-        List<Channel> channelsList = new ArrayList<>();
-        Cursor cursor;
+    private void deleteChannel(SQLiteDatabase connectDB, String urlChannel) {
+        connectDB.delete(TABLE_FEED, COLUMN_URL + " = ?", new String[]{urlChannel});
+    }
 
-        //String relatedTables = TABLE_ITEM_New + AS_T + INNER_JOIN + TABLE_FEED + AS_V + ON + T_ID_V_ID;
+    private void deleteAllChannel(SQLiteDatabase connectDB) {
+        connectDB.delete(TABLE_FEED, null, null);
+    }
+
+    private Completable refreshChannel(SQLiteDatabase connectDB, List<Channel> channelsList) {
+        return Completable.create(emitter -> {
+            Timber.d("rty Записали данные после рефреш");
+            //ToDo: Дописать
+        }).subscribeOn(Schedulers.io());
+    }
+
+    private List<Feed> buildChannelsList(SQLiteDatabase connectDB) {
+        List<Feed> channelsList = new ArrayList<>();
+        Cursor cursor;
         cursor = connectDB.query(TABLE_FEED, null, null, null, null, null, null);
-        //List<ItemNew> itemNewsList = new ArrayList<>();
-        Feed feed = null;
-        Channel channel;
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 String feedUrl = null, feedTitle = null, feedLink = null, feedAuthor = null, feedDescription = null, feedImage = null, feedLastBuildDate = null;
-               // String itemNewTitle = null, itemNewPubDate = null, itemNewLink = null, itemNewGuid = null, itemNewAuthor = null, itemNewThumbnail = null, itemNewDescription = null, itemNewContent = null;
-//                int currentId = 2;
-                //int id;
+
                 do {
                     for (String cn : cursor.getColumnNames()) {
                         switch (cn) {
-//                            case COLUMN_ID_FEED:
-//                                id = cursor.getInt(cursor.getColumnIndex(cn));
-//                                break;
                             case COLUMN_URL:
                                 feedUrl = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
@@ -199,56 +194,19 @@ public class ChannelsListCache implements IChannelsListCache {
                             case COLUMN_LAST_BUILD:
                                 feedLastBuildDate = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
-//                            case COLUMN_TITLE:
-//                                itemNewTitle = cursor.getString(cursor.getColumnIndex(cn));
-//                                break;
-//                            case COLUMN_PUB_DATE:
-//                                itemNewPubDate = cursor.getString(cursor.getColumnIndex(cn));
-//                                break;
-//                            case COLUMN_LINK:
-//                                itemNewLink = cursor.getString(cursor.getColumnIndex(cn));
-//                                break;
-//                            case COLUMN_GUID:
-//                                itemNewGuid = cursor.getString(cursor.getColumnIndex(cn));
-//                                break;
-//                            case COLUMN_AUTHOR:
-//                                itemNewAuthor = cursor.getString(cursor.getColumnIndex(cn));
-//                                break;
-//                            case COLUMN_THUMBNAIL:
-//                                itemNewThumbnail = cursor.getString(cursor.getColumnIndex(cn));
-//                                break;
-//                            case COLUMN_DESCRIPTION:
-//                                itemNewDescription = cursor.getString(cursor.getColumnIndex(cn));
-//                                break;
-//                            case COLUMN_CONTENT:
-//                                itemNewContent = cursor.getString(cursor.getColumnIndex(cn));
-//                                break;
                             default:
                                 break;
                         }
                     }
-                   // Timber.d("rty " + feedUrl+ " "+feedTitle+" "+feedLink+" "+feedAuthor+" "+feedDescription+" "+feedImage+" "+feedLastBuildDate);
-                    channel = new Channel("ok", new Feed(feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate), null);
-                    channelsList.add(channel);
-//                    if (currentId > id) {
-//
-//                        ItemNew item = new ItemNew(itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent, null, null);
-//                        itemNewsList.add(item);
-//                    }
-//
-//                    if (currentId == id) {
-//
-//
-//                        itemNewsList.clear();
-//                        currentId++;
-//                    }
+
+                    Feed feed = new Feed(feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
+                    channelsList.add(feed);
                 } while (cursor.moveToNext());
             }
         } else {
             //TODO: обработать ситуацию
             Timber.d("rty КУРСОР НУЛ");
         }
-
         cursor.close();
         return channelsList;
     }

@@ -4,22 +4,25 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.olskrain.aggregatornews.data.cache.DBHelper;
-import com.olskrain.aggregatornews.data.repository.ResponseServiceBroadcast;
 
+import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 public class App extends Application {
     public static final String NAME_DB = "News";
     private static final String SHARED_PREFERENCES_TAG = "SPT";
 
-    static private App instance;
-    static private DBHelper dbHelper;
-    static private SharedPreferences sharedPreferences;
+    private static App instance;
+    private DBHelper dbHelper;
+    private SharedPreferences sharedPreferences;
+    private static CompositeDisposable compositeDisposable;
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        compositeDisposable = new CompositeDisposable();
 
         Timber.plant(new Timber.DebugTree());
         dbHelper = new DBHelper(instance, NAME_DB, null, 1);
@@ -30,12 +33,15 @@ public class App extends Application {
         return instance;
     }
 
-    public static DBHelper getDbHelper() {
+    public DBHelper getDbHelper() {
         return dbHelper;
     }
 
-    public static SharedPreferences getSharedPreferences() {
+    public SharedPreferences getSharedPreferences() {
         return sharedPreferences;
     }
 
+    public CompositeDisposable getCompositeDisposable() {
+        return compositeDisposable;
+    }
 }

@@ -1,10 +1,12 @@
 package com.olskrain.aggregatornews.data.repository;
 
+import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
@@ -12,7 +14,9 @@ import io.reactivex.Single;
  */
 
 public interface IChannelsListRepository {
-    void putUpdatedData(List<Channel> channelsList);
+    void putUpdatedData(Command command, List<Channel> channelsList);
 
-    Single<List<Feed>> getChannelsList(List<String> urlList);
+    Single<List<Feed>> getChannelsList(Command command, List<String> urlList);
+
+    Single<Feed> getChannel(Command command, List<String> urlList);
 }

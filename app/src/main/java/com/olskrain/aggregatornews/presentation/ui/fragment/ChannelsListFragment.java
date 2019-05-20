@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.activity.ChannelDetailActivity;
@@ -68,6 +70,8 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
         initUi(view);
         initOnClick();
 
+        channelsListPresenter.refreshChannelsList();
+
         return view;
     }
 
@@ -76,7 +80,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
 
         allChannelsListRecyclerView = view.findViewById(R.id.all_channels_list);
         allChannelsListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        allChannelsListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        allChannelsListRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL));
         allChannelsListRVAdapter = new ChannelsListRVAdapter(channelsListPresenter.channelListPresenter);
         allChannelsListRecyclerView.setAdapter(allChannelsListRVAdapter);
 
@@ -98,6 +102,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
     @Override
     public void onStop() {
         super.onStop();
+        channelsListPresenter.putUrlsChannelList();
     }
 
     @Override
@@ -126,6 +131,22 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
         if (getFragmentManager() != null) {
             customBottomSheetFragment.show(getFragmentManager(), customBottomSheetFragment.getTag());
         }
+    }
+
+    @Override
+    public void showError(Command command) {
+        switch (command) {
+            case ADD_CHANNEL:
+                Snackbar.make(Objects.requireNonNull(getView()), R.string.error_connection, Snackbar.LENGTH_SHORT).show();
+                break;
+            case REFRESH_URL:
+                Snackbar.make(Objects.requireNonNull(getView()), R.string.error_no_channels, Snackbar.LENGTH_SHORT).show();
+                break;
+            case REFRESH_CHANNELS:
+                Snackbar.make(Objects.requireNonNull(getView()), R.string.error_failed_update, Snackbar.LENGTH_SHORT).show();
+                break;
+        }
+
     }
 
     @Override
