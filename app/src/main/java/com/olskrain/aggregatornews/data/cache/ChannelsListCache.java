@@ -35,7 +35,7 @@ public class ChannelsListCache implements IChannelsListCache {
     private static final String COLUMN_AUTHOR_FEED = "author_feed";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_DESCRIPTION_FEED = "description_feed";
-    private static final String COLUMN_IMAGE = "image";
+    private static final String COLUMN_IMAGE_FEED = "image";
     private static final String COLUMN_LAST_BUILD = "lastbuilddate";
     private static final String COLUMN_PUB_DATE = "pubDate";
     private static final String COLUMN_GUID = "guid";
@@ -67,6 +67,7 @@ public class ChannelsListCache implements IChannelsListCache {
             default:
                 break;
         }
+        Timber.d("rty количество в БД "+ buildChannelsList(connectDB).size());
         App.getInstance().getDbHelper().close();
     }
 
@@ -98,7 +99,7 @@ public class ChannelsListCache implements IChannelsListCache {
             String feedLastBuildDate = channelsList.get(i).getFeed().getLastBuildDate();
             List<ItemNew> itemNewsList = channelsList.get(i).getItemNew();
 
-            int idFeed = (int) insertFeed(connectDB, TABLE_FEED, feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
+            insertFeed(connectDB, TABLE_FEED, feedUrl, feedTitle, feedLink, feedAuthor, feedDescription, feedImage, feedLastBuildDate);
 
             if (itemNewsList != null) {
                 for (int j = 0; j < itemNewsList.size(); j++) {
@@ -111,7 +112,7 @@ public class ChannelsListCache implements IChannelsListCache {
                     String itemNewDescription = itemNewsList.get(j).getDescription();
                     String itemNewContent = itemNewsList.get(j).getContent();
 
-                    insertItemNew(connectDB, TABLE_ITEM_NEWS, idFeed, itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent);
+                    insertItemNew(connectDB, TABLE_ITEM_NEWS, feedUrl, itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent);
                 }
             }
         }
@@ -125,12 +126,12 @@ public class ChannelsListCache implements IChannelsListCache {
         contentValues.put(COLUMN_LINK_FEED, link);
         contentValues.put(COLUMN_AUTHOR_FEED, author);
         contentValues.put(COLUMN_DESCRIPTION_FEED, description);
-        contentValues.put(COLUMN_IMAGE, image);
+        contentValues.put(COLUMN_IMAGE_FEED, image);
         contentValues.put(COLUMN_LAST_BUILD, lastBuildDate);
         return connectDB.insert(table, null, contentValues);
     }
 
-    private long insertItemNew(SQLiteDatabase connectDB, String table, int idFeed, String title, String pubDate, String link,
+    private long insertItemNew(SQLiteDatabase connectDB, String table, String feedUrl, String title, String pubDate, String link,
                                String guid, String author, String thumbnail, String description, String content) {
 
         ContentValues contentValues = new ContentValues();
@@ -142,7 +143,7 @@ public class ChannelsListCache implements IChannelsListCache {
         contentValues.put(COLUMN_THUMBNAIL, thumbnail);
         contentValues.put(COLUMN_DESCRIPTION, description);
         contentValues.put(COLUMN_CONTENT, content);
-        contentValues.put(COLUMN_ID_FEED, idFeed);
+        contentValues.put(COLUMN_ID_FEED, feedUrl);
         return connectDB.insert(table, null, contentValues);
     }
 
@@ -188,7 +189,7 @@ public class ChannelsListCache implements IChannelsListCache {
                             case COLUMN_DESCRIPTION_FEED:
                                 feedDescription = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
-                            case COLUMN_IMAGE:
+                            case COLUMN_IMAGE_FEED:
                                 feedImage = cursor.getString(cursor.getColumnIndex(cn));
                                 break;
                             case COLUMN_LAST_BUILD:

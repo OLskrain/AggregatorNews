@@ -32,10 +32,21 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
 
     @SuppressLint("CheckResult")
     @Override
-    public Single<Feed> addNewChannel(Command command, String urlsList) {
+    public Single<Feed> addNewChannel(Command command, String urlChannel) {
         List<String> urlList = new ArrayList<>();
-        urlList.add(urlsList);
+        urlList.add(urlChannel);
         return channelRepository.getChannel(command, urlList);
+
+    }
+
+    @Override
+    public boolean checkDuplicate(String urlChannel, List<String> urlsList) {
+        for (int i = 0; i < urlsList.size(); i++) {
+            if (urlChannel.equalsIgnoreCase(urlsList.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

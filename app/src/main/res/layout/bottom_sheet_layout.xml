@@ -6,7 +6,7 @@
     android:id="@+id/channels_list_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/darker_gray"
+    android:background="@color/colorPrimary"
     android:elevation="@dimen/elevation_16dp"
     android:orientation="vertical"
     app:behavior_hideable="true"
@@ -21,7 +21,7 @@
         android:layout_marginBottom="@dimen/margin_8dp"
         android:textSize="@dimen/text_size_18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/last_build_date_channel"
+        app:layout_constraintBottom_toTopOf="@+id/last_build_date_bs"
         app:layout_constraintStart_toEndOf="@+id/channel_imageView_bs"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
@@ -31,14 +31,14 @@
         android:layout_width="@dimen/width_0dp"
         android:layout_height="@dimen/height_0dp"
         android:layout_marginStart="@dimen/margin_start"
-        app:layout_constraintBottom_toBottomOf="@+id/last_build_date_channel"
+        app:layout_constraintBottom_toBottomOf="@+id/last_build_date_bs"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/channel_title_bs"
         app:srcCompat="@drawable/ic_newspaper" />
 
     <TextView
-        android:id="@+id/last_build_date_channel"
+        android:id="@+id/last_build_date_bs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bottom_sheet_share"
         app:layout_constraintBottom_toBottomOf="@+id/share_channel_image"
-        app:layout_constraintStart_toStartOf="@+id/last_build_date_channel"
+        app:layout_constraintStart_toStartOf="@+id/last_build_date_bs"
         app:layout_constraintTop_toTopOf="@+id/share_channel_image" />
 
     <TextView
@@ -105,7 +105,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bottom_sheet_add_to_favorites_list"
         app:layout_constraintBottom_toBottomOf="@+id/add_favorite_image"
-        app:layout_constraintStart_toStartOf="@+id/last_build_date_channel"
+        app:layout_constraintStart_toStartOf="@+id/last_build_date_bs"
         app:layout_constraintTop_toTopOf="@+id/add_favorite_image" />
 
     <TextView
@@ -114,7 +114,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bottom_sheet_delete_channel"
         app:layout_constraintBottom_toBottomOf="@+id/delete_channel_image"
-        app:layout_constraintStart_toStartOf="@+id/last_build_date_channel"
+        app:layout_constraintStart_toStartOf="@+id/last_build_date_bs"
         app:layout_constraintTop_toTopOf="@+id/delete_channel_image" />
 
 </android.support.constraint.ConstraintLayout>

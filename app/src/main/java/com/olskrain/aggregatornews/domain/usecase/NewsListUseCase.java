@@ -6,45 +6,22 @@ import com.olskrain.aggregatornews.domain.entities.ItemNew;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 /**
  * Created by Andrey Ievlev on 10,Май,2019
  */
 
-public class NewsListUseCase implements INewsListUseCase, NewsListRepository.IResponseDBCallback {
+public class NewsListUseCase implements INewsListUseCase {
 
-    public interface IResponseDBCallback {
-        void onMessageStatus(String message);
-        void onNewsList(List<ItemNew> newsList);
-    }
-
-    private IResponseDBCallback callback;
     private INewsListRepository newsListRepository;
-    private List<ItemNew> newList;
 
-    public NewsListUseCase(int channelPosition) {
-        this.newsListRepository = new NewsListRepository(channelPosition);
-        ((NewsListRepository) newsListRepository).registerCallBack(this);
+    public NewsListUseCase() {
+        this.newsListRepository = new NewsListRepository();
     }
 
     @Override
-    public void registerCallBack(IResponseDBCallback callback) {
-        this.callback = callback;
-    }
-
-    @Override
-    public void refreshNewsList() {
-        newsListRepository.getChannelsList();
-    }
-
-
-    @Override
-    public void onMessageStatus(String message) {
-
-    }
-
-    @Override
-    public void onNewsList(List<ItemNew> newsList) {
-        this.newList = newsList;
-        callback.onNewsList(newsList);
+    public Single<List<ItemNew>> refreshNewsList(String urlChannel) {
+       return newsListRepository.getNewsList(urlChannel);
     }
 }

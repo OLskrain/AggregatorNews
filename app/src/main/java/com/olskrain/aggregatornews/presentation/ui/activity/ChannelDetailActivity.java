@@ -35,10 +35,10 @@ public class ChannelDetailActivity extends AppCompatActivity implements IChannel
         channelDetailActivityPresenter = new ChannelDetailActivityPresenter(this);
 
         if (savedInstanceState == null) {
-            int channelPosition = getIntent().getIntExtra(ChannelDetailFragment.ARG_CDF_ID, 0);
+            String urlChannel = getIntent().getStringExtra(ChannelDetailFragment.ARG_CDF_ID);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.channel_detail_container, ChannelDetailFragment.getInstance(ChannelDetailFragment.ARG_CDF_ID, channelPosition), NEW_FRAGMENT_TAG)
+                    .add(R.id.channel_detail_container, ChannelDetailFragment.getInstance(ChannelDetailFragment.ARG_CDF_ID, urlChannel), NEW_FRAGMENT_TAG)
                     .commit();
         }
     }

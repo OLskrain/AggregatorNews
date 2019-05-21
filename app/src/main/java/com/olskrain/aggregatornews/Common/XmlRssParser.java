@@ -13,11 +13,13 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by Andrey Ievlev on 04,Май,2019
  */
 
-public class XmlRssParser { //ToDo: обработать ошибки парсера
+public class XmlRssParser {
     private static final String CHANNEL = "channel";
     private static final String ITEM = "item";
     private static final String TITLE = "title";
@@ -39,6 +41,7 @@ public class XmlRssParser { //ToDo: обработать ошибки парсе
     private String current;
 
     public Channel parseData(String urlChannel, String responseServer) {
+        currentItemList.clear();
         try {
             XmlPullParser xpp = prepareXpp(responseServer);
             while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {

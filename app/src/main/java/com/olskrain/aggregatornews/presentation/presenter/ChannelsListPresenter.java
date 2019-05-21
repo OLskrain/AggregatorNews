@@ -30,13 +30,8 @@ import timber.log.Timber;
 
 public class ChannelsListPresenter {
     public class ChannelListPresenter implements IChannelListPresenter {
-        private IChannelListItemView rowView;
         private final PublishSubject<IChannelListItemView> clickItem = PublishSubject.create();
         private final PublishSubject<IChannelListItemView> clickMenu = PublishSubject.create();
-
-        public IChannelListItemView getRowView() {
-            return rowView;
-        }
 
         @Override
         public PublishSubject<IChannelListItemView> getClickOnItem() {
@@ -50,7 +45,6 @@ public class ChannelsListPresenter {
 
         @Override
         public void bindView(IChannelListItemView rowView) {
-            this.rowView = rowView;
             String channelTitle = channelsListLocal.get(rowView.getPos()).getTitle();
             String lastBuildDate = channelsListLocal.get(rowView.getPos()).getLastBuildDate();
             rowView.setTitle(channelTitle);
@@ -83,30 +77,32 @@ public class ChannelsListPresenter {
     @SuppressLint("CheckResult")
     public void attachView() {
         channelListPresenter.clickItem.subscribe(iChannelListItemView ->
-                channelsListView.goToChannelDetailFragment(channelListPresenter.getRowView().getPos()));
+                channelsListView.goToChannelDetailFragment(channelsListLocal.get(iChannelListItemView.getCurrentPosition()).getUrl()));
 
         channelListPresenter.clickMenu.subscribe(iChannelListItemView ->
-                channelsListView.showBottomSheet(channelListPresenter.getRowView().getPos()));
+                channelsListView.showBottomSheet(channelsListLocal.get(iChannelListItemView.getCurrentPosition())));
     }
 
     @SuppressLint("CheckResult")
     public void addNewChannel(String urlChannel) {
-        channelsListView.showLoading();
-        Single<Feed> responseRepository = channelsListUseCase.addNewChannel(Command.ADD_CHANNEL, urlChannel);
+       if(channelsListUseCase.checkDuplicate(urlChannel, urlChannelsListLocal)) {
+           channelsListView.showLoading();
+           Single<Feed> responseRepository = channelsListUseCase.addNewChannel(Command.ADD_CHANNEL, urlChannel);
 
-        disposable = responseRepository
-                .observeOn(mainThreadScheduler)
-                .subscribe(channel -> {
-                    channelsListLocal.add(channel);
-                    updateUrlsChannelList(channelsListLocal);
-                    channelsListView.hideLoading();
-                    channelsListView.refreshChannelsListRVAdapter();
-                }, throwable -> {
-                    channelsListView.hideLoading();
-                    channelsListView.showError(Command.ADD_CHANNEL);
-                });
+           disposable = responseRepository
+                   .observeOn(mainThreadScheduler)
+                   .subscribe(channel -> {
+                       channelsListLocal.add(channel);
+                       updateUrlsChannelList(channelsListLocal);
+                       channelsListView.hideLoading();
+                       channelsListView.refreshChannelsListRVAdapter();
+                   }, throwable -> {
+                       channelsListView.hideLoading();
+                       channelsListView.showError(Command.ADD_CHANNEL);
+                   });
 
-        App.getInstance().getCompositeDisposable().add(disposable);
+           App.getInstance().getCompositeDisposable().add(disposable);
+       }
     }
 
     //Todo: потом перенести
@@ -155,10 +151,12 @@ public class ChannelsListPresenter {
     }
 
     private void updateUrlsChannelList(List<Feed> urlList) {
+        //TODo: вынести в юзкейс
         urlChannelsListLocal.clear();
         for (int i = 0; i < urlList.size(); i++) {
             urlChannelsListLocal.add(urlList.get(i).getUrl());
         }
+        Timber.d("rty количество url "+ urlChannelsListLocal.size());
     }
 }
 

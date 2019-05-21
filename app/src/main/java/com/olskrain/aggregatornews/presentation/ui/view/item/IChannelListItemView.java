@@ -7,7 +7,7 @@ package com.olskrain.aggregatornews.presentation.ui.view.item;
 public interface IChannelListItemView {
 
     int getPos();
-
+    int getCurrentPosition();
     void setTitle(String title);
     void setLastBuildDate(String lastBuildDate);
 }

@@ -5,4 +5,5 @@ package com.olskrain.aggregatornews.presentation.ui.view;
  */
 public interface ICustomBottomSheetView {
     void closeBottomSheet();
+    void setChannelCard(String title, String LastBuildDate);
 }

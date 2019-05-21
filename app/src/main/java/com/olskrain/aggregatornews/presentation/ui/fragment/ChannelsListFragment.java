@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.R;
+import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.activity.ChannelDetailActivity;
 import com.olskrain.aggregatornews.presentation.ui.adapter.ChannelsListRVAdapter;
@@ -116,17 +117,17 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
     }
 
     @Override
-    public void goToChannelDetailFragment(int position) {
+    public void goToChannelDetailFragment(String urlChannel) {
         Intent intent = new Intent(getContext(), ChannelDetailActivity.class);
-        intent.putExtra(ChannelDetailFragment.ARG_CDF_ID, position);
+        intent.putExtra(ChannelDetailFragment.ARG_CDF_ID, urlChannel);
         Objects.requireNonNull(getContext()).startActivity(intent);
     }
 
     @Override
-    public void showBottomSheet(int position) {
+    public void showBottomSheet(Feed feed) {
         customBottomSheetFragment = new CustomBottomSheetFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(CHANNEL_POSITION, position);
+        bundle.putParcelable(CHANNEL_POSITION, feed);
         customBottomSheetFragment.setArguments(bundle);
         if (getFragmentManager() != null) {
             customBottomSheetFragment.show(getFragmentManager(), customBottomSheetFragment.getTag());

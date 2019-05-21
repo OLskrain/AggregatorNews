@@ -7,7 +7,7 @@ import com.olskrain.aggregatornews.presentation.ui.view.INewDetailActivityView;
  * Created by Andrey Ievlev on 11,Май,2019
  */
 
-public class NewDetailActivityPresenter implements NewDetailUseCase.IResponseServerCallback {
+public class NewDetailActivityPresenter  {
 
     private INewDetailActivityView newDetailActivityView;
     private NewDetailUseCase newDetailUseCase;
@@ -15,7 +15,6 @@ public class NewDetailActivityPresenter implements NewDetailUseCase.IResponseSer
     public NewDetailActivityPresenter(INewDetailActivityView view, String urlNew) {
         this.newDetailActivityView = view;
         this.newDetailUseCase = new NewDetailUseCase(urlNew);
-        this.newDetailUseCase.registerCallBack(this);
     }
 
     public void getWebPage(){
@@ -27,15 +26,5 @@ public class NewDetailActivityPresenter implements NewDetailUseCase.IResponseSer
         newDetailActivityView.goToNewsList();
     }
 
-    @Override
-    public void onMessageStatus(String message) {
-
-    }
-
-    @Override
-    public void onWebPage(String webPage) {
-        newDetailActivityView.hideLoading();
-        newDetailActivityView.sendWebPageData(webPage);
-    }
 }
 

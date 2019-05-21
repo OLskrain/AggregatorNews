@@ -1,10 +1,15 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
+import com.olskrain.aggregatornews.domain.entities.ItemNew;
+
+import java.util.List;
+
+import io.reactivex.Single;
+
 /**
  * Created by Andrey Ievlev on 11,Май,2019
  */
-public interface INewsListUseCase {
-    void refreshNewsList();
 
-    void registerCallBack(NewsListUseCase.IResponseDBCallback callback);
+public interface INewsListUseCase {
+    Single<List<ItemNew>> refreshNewsList(String urlChannel);
 }

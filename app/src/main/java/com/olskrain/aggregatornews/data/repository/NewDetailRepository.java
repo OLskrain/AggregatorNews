@@ -11,22 +11,11 @@ import com.olskrain.aggregatornews.data.api.ServerDataSource;
  */
 
 public class NewDetailRepository implements INewsDetailRepository{
-
-    public interface IResponseServerCallback {
-        void onMessageStatus(String message);
-        void onWebPage(String webPage);
-    }
-
     private static final String NO_CONNECTION = "Нет подключения";
-    private IResponseServerCallback callback;
     private String urlNew;
 
     public NewDetailRepository(String urlNew) {
         this.urlNew = urlNew;
-    }
-
-    public void registerCallBack(IResponseServerCallback callback) {
-        this.callback = callback;
     }
 
     @Override

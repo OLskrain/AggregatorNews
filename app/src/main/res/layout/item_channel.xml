@@ -10,6 +10,7 @@
     app:cardElevation="@dimen/card_elevation">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/pop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_8dp"
@@ -24,7 +25,7 @@
             android:layout_marginBottom="@dimen/margin_8dp"
             android:textSize="@dimen/text_size_18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/last_build_date_channel"
+            app:layout_constraintBottom_toTopOf="@+id/last_build_date"
             app:layout_constraintStart_toEndOf="@+id/channel_imageView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
@@ -34,7 +35,7 @@
             android:layout_width="@dimen/width_0dp"
             android:layout_height="@dimen/height_0dp"
             android:layout_marginStart="@dimen/margin_start"
-            app:layout_constraintBottom_toBottomOf="@+id/last_build_date_channel"
+            app:layout_constraintBottom_toBottomOf="@+id/last_build_date"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/channel_title"
@@ -42,7 +43,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/last_build_date_channel"
+            android:id="@+id/last_build_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_8dp"

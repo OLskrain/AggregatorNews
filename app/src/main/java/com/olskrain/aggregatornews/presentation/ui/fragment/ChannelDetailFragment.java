@@ -1,6 +1,7 @@
 package com.olskrain.aggregatornews.presentation.ui.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,18 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.R;
+import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelDetailFragmentPresenter;
 import com.olskrain.aggregatornews.presentation.ui.adapter.NewsListRVAdapter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
 
+import java.util.Objects;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
+
 
 public class ChannelDetailFragment extends Fragment implements IChannelDetailFragmentView {
 
-    public static ChannelDetailFragment getInstance(String arg, int channelPosition) {
+    public static ChannelDetailFragment getInstance(String arg, String urlChannel) {
         ChannelDetailFragment fragment = new ChannelDetailFragment();
         Bundle arguments = new Bundle();
-        arguments.putInt(arg, channelPosition);
+        arguments.putString(arg, urlChannel);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -31,19 +39,19 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
     private NewsListRVAdapter newsListRVAdapter;
     private ChannelDetailFragmentPresenter channelDetailFragmentPresenter;
     private ProgressBar loadingProgressBar;
-    private int channelPosition;
+    private String urlChannel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_channel_detail, container, false);
 
         if (getArguments() != null && getArguments().containsKey(ARG_CDF_ID)) {
-            channelPosition = getArguments().getInt(ARG_CDF_ID);
-            channelDetailFragmentPresenter = new ChannelDetailFragmentPresenter(this, channelPosition);
+            urlChannel = getArguments().getString(ARG_CDF_ID);
+            channelDetailFragmentPresenter = new ChannelDetailFragmentPresenter(this, AndroidSchedulers.mainThread());
         }
 
         initUi(rootView);
-        channelDetailFragmentPresenter.refreshNewsList();
+        channelDetailFragmentPresenter.refreshNewsList(urlChannel);
         return rootView;
     }
 
@@ -65,6 +73,16 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
     @Override
     public void hideLoading() {
         loadingProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showBottomSheet(ItemNew itemNew) {
+
+    }
+
+    @Override
+    public void showError(Command command) {
+        Snackbar.make(Objects.requireNonNull(getView()), R.string.error_failed_update, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

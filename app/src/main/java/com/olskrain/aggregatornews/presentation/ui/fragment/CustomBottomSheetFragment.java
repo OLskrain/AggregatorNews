@@ -11,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.olskrain.aggregatornews.R;
+import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.CustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
+
+import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 18,Май,2019
@@ -21,13 +24,15 @@ import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 public class CustomBottomSheetFragment extends BottomSheetDialogFragment implements ICustomBottomSheetView {
 
     public static final String CHANNEL_POSITION = "channel position";
+    private TextView channelTitle;
+    private TextView lastBuildDate;
     private TextView addFavorite;
     private TextView shareChannel;
     private TextView deleteChannel;
     private ImageView addFavoriteImage;
     private ImageView shareChannelImage;
     private ImageView deleteChannelImage;
-    private int channelPosition;
+    private Feed channel;
 
     private CustomBottomSheetPresenter customBottomSheetPresenter;
 
@@ -39,16 +44,19 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
         customBottomSheetPresenter = new CustomBottomSheetPresenter(this);
 
         if (getArguments() != null) {
-            channelPosition = getArguments().getInt(CHANNEL_POSITION);
+            channel = getArguments().getParcelable(CHANNEL_POSITION);
         }
 
         initUi(view);
         initOnClick();
 
+        customBottomSheetPresenter.setChannelCard(channel);
         return view;
     }
 
     private void initUi(View view) {
+        channelTitle = view.findViewById(R.id.channel_title_bs);
+        lastBuildDate = view.findViewById(R.id.last_build_date_bs);
         addFavorite = view.findViewById(R.id.add_favorite);
         shareChannel = view.findViewById(R.id.share_channel);
         deleteChannel = view.findViewById(R.id.delete_channel);
@@ -60,7 +68,7 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
 
     private void initOnClick() {
         addFavorite.setOnClickListener(view -> {
-            customBottomSheetPresenter.addFavorite(channelPosition);
+
         });
         shareChannel.setOnClickListener(view -> {
 
@@ -71,7 +79,7 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
 
         });
         addFavoriteImage.setOnClickListener(view -> {
-            customBottomSheetPresenter.addFavorite(channelPosition);
+
         });
         shareChannelImage.setOnClickListener(view -> {
 
@@ -87,5 +95,11 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     @Override
     public void closeBottomSheet() {
         dismiss();
+    }
+
+    @Override
+    public void setChannelCard(String title, String lastBuild) {
+        channelTitle.setText(title);
+        lastBuildDate.setText(lastBuild);
     }
 }

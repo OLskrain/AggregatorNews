@@ -6,5 +6,4 @@ package com.olskrain.aggregatornews.domain.usecase;
 public interface INewDetailUseCase {
     void getWebPage();
 
-    void registerCallBack(NewDetailUseCase.IResponseServerCallback callback);
 }

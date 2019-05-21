@@ -14,11 +14,14 @@ import io.reactivex.Single;
  */
 
 public interface IChannelsListUseCase {
-    Single<Feed> addNewChannel(Command command, String urlsList);
+    Single<Feed> addNewChannel(Command command, String urlChannel);
 
     void deleteChannel(String url);
 
     List<Feed> deleteAllChannels(Command command, List<Feed> channelsList);
 
     Single<List<Feed>> getChannelsList(Command command, List<String> urlList);
+
+    boolean checkDuplicate(String urlChannel, List<String> urlsList);
+
 }

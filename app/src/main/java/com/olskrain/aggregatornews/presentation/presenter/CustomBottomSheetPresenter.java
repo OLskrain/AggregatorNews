@@ -1,5 +1,6 @@
 package com.olskrain.aggregatornews.presentation.presenter;
 
+import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 
 import timber.log.Timber;
@@ -29,4 +30,9 @@ public class CustomBottomSheetPresenter {
         customBottomSheetView.closeBottomSheet();
     }
 
+    public void setChannelCard(Feed channel) {
+        String title = channel.getTitle();
+        String lastBuild = channel.getLastBuildDate();
+        customBottomSheetView.setChannelCard(title, lastBuild);
+    }
 }

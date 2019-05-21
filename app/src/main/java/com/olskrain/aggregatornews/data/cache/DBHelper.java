@@ -19,8 +19,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
         sqLiteDatabase.execSQL("CREATE TABLE channel("
-                + "id integer PRIMARY KEY,"
-                + "url text,"
+                + "id integer,"
+                + "url text PRIMARY KEY,"
                 + "title_feed text,"
                 + "link_feed text,"
                 + "author_feed text,"
@@ -38,8 +38,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "thumbnail text,"
                 + "description text,"
                 + "content text,"
-                + "id_feed integer NOT NULL,"
-                + " FOREIGN KEY (id_feed) REFERENCES channel(id) ON DELETE CASCADE);");
+                + "id_feed text NOT NULL,"
+                + " FOREIGN KEY (id_feed) REFERENCES channel(url) ON DELETE CASCADE);");
     }
 
     @Override
