@@ -8,6 +8,7 @@ import com.olskrain.aggregatornews.Common.App;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -18,6 +19,7 @@ import timber.log.Timber;
 /**
  * Created by Andrey Ievlev on 20,Май,2019
  */
+
 public class UrlListRepositoryRepository implements IUrlsChannelListRepository {
     private static final String ERROR_SHARED_PREFERENCES = "Ошибка: нет URL списка";
     private static final String BUNCH_KEYS = "bunch keys";
@@ -26,34 +28,17 @@ public class UrlListRepositoryRepository implements IUrlsChannelListRepository {
 
     @Override
     public Single<List<String>> getUrlsChannelList() {
-        return Single.create(emitter -> {
+        return Single.fromCallable(() -> {
             int bunchKeys = App.getInstance().getSharedPreferences().getInt(BUNCH_KEYS, DEFAULT_VALUE_KEYS);
             List<String> urlsList = new ArrayList<>();
             for (int i = 0; i < bunchKeys; i++) {
                 String currentUrl = App.getInstance().getSharedPreferences().getString(Integer.toString(i), DEFAULT_VALUE);
                 urlsList.add(currentUrl);
             }
-
-            if (urlsList.isEmpty()) {
-                emitter.onError(new RuntimeException(ERROR_SHARED_PREFERENCES));
-            } else emitter.onSuccess(urlsList);
-        }).subscribeOn(Schedulers.io()).cast((Class<List<String>>) (Class) List.class);
+            return urlsList;
+        }).subscribeOn(Schedulers.io());
     }
 
-//    public Completable deleteChannel(String urlChannel) {
-//        return Completable.create(emitter -> {
-//            try {
-//                SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
-//                connectDB.execSQL("PRAGMA foreign_keys=ON");
-//                connectDB.delete(TABLE_FEED, COLUMN_URL + " = ?", new String[]{urlChannel});
-//                emitter.onComplete();
-//            } catch (SQLException e) {
-//                emitter.onError(new SQLException());
-//            } finally {
-//                App.getInstance().getDbHelper().close();
-//            }
-//        }).subscribeOn(Schedulers.io());
-//    }
     @Override
     public void putUrlChannelsList(List<String> urlChannelsList) {
         SharedPreferences.Editor editor = App.getInstance().getSharedPreferences().edit();

@@ -13,9 +13,11 @@ import com.olskrain.aggregatornews.domain.entities.ItemNew;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -65,49 +67,32 @@ public class ChannelsListCache implements IChannelsListCache {
 
     @Override
     public Single<List<Feed>> getChannelsList() {
-        return Single.create(emitter -> {
-            try {
-                SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
-                connectDB.execSQL("PRAGMA foreign_keys=ON");
-                List<Feed> channelsList = buildChannelsList(connectDB);
-                emitter.onSuccess(channelsList);
-            } catch (SQLException e) {
-                emitter.onError(new SQLException());
-            } finally {
-                App.getInstance().getDbHelper().close();
-            }
-        }).subscribeOn(Schedulers.io()).cast((Class<List<Feed>>) (Class) List.class);
+        return Single.fromCallable(() -> {
+            SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
+            connectDB.execSQL("PRAGMA foreign_keys=ON");
+            List<Feed> channelsList = buildChannelsList(connectDB);
+            App.getInstance().getDbHelper().close();
+            return channelsList;
+        }).subscribeOn(Schedulers.io());
     }
 
     @Override
     public Completable deleteAllChannels() {
-        return Completable.create(emitter -> {
-            try {
-                SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
-                connectDB.execSQL("PRAGMA foreign_keys=ON");
-                connectDB.delete(TABLE_FEED, null, null);
-                emitter.onComplete();
-            } catch (SQLException e) {
-                emitter.onError(new SQLException());
-            } finally {
-                App.getInstance().getDbHelper().close();
-            }
+        return Completable.fromAction(() -> {
+            SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
+            connectDB.execSQL("PRAGMA foreign_keys=ON");
+            connectDB.delete(TABLE_FEED, null, null);
+            App.getInstance().getDbHelper().close();
         }).subscribeOn(Schedulers.io());
     }
 
     @Override
     public Completable deleteChannel(String urlChannel) {
-        return Completable.create(emitter -> {
-            try {
-                SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
-                connectDB.execSQL("PRAGMA foreign_keys=ON");
-                connectDB.delete(TABLE_FEED, COLUMN_URL + " = ?", new String[]{urlChannel});
-                emitter.onComplete();
-            } catch (SQLException e) {
-                emitter.onError(new SQLException());
-            } finally {
-                App.getInstance().getDbHelper().close();
-            }
+        return Completable.fromAction(() -> {
+            SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
+            connectDB.execSQL("PRAGMA foreign_keys=ON");
+            connectDB.delete(TABLE_FEED, COLUMN_URL + " = ?", new String[]{urlChannel});
+            App.getInstance().getDbHelper().close();
         }).subscribeOn(Schedulers.io());
     }
 
@@ -171,9 +156,12 @@ public class ChannelsListCache implements IChannelsListCache {
     }
 
     private Completable refreshChannel(SQLiteDatabase connectDB, List<Channel> channelsList) {
-        return Completable.create(emitter -> {
-            Timber.d("rty Записали данные после рефреш");
-            //ToDo: Дописать
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                Timber.d("rty Записали данные после рефреш");
+                //ToDo: Дописать
+            }
         }).subscribeOn(Schedulers.io());
     }
 

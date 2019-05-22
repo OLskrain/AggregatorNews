@@ -129,10 +129,12 @@ public class ChannelsListPresenter {
             disposable = responseRepository
                     .observeOn(mainThreadScheduler)
                     .subscribe(() -> {
+                        Timber.d("rty RRRRRRRRRRRRR");
                         getChannelListDB();
                         channelsListView.hideLoading();
                         channelsListView.refreshChannelsListRVAdapter();
                     }, throwable -> {
+                        Timber.d("rty RRRRRRRRRRRRRTTTTTTTTTTTT");
                         channelsListView.hideLoading();
                         channelsListView.showError(Command.ERROR_DIFFERENT);
                     });
