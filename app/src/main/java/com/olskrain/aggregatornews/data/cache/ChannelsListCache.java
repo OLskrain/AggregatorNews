@@ -2,6 +2,7 @@ package com.olskrain.aggregatornews.data.cache;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.olskrain.aggregatornews.Common.App;
@@ -42,9 +43,6 @@ public class ChannelsListCache implements IChannelsListCache {
     private static final String COLUMN_THUMBNAIL = "thumbnail";
     private static final String COLUMN_CONTENT = "content";
     private static final String COLUMN_ID_FEED = "id_feed";
-    private static final String STATUS_DB_UPDATE = "Список каналов обновлен";
-    private static final String STATUS_DB_TRANSACTION_FAILED = "Транзакция не прошла";
-    private static final String ERROR_CACHE = "В базе нет данных";
 
     @Override
     public void updateDatabase(Command command, List<Channel> channelsList) {
@@ -55,37 +53,62 @@ public class ChannelsListCache implements IChannelsListCache {
             case ADD_CHANNEL:
                 addChannel(connectDB, channelsList);
                 break;
-            case DELETE_CHANNEL:
-                deleteChannel(connectDB, channelsList.get(0).getFeed().getUrl());
-                break;
-            case DELETE_ALL_CHANNELS:
-                deleteAllChannel(connectDB);
-                break;
             case REFRESH_CHANNELS:
                 refreshChannel(connectDB, channelsList);
                 break;
             default:
                 break;
         }
-        Timber.d("rty количество в БД "+ buildChannelsList(connectDB).size());
+        Timber.d("rty количество в БД " + buildChannelsList(connectDB).size());
         App.getInstance().getDbHelper().close();
     }
 
     @Override
     public Single<List<Feed>> getChannelsList() {
         return Single.create(emitter -> {
-            SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
-            connectDB.execSQL("PRAGMA foreign_keys=ON");
-
-            List<Feed> channelsList = buildChannelsList(connectDB);
-            if (channelsList.isEmpty()) {
-                emitter.onError(new RuntimeException(ERROR_CACHE));
-            } else {
+            try {
+                SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
+                connectDB.execSQL("PRAGMA foreign_keys=ON");
+                List<Feed> channelsList = buildChannelsList(connectDB);
                 emitter.onSuccess(channelsList);
+            } catch (SQLException e) {
+                emitter.onError(new SQLException());
+            } finally {
+                App.getInstance().getDbHelper().close();
             }
-
-            App.getInstance().getDbHelper().close();
         }).subscribeOn(Schedulers.io()).cast((Class<List<Feed>>) (Class) List.class);
+    }
+
+    @Override
+    public Completable deleteAllChannels() {
+        return Completable.create(emitter -> {
+            try {
+                SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
+                connectDB.execSQL("PRAGMA foreign_keys=ON");
+                connectDB.delete(TABLE_FEED, null, null);
+                emitter.onComplete();
+            } catch (SQLException e) {
+                emitter.onError(new SQLException());
+            } finally {
+                App.getInstance().getDbHelper().close();
+            }
+        }).subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Completable deleteChannel(String urlChannel) {
+        return Completable.create(emitter -> {
+            try {
+                SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
+                connectDB.execSQL("PRAGMA foreign_keys=ON");
+                connectDB.delete(TABLE_FEED, COLUMN_URL + " = ?", new String[]{urlChannel});
+                emitter.onComplete();
+            } catch (SQLException e) {
+                emitter.onError(new SQLException());
+            } finally {
+                App.getInstance().getDbHelper().close();
+            }
+        }).subscribeOn(Schedulers.io());
     }
 
     private void addChannel(SQLiteDatabase connectDB, List<Channel> channelsList) {
@@ -145,14 +168,6 @@ public class ChannelsListCache implements IChannelsListCache {
         contentValues.put(COLUMN_CONTENT, content);
         contentValues.put(COLUMN_ID_FEED, feedUrl);
         return connectDB.insert(table, null, contentValues);
-    }
-
-    private void deleteChannel(SQLiteDatabase connectDB, String urlChannel) {
-        connectDB.delete(TABLE_FEED, COLUMN_URL + " = ?", new String[]{urlChannel});
-    }
-
-    private void deleteAllChannel(SQLiteDatabase connectDB) {
-        connectDB.delete(TABLE_FEED, null, null);
     }
 
     private Completable refreshChannel(SQLiteDatabase connectDB, List<Channel> channelsList) {

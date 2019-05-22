@@ -1,5 +1,6 @@
 package com.olskrain.aggregatornews.presentation.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,11 +11,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.olskrain.aggregatornews.Common.Command;
+import com.olskrain.aggregatornews.Common.myObserver.CustomPublisher;
+import com.olskrain.aggregatornews.Common.myObserver.ICustomPublishGetter;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.CustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 
+import java.util.concurrent.Callable;
+
+import io.reactivex.Completable;
+import io.reactivex.Single;
 import timber.log.Timber;
 
 /**
@@ -35,7 +43,13 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     private Feed channel;
 
     private CustomBottomSheetPresenter customBottomSheetPresenter;
+    private CustomPublisher publisher;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        publisher = ((ICustomPublishGetter) context).getPublisher(); // получим обработчика подписок
+    }
 
     @Nullable
     @Override
@@ -75,8 +89,7 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
 
         });
         deleteChannel.setOnClickListener(view -> {
-
-
+            customBottomSheetPresenter.deleteChannel(Command.DELETE_CHANNEL);
         });
         addFavoriteImage.setOnClickListener(view -> {
 
@@ -86,20 +99,33 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
 
         });
         deleteChannelImage.setOnClickListener(view -> {
-
-
+            customBottomSheetPresenter.deleteChannel(Command.DELETE_CHANNEL);
         });
-    }
-
-
-    @Override
-    public void closeBottomSheet() {
-        dismiss();
     }
 
     @Override
     public void setChannelCard(String title, String lastBuild) {
         channelTitle.setText(title);
         lastBuildDate.setText(lastBuild);
+    }
+
+    @Override
+    public void addFavorite(Command command) {
+        publisher.notify(command);
+    }
+
+    @Override
+    public void shareChannel(Command command) {
+        publisher.notify(command);
+    }
+
+    @Override
+    public void deleteChannel(Command command) {
+        publisher.notify(command);
+    }
+
+    @Override
+    public void closeBottomSheet() {
+        dismiss();
     }
 }

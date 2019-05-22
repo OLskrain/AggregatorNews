@@ -16,7 +16,13 @@ import io.reactivex.Single;
 public interface IChannelsListRepository {
     void putUpdatedData(Command command, List<Channel> channelsList);
 
-    Single<List<Feed>> getChannelsList(Command command, List<String> urlList);
+    Single<List<Feed>> refreshChannelsList(Command command, List<String> urlList);
 
     Single<Feed> getChannel(Command command, List<String> urlList);
+
+    Single<List<Feed>> getChannelListDB();
+
+    Completable deleteAllChannels ();
+
+    Completable deleteChannel (String urlChannel);
 }

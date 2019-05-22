@@ -20,7 +20,6 @@ import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
@@ -65,6 +64,7 @@ public class ChannelsListPresenter {
     private List<Feed> channelsListLocal = new ArrayList<>();
     private List<String> urlChannelsListLocal = new ArrayList<>();
     private Disposable disposable;
+    private String currentUrlChannel;
 
     public ChannelsListPresenter(IChannelsListView view, Scheduler mainThreadScheduler) {
         this.channelsListView = view;
@@ -79,8 +79,10 @@ public class ChannelsListPresenter {
         channelListPresenter.clickItem.subscribe(iChannelListItemView ->
                 channelsListView.goToChannelDetailFragment(channelsListLocal.get(iChannelListItemView.getCurrentPosition()).getUrl()));
 
-        channelListPresenter.clickMenu.subscribe(iChannelListItemView ->
-                channelsListView.showBottomSheet(channelsListLocal.get(iChannelListItemView.getCurrentPosition())));
+        channelListPresenter.clickMenu.subscribe(iChannelListItemView -> {
+            currentUrlChannel = channelsListLocal.get(iChannelListItemView.getCurrentPosition()).getUrl();
+            channelsListView.showBottomSheet(channelsListLocal.get(iChannelListItemView.getCurrentPosition()));
+        });
     }
 
     public void checkDuplicate(String urlChannel) {
@@ -99,7 +101,6 @@ public class ChannelsListPresenter {
         App.getInstance().getCompositeDisposable().add(disposable);
     }
 
-    @SuppressLint("CheckResult")
     private void addNewChannel(String urlChannel) {
         channelsListView.showLoading();
         Single<Feed> responseRepository = channelsListUseCase.addNewChannel(Command.ADD_CHANNEL, urlChannel);
@@ -119,14 +120,63 @@ public class ChannelsListPresenter {
         App.getInstance().getCompositeDisposable().add(disposable);
     }
 
-    //Todo: потом перенести
-    public void deleteAllChannels() {
-        channelsListLocal = channelsListUseCase.deleteAllChannels(Command.DELETE_ALL_CHANNELS, channelsListLocal);
-        updateUrlsChannelList(channelsListLocal);
-        channelsListView.refreshChannelsListRVAdapter();
+    public void deleteChannel(Command command) {
+        Completable responseUser = channelsListView.showWarning(command);
+        disposable = responseUser.subscribe(() -> {
+
+            channelsListView.showLoading();
+            Completable responseRepository = channelsListUseCase.deleteChannel(currentUrlChannel);
+            disposable = responseRepository
+                    .observeOn(mainThreadScheduler)
+                    .subscribe(() -> {
+                        getChannelListDB();
+                        channelsListView.hideLoading();
+                        channelsListView.refreshChannelsListRVAdapter();
+                    }, throwable -> {
+                        channelsListView.hideLoading();
+                        channelsListView.showError(Command.ERROR_DIFFERENT);
+                    });
+            App.getInstance().getCompositeDisposable().add(disposable);
+
+        }, throwable -> {
+            channelsListView.showError(Command.ERROR_DIFFERENT);
+        });
+
+        App.getInstance().getCompositeDisposable().add(disposable);
     }
 
-    public void refreshChannelsList() {
+    public void deleteAllChannels() {
+        channelsListView.showLoading();
+        Completable responseRepository = channelsListUseCase.deleteAllChannels();
+        disposable = responseRepository
+                .observeOn(mainThreadScheduler)
+                .subscribe(() -> {
+                    getChannelListDB();
+                }, throwable -> {
+                    channelsListView.hideLoading();
+                    channelsListView.showError(Command.ERROR_DIFFERENT);
+                });
+        App.getInstance().getCompositeDisposable().add(disposable);
+    }
+
+    private void getChannelListDB() {
+        Single<List<Feed>> responseRepository = channelsListUseCase.getChannelListDB();
+        disposable = responseRepository
+                .observeOn(mainThreadScheduler)
+                .subscribe(channelList -> {
+                    channelsListLocal = channelList;
+                    updateUrlsChannelList(channelsListLocal);
+                    channelsListView.hideLoading();
+                    channelsListView.refreshChannelsListRVAdapter();
+                }, throwable -> {
+                    channelsListView.hideLoading();
+                    channelsListView.showError(Command.REFRESH_CHANNELS);
+                });
+
+        App.getInstance().getCompositeDisposable().add(disposable);
+    }
+
+    public void getUrlsChannelList() {
         channelsListView.showLoading();
         Single<List<String>> responseRepository = urlsChannelListUseCase.getUrlsChannelList();
 
@@ -134,7 +184,7 @@ public class ChannelsListPresenter {
                 .observeOn(mainThreadScheduler)
                 .subscribe(urlList -> {
                     urlChannelsListLocal = urlList;
-                    getChannelsList(urlChannelsListLocal);
+                    refreshChannelsList(urlChannelsListLocal);
                 }, throwable -> {
                     channelsListView.hideLoading();
                     channelsListView.showError(Command.REFRESH_URL);
@@ -142,8 +192,8 @@ public class ChannelsListPresenter {
         App.getInstance().getCompositeDisposable().add(disposable);
     }
 
-    private void getChannelsList(List<String> urlList) {
-        Single<List<Feed>> responseRepository = channelsListUseCase.getChannelsList(Command.REFRESH_CHANNELS, urlList);
+    private void refreshChannelsList(List<String> urlList) {
+        Single<List<Feed>> responseRepository = channelsListUseCase.refreshChannelsList(Command.REFRESH_CHANNELS, urlList);
 
         disposable = responseRepository
                 .observeOn(mainThreadScheduler)
@@ -165,11 +215,7 @@ public class ChannelsListPresenter {
     }
 
     private void updateUrlsChannelList(List<Feed> urlList) {
-        //TODo: вынести в юзкейс
-        urlChannelsListLocal.clear();
-        for (int i = 0; i < urlList.size(); i++) {
-            urlChannelsListLocal.add(urlList.get(i).getUrl());
-        }
+        urlChannelsListLocal = urlsChannelListUseCase.updateUrlsChannelList(urlList);
         Timber.d("rty количество url " + urlChannelsListLocal.size());
     }
 }

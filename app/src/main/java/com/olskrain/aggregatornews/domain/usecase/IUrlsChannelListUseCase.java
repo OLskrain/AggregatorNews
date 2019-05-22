@@ -1,7 +1,10 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
+import com.olskrain.aggregatornews.domain.entities.Feed;
+
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
@@ -12,5 +15,7 @@ public interface IUrlsChannelListUseCase {
     Single<List<String>> getUrlsChannelList();
 
     void putUrlChannelsList(List<String> urlChannelsList);
+
+    List<String> updateUrlsChannelList(List<Feed> urlList);
 }
 

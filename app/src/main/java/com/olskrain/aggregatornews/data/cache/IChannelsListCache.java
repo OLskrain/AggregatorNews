@@ -6,6 +6,8 @@ import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 
 import java.util.List;
+
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
@@ -16,4 +18,8 @@ public interface IChannelsListCache {
     void updateDatabase(Command command, List<Channel> channelsList);
 
     Single<List<Feed>> getChannelsList();
+
+    Completable deleteAllChannels ();
+
+    Completable deleteChannel (String urlChannel);
 }

@@ -5,19 +5,14 @@ import android.annotation.SuppressLint;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.data.repository.ChannelsListRepository;
 import com.olskrain.aggregatornews.data.repository.IChannelsListRepository;
-import com.olskrain.aggregatornews.domain.entities.Channel;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 01,Май,2019
@@ -25,10 +20,10 @@ import timber.log.Timber;
 
 public class ChannelsListUseCase implements IChannelsListUseCase {
 
-    private IChannelsListRepository channelRepository;
+    private IChannelsListRepository channelsListRepository;
 
     public ChannelsListUseCase() {
-        this.channelRepository = new ChannelsListRepository();
+        this.channelsListRepository = new ChannelsListRepository();
     }
 
     @SuppressLint("CheckResult")
@@ -36,7 +31,7 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
     public Single<Feed> addNewChannel(Command command, String urlChannel) {
         List<String> urlList = new ArrayList<>();
         urlList.add(urlChannel);
-        return channelRepository.getChannel(command, urlList);
+        return channelsListRepository.getChannel(command, urlList);
 
     }
 
@@ -53,8 +48,8 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
     }
 
     @Override
-    public void deleteChannel(String url) {
-
+    public Completable deleteChannel(String urlChannel) {
+        return channelsListRepository.deleteChannel(urlChannel);
     }
 
 //    @Override
@@ -62,16 +57,22 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
 //        channelsList.remove(position);
 //
 //    }
-
+//Todo: переделать
     @Override
-    public List<Feed> deleteAllChannels(Command command, List<Feed> channelList) {
-        channelRepository.putUpdatedData(command, null);
-        channelList.clear();
-        return channelList;
+    public Completable deleteAllChannels() {
+       return channelsListRepository.deleteAllChannels();
+//        channelsListRepository.putUpdatedData(command, null);
+//        channelList.clear();
+//        return channelList;
     }
 
     @Override
-    public Single<List<Feed>> getChannelsList(Command command, List<String> urlList) {
-        return channelRepository.getChannelsList(command, urlList);
+    public Single<List<Feed>> refreshChannelsList(Command command, List<String> urlList) {
+        return channelsListRepository.refreshChannelsList(command, urlList);
+    }
+
+    @Override
+    public Single<List<Feed>> getChannelListDB() {
+        return channelsListRepository.getChannelListDB();
     }
 }

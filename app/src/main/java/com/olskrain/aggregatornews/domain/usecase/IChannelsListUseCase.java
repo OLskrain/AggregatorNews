@@ -16,12 +16,13 @@ import io.reactivex.Single;
 public interface IChannelsListUseCase {
     Single<Feed> addNewChannel(Command command, String urlChannel);
 
-    void deleteChannel(String url);
+    Single<List<Feed>> refreshChannelsList(Command command, List<String> urlList);
 
-    List<Feed> deleteAllChannels(Command command, List<Feed> channelsList);
+    Single<List<Feed>> getChannelListDB();
 
-    Single<List<Feed>> getChannelsList(Command command, List<String> urlList);
+    Completable deleteChannel(String urlChannel);
+
+    Completable deleteAllChannels();
 
     Completable checkDuplicate(String urlChannel, List<String> urlsList);
-
 }

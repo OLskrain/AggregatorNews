@@ -2,7 +2,9 @@ package com.olskrain.aggregatornews.domain.usecase;
 
 import com.olskrain.aggregatornews.data.repository.IUrlsChannelListRepository;
 import com.olskrain.aggregatornews.data.repository.UrlListRepositoryRepository;
+import com.olskrain.aggregatornews.domain.entities.Feed;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -11,7 +13,7 @@ import io.reactivex.Single;
  * Created by Andrey Ievlev on 20,Май,2019
  */
 
-public class UrlsChannelListUseCase implements IUrlsChannelListUseCase{
+public class UrlsChannelListUseCase implements IUrlsChannelListUseCase {
     private IUrlsChannelListRepository urlsChannelListRepository;
 
     public UrlsChannelListUseCase() {
@@ -26,5 +28,14 @@ public class UrlsChannelListUseCase implements IUrlsChannelListUseCase{
     @Override
     public void putUrlChannelsList(List<String> urlsChannelList) {
         urlsChannelListRepository.putUrlChannelsList(urlsChannelList);
+    }
+
+    @Override
+    public List<String> updateUrlsChannelList(List<Feed> urlList) {
+        List<String> currentUrlsList = new ArrayList<>();
+        for (int i = 0; i < urlList.size(); i++) {
+            currentUrlsList.add(urlList.get(i).getUrl());
+        }
+        return currentUrlsList;
     }
 }

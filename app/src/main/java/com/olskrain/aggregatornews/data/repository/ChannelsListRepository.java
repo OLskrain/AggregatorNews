@@ -37,7 +37,7 @@ public class ChannelsListRepository implements IChannelsListRepository {
     }
 
     @Override
-    public Single<List<Feed>> getChannelsList(Command command, List<String> urlList) {
+    public Single<List<Feed>> refreshChannelsList(Command command, List<String> urlList) {
         if (NetworkStatus.isOnline()) {
             return serverDataSource.getChannelFromApi(urlList).subscribeOn(Schedulers.io())
                     .map(channelsList -> {
@@ -64,5 +64,20 @@ public class ChannelsListRepository implements IChannelsListRepository {
         } else {
             return Single.error(new RuntimeException());
         }
+    }
+
+    @Override
+    public Single<List<Feed>> getChannelListDB() {
+        return cache.getChannelsList();
+    }
+
+    @Override
+    public Completable deleteAllChannels() {
+        return cache.deleteAllChannels();
+    }
+
+    @Override
+    public Completable deleteChannel(String urlChannel) {
+        return cache.deleteChannel(urlChannel);
     }
 }

@@ -3,6 +3,8 @@ package com.olskrain.aggregatornews.presentation.ui.view;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 
+import io.reactivex.Completable;
+
 /**
  * Created by Andrey Ievlev on 03,Май,2019
  */
@@ -17,9 +19,9 @@ public interface IChannelsListView {
 
     void showBottomSheet(Feed feed);
 
-    void showError(Command command);
+    Completable showWarning(Command command);
 
-    void displayMessages(String message);
+    void showError(Command command);
 
     void refreshChannelsListRVAdapter();
 }

@@ -1,14 +1,19 @@
 package com.olskrain.aggregatornews.data.repository;
 
 import android.content.SharedPreferences;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.olskrain.aggregatornews.Common.App;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 20,Май,2019
@@ -35,6 +40,20 @@ public class UrlListRepositoryRepository implements IUrlsChannelListRepository {
         }).subscribeOn(Schedulers.io()).cast((Class<List<String>>) (Class) List.class);
     }
 
+//    public Completable deleteChannel(String urlChannel) {
+//        return Completable.create(emitter -> {
+//            try {
+//                SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
+//                connectDB.execSQL("PRAGMA foreign_keys=ON");
+//                connectDB.delete(TABLE_FEED, COLUMN_URL + " = ?", new String[]{urlChannel});
+//                emitter.onComplete();
+//            } catch (SQLException e) {
+//                emitter.onError(new SQLException());
+//            } finally {
+//                App.getInstance().getDbHelper().close();
+//            }
+//        }).subscribeOn(Schedulers.io());
+//    }
     @Override
     public void putUrlChannelsList(List<String> urlChannelsList) {
         SharedPreferences.Editor editor = App.getInstance().getSharedPreferences().edit();

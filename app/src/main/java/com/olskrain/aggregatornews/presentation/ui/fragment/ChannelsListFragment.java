@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.Command;
+import com.olskrain.aggregatornews.Common.myObserver.ICustomObserver;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelsListPresenter;
@@ -25,6 +27,7 @@ import com.olskrain.aggregatornews.presentation.ui.view.IChannelsListView;
 
 import java.util.Objects;
 
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
@@ -32,7 +35,7 @@ import timber.log.Timber;
  * Created by Andrey Ievlev on 03,Май,2019
  */
 
-public class ChannelsListFragment extends Fragment implements IChannelsListView {
+public class ChannelsListFragment extends Fragment implements IChannelsListView, ICustomObserver {
 
     public static ChannelsListFragment getInstance(String arg) {
         ChannelsListFragment fragment = new ChannelsListFragment();
@@ -65,13 +68,14 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_channel_list, container, false);
 
+        customBottomSheetFragment = new CustomBottomSheetFragment();
         channelsListPresenter = new ChannelsListPresenter(this, AndroidSchedulers.mainThread());
         channelsListPresenter.attachView();
 
         initUi(view);
         initOnClick();
 
-        channelsListPresenter.refreshChannelsList();
+        channelsListPresenter.getUrlsChannelList();
 
         return view;
     }
@@ -101,12 +105,6 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        channelsListPresenter.putUrlsChannelList();
-    }
-
-    @Override
     public void showLoading() {
         loadingProgressBar.setVisibility(View.VISIBLE);
     }
@@ -125,13 +123,29 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
 
     @Override
     public void showBottomSheet(Feed feed) {
-        customBottomSheetFragment = new CustomBottomSheetFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(CHANNEL_POSITION, feed);
         customBottomSheetFragment.setArguments(bundle);
         if (getFragmentManager() != null) {
             customBottomSheetFragment.show(getFragmentManager(), customBottomSheetFragment.getTag());
         }
+    }
+
+    @Override
+    public Completable showWarning(Command command) {
+        return Completable.create(emitter -> {
+            switch (command) {
+                case DELETE_CHANNEL:
+                    emitter.onComplete();
+                    break;
+                case DELETE_ALL_CHANNELS:
+                    emitter.onComplete();
+                    break;
+                default:
+                    emitter.onError(new RuntimeException());
+                    break;
+            }
+        });
     }
 
     @Override
@@ -149,13 +163,14 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
             case REFRESH_CHANNELS:
                 Snackbar.make(Objects.requireNonNull(getView()), R.string.error_failed_update, Snackbar.LENGTH_SHORT).show();
                 break;
+            case ERROR_DIFFERENT:
+                Snackbar.make(Objects.requireNonNull(getView()), R.string.error_defferent, Snackbar.LENGTH_SHORT).show();
+                break;
+            default:
+                Snackbar.make(Objects.requireNonNull(getView()), R.string.error_defferent, Snackbar.LENGTH_SHORT).show();
+                break;
         }
 
-    }
-
-    @Override
-    public void displayMessages(String message) {
-        Timber.d("rty " + message);
     }
 
     @Override
@@ -163,4 +178,26 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
         allChannelsListRVAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void actionAboveChannelsList(Command command) {
+        switch (command) {
+            case ADD_FAVORITE:
+                break;
+            case SHARE_CHANNEL:
+                break;
+            case DELETE_CHANNEL:
+                //TODO : возникает баг при перевороте и попытке вызвать метод
+                channelsListPresenter.deleteChannel(command);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        channelsListPresenter.putUrlsChannelList();
+        App.getInstance().getCompositeDisposable().clear(); //Todo: баг с отпиской
+    }
 }

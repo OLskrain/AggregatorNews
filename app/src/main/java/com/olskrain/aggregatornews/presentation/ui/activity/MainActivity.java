@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.olskrain.aggregatornews.Common.App;
+import com.olskrain.aggregatornews.Common.myObserver.CustomPublisher;
+import com.olskrain.aggregatornews.Common.myObserver.ICustomPublishGetter;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentation.presenter.MainActivityPresenter;
 import com.olskrain.aggregatornews.presentation.ui.adapter.CustomFragmentPA;
@@ -23,7 +25,7 @@ import timber.log.Timber;
  * Created by Andrey Ievlev on 22,Апрель,2019
  */
 
-public class MainActivity extends AppCompatActivity implements IMainView {
+public class MainActivity extends AppCompatActivity implements IMainView, ICustomPublishGetter {
     private static final int PERMISSION_REQUEST_CODE = 156;
     private ViewPager mainViewPager;
     private CustomFragmentPA customFragmentPA;
@@ -32,12 +34,14 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     private MainActivityPresenter mainPresenter;
     private ChannelsListFragment channelsListFragment;
     private FavoriteChannelsListFragment favoriteChannelsListFragment;
+    private CustomPublisher publisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        publisher = new CustomPublisher();
         mainPresenter = new MainActivityPresenter(this);
         initUI();
 
@@ -62,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
         channelsListFragment = ChannelsListFragment.getInstance(ChannelsListFragment.ARG_ACLF_ID);
         favoriteChannelsListFragment = FavoriteChannelsListFragment.getInstance(FavoriteChannelsListFragment.ARG_FCLF_ID);
+
+        publisher.subscribe(channelsListFragment);
 
         customFragmentPA = new CustomFragmentPA(getSupportFragmentManager());
         customFragmentPA.addFragment(channelsListFragment, getString(R.string.channels_list_tab_title));
@@ -169,15 +175,20 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     @Override
     protected void onStop() {
         super.onStop();
-//        if (App.getResponseServiceBroadcast()!= null) {
-////            unregisterReceiver(App.getResponseServiceBroadcast());
-////        }
-////       // unregisterReceiver(App.getResponseServiceBroadcast());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        App.getInstance().getCompositeDisposable().clear();
+        publisher.unsubscribe(channelsListFragment);
+//        if (isFinishing()){
+//            Timber.d("TYT");
+//            App.getInstance().getCompositeDisposable().dispose();
+//        }
+    }
+
+    @Override
+    public CustomPublisher getPublisher() {
+        return publisher;
     }
 }

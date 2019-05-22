@@ -1,5 +1,6 @@
 package com.olskrain.aggregatornews.presentation.presenter;
 
+import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 
@@ -8,6 +9,7 @@ import timber.log.Timber;
 /**
  * Created by Andrey Ievlev on 18,Май,2019
  */
+
 public class CustomBottomSheetPresenter {
     private ICustomBottomSheetView customBottomSheetView;
 
@@ -15,18 +17,17 @@ public class CustomBottomSheetPresenter {
         this.customBottomSheetView = customBottomSheetView;
     }
 
-    public void addFavorite (int channelPosition) {
-        Timber.d("rty posddd " + channelPosition);
+    public void addFavorite(Command command) {
         customBottomSheetView.closeBottomSheet();
     }
 
-    public void shareChannel(int channelPosition) {
-        Timber.d("rty posddd " + channelPosition);
+    public void shareChannel(Command command) {
+
         customBottomSheetView.closeBottomSheet();
     }
 
-    public void deleteChannel(int channelPosition) {
-        Timber.d("rty posddd " + channelPosition);
+    public void deleteChannel(Command command) {
+        customBottomSheetView.deleteChannel(command);
         customBottomSheetView.closeBottomSheet();
     }
 
