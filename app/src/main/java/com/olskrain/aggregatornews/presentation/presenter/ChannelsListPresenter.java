@@ -83,26 +83,40 @@ public class ChannelsListPresenter {
                 channelsListView.showBottomSheet(channelsListLocal.get(iChannelListItemView.getCurrentPosition())));
     }
 
+    public void checkDuplicate(String urlChannel) {
+        channelsListView.showLoading();
+        Completable responseRepository = channelsListUseCase.checkDuplicate(urlChannel, urlChannelsListLocal);
+
+        disposable = responseRepository
+                .observeOn(mainThreadScheduler)
+                .subscribe(() -> {
+                    addNewChannel(urlChannel);
+                }, throwable -> {
+                    channelsListView.hideLoading();
+                    channelsListView.showError(Command.CHECK_DUPLICATE);
+                });
+
+        App.getInstance().getCompositeDisposable().add(disposable);
+    }
+
     @SuppressLint("CheckResult")
-    public void addNewChannel(String urlChannel) {
-       if(channelsListUseCase.checkDuplicate(urlChannel, urlChannelsListLocal)) {
-           channelsListView.showLoading();
-           Single<Feed> responseRepository = channelsListUseCase.addNewChannel(Command.ADD_CHANNEL, urlChannel);
+    private void addNewChannel(String urlChannel) {
+        channelsListView.showLoading();
+        Single<Feed> responseRepository = channelsListUseCase.addNewChannel(Command.ADD_CHANNEL, urlChannel);
 
-           disposable = responseRepository
-                   .observeOn(mainThreadScheduler)
-                   .subscribe(channel -> {
-                       channelsListLocal.add(channel);
-                       updateUrlsChannelList(channelsListLocal);
-                       channelsListView.hideLoading();
-                       channelsListView.refreshChannelsListRVAdapter();
-                   }, throwable -> {
-                       channelsListView.hideLoading();
-                       channelsListView.showError(Command.ADD_CHANNEL);
-                   });
+        disposable = responseRepository
+                .observeOn(mainThreadScheduler)
+                .subscribe(channel -> {
+                    channelsListLocal.add(channel);
+                    updateUrlsChannelList(channelsListLocal);
+                    channelsListView.hideLoading();
+                    channelsListView.refreshChannelsListRVAdapter();
+                }, throwable -> {
+                    channelsListView.hideLoading();
+                    channelsListView.showError(Command.ADD_CHANNEL);
+                });
 
-           App.getInstance().getCompositeDisposable().add(disposable);
-       }
+        App.getInstance().getCompositeDisposable().add(disposable);
     }
 
     //Todo: потом перенести
@@ -156,7 +170,7 @@ public class ChannelsListPresenter {
         for (int i = 0; i < urlList.size(); i++) {
             urlChannelsListLocal.add(urlList.get(i).getUrl());
         }
-        Timber.d("rty количество url "+ urlChannelsListLocal.size());
+        Timber.d("rty количество url " + urlChannelsListLocal.size());
     }
 }
 

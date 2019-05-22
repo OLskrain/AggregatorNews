@@ -22,6 +22,6 @@ public interface IChannelsListUseCase {
 
     Single<List<Feed>> getChannelsList(Command command, List<String> urlList);
 
-    boolean checkDuplicate(String urlChannel, List<String> urlsList);
+    Completable checkDuplicate(String urlChannel, List<String> urlsList);
 
 }

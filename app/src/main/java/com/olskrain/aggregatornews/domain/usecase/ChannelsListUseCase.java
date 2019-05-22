@@ -15,6 +15,7 @@ import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -40,13 +41,15 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
     }
 
     @Override
-    public boolean checkDuplicate(String urlChannel, List<String> urlsList) {
-        for (int i = 0; i < urlsList.size(); i++) {
-            if (urlChannel.equalsIgnoreCase(urlsList.get(i))) {
-                return false;
+    public Completable checkDuplicate(String urlChannel, List<String> urlsList) {
+        return Completable.create(emitter -> {
+            for (int i = 0; i < urlsList.size(); i++) {
+                if (urlChannel.equalsIgnoreCase(urlsList.get(i))) {
+                    emitter.onError(new RuntimeException());
+                }
             }
-        }
-        return true;
+            emitter.onComplete();
+        }).subscribeOn(Schedulers.computation());
     }
 
     @Override

@@ -93,9 +93,9 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
     }
 
     public void initOnClick() {
-        addChannelOne.setOnClickListener(view -> channelsListPresenter.addNewChannel(CHANNEL_ONE));
-        addChannelTwo.setOnClickListener(view -> channelsListPresenter.addNewChannel(CHANNEL_TWO));
-        addChannelThree.setOnClickListener(view -> channelsListPresenter.addNewChannel(CHANNEL_THREE));
+        addChannelOne.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_ONE));
+        addChannelTwo.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_TWO));
+        addChannelThree.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_THREE));
 
         deleteAllChannels.setOnClickListener(view -> channelsListPresenter.deleteAllChannels());
     }
@@ -137,6 +137,9 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView 
     @Override
     public void showError(Command command) {
         switch (command) {
+            case CHECK_DUPLICATE:
+                Snackbar.make(Objects.requireNonNull(getView()), R.string.check_duplicate, Snackbar.LENGTH_SHORT).show();
+                break;
             case ADD_CHANNEL:
                 Snackbar.make(Objects.requireNonNull(getView()), R.string.error_connection, Snackbar.LENGTH_SHORT).show();
                 break;
