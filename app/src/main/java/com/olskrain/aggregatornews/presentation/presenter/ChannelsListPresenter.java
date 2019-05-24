@@ -66,7 +66,6 @@ public class ChannelsListPresenter {
     private CompositeDisposable compositeDisposable;
     private Disposable disposable;
     private String currentUrlChannel;
-    private boolean fistUpdete = true;
 
     public ChannelsListPresenter(IChannelsListView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
         this.channelsListView = view;

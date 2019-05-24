@@ -117,6 +117,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
 
     @Override
     public void hideLoading() {
+        swipeRefreshLayout.setRefreshing(false);
         loadingProgressBar.setVisibility(View.INVISIBLE);
     }
 

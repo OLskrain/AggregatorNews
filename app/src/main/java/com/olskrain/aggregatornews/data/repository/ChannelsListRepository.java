@@ -24,6 +24,7 @@ public class ChannelsListRepository implements IChannelsListRepository {
     private IChannelsListCache cache;
     private IServerDataSource serverDataSource;
     private List<Feed> channelsList;
+    private boolean fistUpdate = true;
 
     public ChannelsListRepository() {
         this.cache = new ChannelsListCache();
@@ -43,9 +44,13 @@ public class ChannelsListRepository implements IChannelsListRepository {
                     .map(channelsList -> {
                         putUpdatedData(command, channelsList);
 
+                        if (!fistUpdate){
+                         this.channelsList.clear();
+                        }
                         for (int i = 0; i < channelsList.size(); i++) {
                             this.channelsList.add(channelsList.get(i).getFeed());
                         }
+                        fistUpdate = false;
                         return this.channelsList;
                     });
         } else {
