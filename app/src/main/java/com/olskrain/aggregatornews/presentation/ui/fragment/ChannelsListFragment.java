@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,8 +52,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     public static final String CHANNEL_THREE = "https://news.yandex.ru/world.rss";
 
     private ProgressBar loadingProgressBar;
-    private RecyclerView allChannelsListRecyclerView;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
     private Button addChannelOne;
     private Button addChannelTwo;
     private Button addChannelThree;
@@ -84,11 +84,14 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     public void initUi(View view) {
         loadingProgressBar = view.findViewById(R.id.all_list_loading_progressBar);
 
-        allChannelsListRecyclerView = view.findViewById(R.id.all_channels_list);
+        RecyclerView allChannelsListRecyclerView = view.findViewById(R.id.all_channels_list);
         allChannelsListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         allChannelsListRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL));
         allChannelsListRVAdapter = new ChannelsListRVAdapter(channelsListPresenter.channelListPresenter);
         allChannelsListRecyclerView.setAdapter(allChannelsListRVAdapter);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refreshLayout_channels);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
 
         addChannelOne = view.findViewById(R.id.add_channel_one);
         addChannelTwo = view.findViewById(R.id.add_channel_two);
@@ -101,12 +104,14 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         addChannelOne.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_ONE));
         addChannelTwo.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_TWO));
         addChannelThree.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_THREE));
-
         deleteAllChannels.setOnClickListener(view -> channelsListPresenter.deleteAllChannels());
+
+        swipeRefreshLayout.setOnRefreshListener(() -> channelsListPresenter.refreshChannelsList());
     }
 
     @Override
     public void showLoading() {
+
         loadingProgressBar.setVisibility(View.VISIBLE);
     }
 

@@ -31,11 +31,24 @@ public class UrlsChannelListUseCase implements IUrlsChannelListUseCase {
     }
 
     @Override
-    public List<String> updateUrlsChannelList(List<Feed> urlList) {
-        List<String> currentUrlsList = new ArrayList<>();
-        for (int i = 0; i < urlList.size(); i++) {
-            currentUrlsList.add(urlList.get(i).getUrl());
+    public List<String> addUrlChannel(List<String> urlsChannelsList, String urlChannel) {
+        urlsChannelsList.add(urlChannel);
+        return urlsChannelsList;
+    }
+
+    @Override
+    public List<String> deleteUrlChannel(List<String> urlsChannelsList, String urlChannel) {
+        for (int i = 0; i < urlsChannelsList.size(); i++) {
+            if (urlChannel.equalsIgnoreCase(urlsChannelsList.get(i))) {
+                urlsChannelsList.remove(i);
+            }
         }
-        return currentUrlsList;
+        return urlsChannelsList;
+    }
+
+    @Override
+    public List<String> deleteAllUrlsChannel(List<String> urlsChannelsList) {
+        urlsChannelsList.clear();
+        return urlsChannelsList;
     }
 }

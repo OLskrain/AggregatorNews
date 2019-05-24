@@ -14,8 +14,12 @@ import io.reactivex.Single;
 public interface IUrlsChannelListUseCase {
     Single<List<String>> getUrlsChannelList();
 
-    void putUrlChannelsList(List<String> urlChannelsList);
+    void putUrlChannelsList(List<String> urlsChannelsList);
 
-    List<String> updateUrlsChannelList(List<Feed> urlList);
+    List<String> addUrlChannel(List<String> urlsChannelsList, String urlChannel);
+
+    List<String> deleteUrlChannel(List<String> urlsChannelsList, String urlChannel);
+
+    List<String> deleteAllUrlsChannel(List<String> urlsChannelsList);
 }
 

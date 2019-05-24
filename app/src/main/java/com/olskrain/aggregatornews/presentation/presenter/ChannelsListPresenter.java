@@ -66,6 +66,7 @@ public class ChannelsListPresenter {
     private CompositeDisposable compositeDisposable;
     private Disposable disposable;
     private String currentUrlChannel;
+    private boolean fistUpdete = true;
 
     public ChannelsListPresenter(IChannelsListView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
         this.channelsListView = view;
@@ -111,7 +112,7 @@ public class ChannelsListPresenter {
                 .observeOn(mainThreadScheduler)
                 .subscribe(channel -> {
                     channelsListLocal.add(channel);
-                    updateUrlsChannelList(channelsListLocal);
+                    urlChannelsListLocal = urlsChannelListUseCase.addUrlChannel(urlChannelsListLocal, urlChannel);
                     channelsListView.hideLoading();
                     channelsListView.refreshChannelsListRVAdapter();
                 }, throwable -> {
@@ -132,6 +133,7 @@ public class ChannelsListPresenter {
                     .observeOn(mainThreadScheduler)
                     .subscribe(() -> {
                         getChannelListDB();
+                        urlChannelsListLocal = urlsChannelListUseCase.deleteUrlChannel(urlChannelsListLocal, currentUrlChannel);
                         channelsListView.hideLoading();
                         channelsListView.refreshChannelsListRVAdapter();
                     }, throwable -> {
@@ -154,6 +156,7 @@ public class ChannelsListPresenter {
                 .observeOn(mainThreadScheduler)
                 .subscribe(() -> {
                     getChannelListDB();
+                    urlChannelsListLocal = urlsChannelListUseCase.deleteAllUrlsChannel(urlChannelsListLocal);
                 }, throwable -> {
                     channelsListView.hideLoading();
                     channelsListView.showError(Command.ERROR_DIFFERENT);
@@ -167,7 +170,6 @@ public class ChannelsListPresenter {
                 .observeOn(mainThreadScheduler)
                 .subscribe(channelList -> {
                     channelsListLocal = channelList;
-                    updateUrlsChannelList(channelsListLocal);
                     channelsListView.hideLoading();
                     channelsListView.refreshChannelsListRVAdapter();
                 }, throwable -> {
@@ -186,7 +188,7 @@ public class ChannelsListPresenter {
                 .observeOn(mainThreadScheduler)
                 .subscribe(urlList -> {
                     urlChannelsListLocal = urlList;
-                    refreshChannelsList(urlChannelsListLocal);
+                    refreshChannelsList();
                 }, throwable -> {
                     channelsListView.hideLoading();
                     channelsListView.showError(Command.REFRESH_URL);
@@ -194,14 +196,13 @@ public class ChannelsListPresenter {
         compositeDisposable.add(disposable);
     }
 
-    private void refreshChannelsList(List<String> urlList) {
-        Single<List<Feed>> responseRepository = channelsListUseCase.refreshChannelsList(Command.REFRESH_CHANNELS, urlList);
+    public void refreshChannelsList() {
+        Single<List<Feed>> responseRepository = channelsListUseCase.refreshChannelsList(Command.REFRESH_CHANNELS, urlChannelsListLocal);
 
         disposable = responseRepository
                 .observeOn(mainThreadScheduler)
                 .subscribe(channelList -> {
                     channelsListLocal = channelList;
-                    updateUrlsChannelList(channelsListLocal);
                     channelsListView.hideLoading();
                     channelsListView.refreshChannelsListRVAdapter();
                 }, throwable -> {
@@ -214,11 +215,6 @@ public class ChannelsListPresenter {
 
     public void putUrlsChannelList() {
         urlsChannelListUseCase.putUrlChannelsList(urlChannelsListLocal);
-    }
-
-    private void updateUrlsChannelList(List<Feed> urlList) {
-        urlChannelsListLocal = urlsChannelListUseCase.updateUrlsChannelList(urlList);
-        Timber.d("rty количество url " + urlChannelsListLocal.size());
     }
 }
 
