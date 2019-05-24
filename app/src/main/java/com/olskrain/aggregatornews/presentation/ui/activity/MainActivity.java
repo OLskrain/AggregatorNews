@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.myObserver.CustomPublisher;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublishGetter;
 import com.olskrain.aggregatornews.R;
@@ -18,7 +17,6 @@ import com.olskrain.aggregatornews.presentation.ui.fragment.ChannelsListFragment
 import com.olskrain.aggregatornews.presentation.ui.fragment.FavoriteChannelsListFragment;
 import com.olskrain.aggregatornews.presentation.ui.view.IMainView;
 
-import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 /**
@@ -181,10 +179,6 @@ public class MainActivity extends AppCompatActivity implements IMainView, ICusto
     protected void onDestroy() {
         super.onDestroy();
         publisher.unsubscribe(channelsListFragment);
-//        if (isFinishing()){
-//            Timber.d("TYT");
-//            App.getInstance().getCompositeDisposable().dispose();
-//        }
     }
 
     @Override

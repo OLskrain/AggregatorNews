@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
-import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomObserver;
 import com.olskrain.aggregatornews.R;
@@ -29,7 +28,7 @@ import java.util.Objects;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by Andrey Ievlev on 03,Май,2019
@@ -47,7 +46,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
 
     public static final String CHANNEL_POSITION = "channel position";
     public static final String ARG_ACLF_ID = "allChannelListId";
-    public static final String CHANNEL_ONE = "https://news.yandex.ru/auto.rss";
+    public static final String CHANNEL_ONE = "https://news.yandex.ru/Khanty-Mansiysk/index.rss";
     public static final String CHANNEL_TWO = "https://news.yandex.ru/business.rss";
     public static final String CHANNEL_THREE = "https://news.yandex.ru/world.rss";
 
@@ -59,6 +58,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     private Button addChannelThree;
     private Button deleteAllChannels;
     private CustomBottomSheetFragment customBottomSheetFragment;
+    private CompositeDisposable compositeDisposable;
 
     private ChannelsListRVAdapter allChannelsListRVAdapter;
     private ChannelsListPresenter channelsListPresenter;
@@ -69,7 +69,8 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         View view = inflater.inflate(R.layout.fragment_channel_list, container, false);
 
         customBottomSheetFragment = new CustomBottomSheetFragment();
-        channelsListPresenter = new ChannelsListPresenter(this, AndroidSchedulers.mainThread());
+        compositeDisposable = new CompositeDisposable();
+        channelsListPresenter = new ChannelsListPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
         channelsListPresenter.attachView();
 
         initUi(view);
@@ -198,6 +199,12 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     public void onStop() {
         super.onStop();
         channelsListPresenter.putUrlsChannelList();
-        App.getInstance().getCompositeDisposable().clear(); //Todo: баг с отпиской
+        compositeDisposable.clear();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
     }
 }

@@ -2,7 +2,6 @@ package com.olskrain.aggregatornews.presentation.presenter;
 
 import android.annotation.SuppressLint;
 
-import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.domain.usecase.ChannelsListUseCase;
@@ -19,6 +18,7 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
@@ -63,11 +63,13 @@ public class ChannelsListPresenter {
     private Scheduler mainThreadScheduler;
     private List<Feed> channelsListLocal = new ArrayList<>();
     private List<String> urlChannelsListLocal = new ArrayList<>();
+    private CompositeDisposable compositeDisposable;
     private Disposable disposable;
     private String currentUrlChannel;
 
-    public ChannelsListPresenter(IChannelsListView view, Scheduler mainThreadScheduler) {
+    public ChannelsListPresenter(IChannelsListView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
         this.channelsListView = view;
+        this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
         this.channelsListUseCase = new ChannelsListUseCase();
         this.channelListPresenter = new ChannelListPresenter();
@@ -98,7 +100,7 @@ public class ChannelsListPresenter {
                     channelsListView.showError(Command.CHECK_DUPLICATE);
                 });
 
-        App.getInstance().getCompositeDisposable().add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     private void addNewChannel(String urlChannel) {
@@ -117,7 +119,7 @@ public class ChannelsListPresenter {
                     channelsListView.showError(Command.ADD_CHANNEL);
                 });
 
-        App.getInstance().getCompositeDisposable().add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     public void deleteChannel(Command command) {
@@ -129,22 +131,20 @@ public class ChannelsListPresenter {
             disposable = responseRepository
                     .observeOn(mainThreadScheduler)
                     .subscribe(() -> {
-                        Timber.d("rty RRRRRRRRRRRRR");
                         getChannelListDB();
                         channelsListView.hideLoading();
                         channelsListView.refreshChannelsListRVAdapter();
                     }, throwable -> {
-                        Timber.d("rty RRRRRRRRRRRRRTTTTTTTTTTTT");
                         channelsListView.hideLoading();
                         channelsListView.showError(Command.ERROR_DIFFERENT);
                     });
-            App.getInstance().getCompositeDisposable().add(disposable);
+            compositeDisposable.add(disposable);
 
         }, throwable -> {
             channelsListView.showError(Command.ERROR_DIFFERENT);
         });
 
-        App.getInstance().getCompositeDisposable().add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     public void deleteAllChannels() {
@@ -158,7 +158,7 @@ public class ChannelsListPresenter {
                     channelsListView.hideLoading();
                     channelsListView.showError(Command.ERROR_DIFFERENT);
                 });
-        App.getInstance().getCompositeDisposable().add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     private void getChannelListDB() {
@@ -175,7 +175,7 @@ public class ChannelsListPresenter {
                     channelsListView.showError(Command.REFRESH_CHANNELS);
                 });
 
-        App.getInstance().getCompositeDisposable().add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     public void getUrlsChannelList() {
@@ -191,7 +191,7 @@ public class ChannelsListPresenter {
                     channelsListView.hideLoading();
                     channelsListView.showError(Command.REFRESH_URL);
                 });
-        App.getInstance().getCompositeDisposable().add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     private void refreshChannelsList(List<String> urlList) {
@@ -209,7 +209,7 @@ public class ChannelsListPresenter {
                     channelsListView.showError(Command.REFRESH_CHANNELS);
                 });
 
-        App.getInstance().getCompositeDisposable().add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     public void putUrlsChannelList() {

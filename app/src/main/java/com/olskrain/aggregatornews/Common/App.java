@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.olskrain.aggregatornews.data.cache.DBHelper;
 
-import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 public class App extends Application {
@@ -15,14 +14,11 @@ public class App extends Application {
     private static App instance;
     private DBHelper dbHelper;
     private SharedPreferences sharedPreferences;
-    private static CompositeDisposable compositeDisposable;
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-
-        compositeDisposable = new CompositeDisposable();
 
         Timber.plant(new Timber.DebugTree());
         dbHelper = new DBHelper(instance, NAME_DB, null, 1);
@@ -41,7 +37,4 @@ public class App extends Application {
         return sharedPreferences;
     }
 
-    public CompositeDisposable getCompositeDisposable() {
-        return compositeDisposable;
-    }
 }

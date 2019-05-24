@@ -1,7 +1,6 @@
 package com.olskrain.aggregatornews.presentation.ui.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentation.presenter.list.INewsListPresenter;
-import com.olskrain.aggregatornews.presentation.ui.activity.NewDetailActivity;
 import com.olskrain.aggregatornews.presentation.ui.view.item.INewsListItemView;
 
 /**
@@ -34,18 +33,12 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ne
 
     @Override
     public void onBindViewHolder(@NonNull NewListViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
-
+        RxView.clicks(viewHolder.itemView).map(obj -> {
+            viewHolder.currentPosition = position;
+            return viewHolder;
+        }).subscribe(presenter.getClickOnItem());
         viewHolder.position = position;
         presenter.bindView(viewHolder);
-
-        //TODO: доделать пассивную реализацию.
-        //данная реализация временная
-        viewHolder.itemView.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), NewDetailActivity.class);
-            String s = "https://news.yandex.ru/";
-            intent.putExtra("url new", s);
-            view.getContext().startActivity(intent);
-        });
     }
 
     @Override
@@ -58,19 +51,23 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ne
         private int position = 0;
         private final TextView newTitle;
         private final TextView pubDate;
-        private final TextView description;
+        private int currentPosition = 0;
 
         NewListViewHolder(View itemView) {
             super(itemView);
 
             newTitle = itemView.findViewById(R.id.new_title);
             pubDate = itemView.findViewById(R.id.new_pubDate);
-            description = itemView.findViewById(R.id.new_description);
         }
 
         @Override
         public int getPos() {
             return position;
+        }
+
+        @Override
+        public int getCurrentPosition() {
+            return currentPosition;
         }
 
         @Override
@@ -83,9 +80,5 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ne
             pubDate.setText(lastBuildDate);
         }
 
-        @Override
-        public void setDescription(String description) {
-            this.description.setText(description);
-        }
     }
 }

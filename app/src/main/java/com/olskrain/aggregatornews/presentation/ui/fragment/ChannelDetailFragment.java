@@ -1,5 +1,6 @@
 package com.olskrain.aggregatornews.presentation.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -15,13 +16,16 @@ import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelDetailFragmentPresenter;
+import com.olskrain.aggregatornews.presentation.ui.activity.NewDetailActivity;
 import com.olskrain.aggregatornews.presentation.ui.adapter.NewsListRVAdapter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
+import io.reactivex.disposables.CompositeDisposable;
 
 
 public class ChannelDetailFragment extends Fragment implements IChannelDetailFragmentView {
@@ -34,20 +38,25 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
         return fragment;
     }
 
+    private static final String EXTRA_URL_NEW_KEY = "urlNews";
     public static final String ARG_CDF_ID = "channelDetailId";
     private RecyclerView newsListRecyclerView;
     private NewsListRVAdapter newsListRVAdapter;
     private ChannelDetailFragmentPresenter channelDetailFragmentPresenter;
+    private CompositeDisposable compositeDisposable;
     private ProgressBar loadingProgressBar;
     private String urlChannel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_channel_detail, container, false);
+
+        compositeDisposable = new CompositeDisposable();
 
         if (getArguments() != null && getArguments().containsKey(ARG_CDF_ID)) {
             urlChannel = getArguments().getString(ARG_CDF_ID);
-            channelDetailFragmentPresenter = new ChannelDetailFragmentPresenter(this, AndroidSchedulers.mainThread());
+            channelDetailFragmentPresenter = new ChannelDetailFragmentPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
+            channelDetailFragmentPresenter.attachView();
         }
 
         initUi(rootView);
@@ -60,7 +69,7 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
 
         newsListRecyclerView = view.findViewById(R.id.news_list);
         newsListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        newsListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        newsListRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL));
         newsListRVAdapter = new NewsListRVAdapter(channelDetailFragmentPresenter.newsListPresenter);
         newsListRecyclerView.setAdapter(newsListRVAdapter);
     }
@@ -76,6 +85,13 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
     }
 
     @Override
+    public void goToNewsDetailActivity(String urlNews) {
+        Intent intent = new Intent(getContext(), NewDetailActivity.class);
+        intent.putExtra(EXTRA_URL_NEW_KEY, urlNews);
+        Objects.requireNonNull(getContext()).startActivity(intent);
+    }
+
+    @Override
     public void showBottomSheet(ItemNew itemNew) {
 
     }
@@ -88,5 +104,17 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
     @Override
     public void refreshChannelsListRVAdapter() {
         newsListRVAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        compositeDisposable.clear();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
     }
 }

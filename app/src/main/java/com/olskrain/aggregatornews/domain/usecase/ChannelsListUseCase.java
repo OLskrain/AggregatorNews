@@ -52,18 +52,9 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
         return channelsListRepository.deleteChannel(urlChannel);
     }
 
-//    @Override
-//    public void deleteChannel(List<Channel> channelsList, int position) {
-//        channelsList.remove(position);
-//
-//    }
-//Todo: переделать
     @Override
     public Completable deleteAllChannels() {
-       return channelsListRepository.deleteAllChannels();
-//        channelsListRepository.putUpdatedData(command, null);
-//        channelList.clear();
-//        return channelList;
+        return channelsListRepository.deleteAllChannels();
     }
 
     @Override

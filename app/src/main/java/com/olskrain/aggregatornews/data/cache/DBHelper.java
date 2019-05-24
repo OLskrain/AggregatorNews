@@ -29,17 +29,17 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "lastbuilddate text" + ");");
 
         sqLiteDatabase.execSQL("CREATE TABLE itemNew("
-                + "id integer PRIMARY KEY,"
+                + "id integer,"
                 + "title text,"
                 + "pubDate text,"
-                + "link text,"
+                + "link text PRIMARY KEY,"
                 + "guid text,"
                 + "author text,"
                 + "thumbnail text,"
                 + "description text,"
                 + "content text,"
-                + "id_feed text NOT NULL,"
-                + " FOREIGN KEY (id_feed) REFERENCES channel(url) ON DELETE CASCADE);");
+                + "url_feed text NOT NULL,"
+                + " FOREIGN KEY (url_feed) REFERENCES channel(url) ON DELETE CASCADE);");
     }
 
     @Override

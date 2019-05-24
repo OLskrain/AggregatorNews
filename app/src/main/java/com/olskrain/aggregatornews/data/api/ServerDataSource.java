@@ -16,10 +16,8 @@ import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
-public class ServerDataSource {
-    private static final String ERROR_URL = "error url";
+public class ServerDataSource implements IServerDataSource {
     private static final String ERROR_SERVER = "Ошибка на сервере или парсера";
     private static final String GET_REQUEST = "GET";
     private XmlRssParser xmlRssParser;
@@ -31,6 +29,7 @@ public class ServerDataSource {
         this.channelsList = new ArrayList<>();
     }
 
+    @Override
     public Single<List<Channel>> getChannelFromApi(List<String> urlList) {
         return Single.create(emitter -> {
             for (int i = 0; i < urlList.size(); i++) {
@@ -46,6 +45,11 @@ public class ServerDataSource {
                 channelsList.clear();
             }
         }).subscribeOn(Schedulers.io()).cast((Class<List<Channel>>) (Class) List.class);
+    }
+
+    @Override
+    public Single<String> getWebPage(String urlNews) {
+        return Single.fromCallable(() -> getHTTPData(urlNews)).subscribeOn(Schedulers.io());
     }
 
     private String getHTTPData(String urlString) {
@@ -68,10 +72,8 @@ public class ServerDataSource {
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            responseServer = ERROR_URL;
         } catch (IOException e) {
             e.printStackTrace();
-            responseServer = ERROR_SERVER;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

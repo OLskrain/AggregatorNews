@@ -3,6 +3,7 @@ package com.olskrain.aggregatornews.data.cache;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.olskrain.aggregatornews.Common.App;
@@ -44,7 +45,7 @@ public class ChannelsListCache implements IChannelsListCache {
     private static final String COLUMN_GUID = "guid";
     private static final String COLUMN_THUMBNAIL = "thumbnail";
     private static final String COLUMN_CONTENT = "content";
-    private static final String COLUMN_ID_FEED = "id_feed";
+    private static final String COLUMN_URL_FEED = "url_feed";
 
     @Override
     public void updateDatabase(Command command, List<Channel> channelsList) {
@@ -94,6 +95,38 @@ public class ChannelsListCache implements IChannelsListCache {
             connectDB.delete(TABLE_FEED, COLUMN_URL + " = ?", new String[]{urlChannel});
             App.getInstance().getDbHelper().close();
         }).subscribeOn(Schedulers.io());
+    }
+
+    private void refreshChannel(SQLiteDatabase connectDB, List<Channel> channelsList) {
+        for (int i = 0; i < channelsList.size(); i++) {
+            String feedUrl = channelsList.get(i).getFeed().getUrl();
+            String feedTitle = channelsList.get(i).getFeed().getTitle();
+            String feedImage = channelsList.get(i).getFeed().getImage();
+            String feedLastBuildDate = channelsList.get(i).getFeed().getLastBuildDate();
+            List<ItemNew> itemNewsList = channelsList.get(i).getItemNew();
+
+            ContentValues cv = new ContentValues();
+            cv.put(COLUMN_TITLE_FEED, feedTitle);
+            cv.put(COLUMN_IMAGE_FEED, feedImage);
+            cv.put(COLUMN_LAST_BUILD, feedLastBuildDate);
+
+            connectDB.update(TABLE_FEED, cv, COLUMN_URL + " = ?", new String[]{feedUrl});
+
+            if (itemNewsList != null) {
+                for (int j = 0; j < itemNewsList.size(); j++) {
+                    String itemNewTitle = itemNewsList.get(j).getTitle();
+                    String itemNewPubDate = itemNewsList.get(j).getPubDate();
+                    String itemNewLink = itemNewsList.get(j).getLink();
+                    String itemNewGuid = itemNewsList.get(j).getGuid();
+                    String itemNewAuthor = itemNewsList.get(j).getAuthor();
+                    String itemNewThumbnail = itemNewsList.get(j).getThumbnail();
+                    String itemNewDescription = itemNewsList.get(j).getDescription();
+                    String itemNewContent = itemNewsList.get(j).getContent();
+
+                    insertItemNew(connectDB, TABLE_ITEM_NEWS, feedUrl, itemNewTitle, itemNewPubDate, itemNewLink, itemNewGuid, itemNewAuthor, itemNewThumbnail, itemNewDescription, itemNewContent);
+                }
+            }
+        }
     }
 
     private void addChannel(SQLiteDatabase connectDB, List<Channel> channelsList) {
@@ -151,18 +184,8 @@ public class ChannelsListCache implements IChannelsListCache {
         contentValues.put(COLUMN_THUMBNAIL, thumbnail);
         contentValues.put(COLUMN_DESCRIPTION, description);
         contentValues.put(COLUMN_CONTENT, content);
-        contentValues.put(COLUMN_ID_FEED, feedUrl);
+        contentValues.put(COLUMN_URL_FEED, feedUrl);
         return connectDB.insert(table, null, contentValues);
-    }
-
-    private Completable refreshChannel(SQLiteDatabase connectDB, List<Channel> channelsList) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                Timber.d("rty Записали данные после рефреш");
-                //ToDo: Дописать
-            }
-        }).subscribeOn(Schedulers.io());
     }
 
     private List<Feed> buildChannelsList(SQLiteDatabase connectDB) {

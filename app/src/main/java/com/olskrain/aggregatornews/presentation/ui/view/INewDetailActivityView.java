@@ -9,6 +9,8 @@ public interface INewDetailActivityView {
 
     void hideLoading();
 
+    void showError();
+
     void goToNewsList();
 
     void sendWebPageData(String webPage);

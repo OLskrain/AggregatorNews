@@ -2,6 +2,7 @@ package com.olskrain.aggregatornews.data.repository;
 
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.Common.NetworkStatus;
+import com.olskrain.aggregatornews.data.api.IServerDataSource;
 import com.olskrain.aggregatornews.data.api.ServerDataSource;
 import com.olskrain.aggregatornews.data.cache.ChannelsListCache;
 import com.olskrain.aggregatornews.data.cache.IChannelsListCache;
@@ -14,7 +15,6 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 27,Апрель,2019
@@ -22,7 +22,7 @@ import timber.log.Timber;
 
 public class ChannelsListRepository implements IChannelsListRepository {
     private IChannelsListCache cache;
-    private ServerDataSource serverDataSource;
+    private IServerDataSource serverDataSource;
     private List<Feed> channelsList;
 
     public ChannelsListRepository() {
@@ -59,7 +59,7 @@ public class ChannelsListRepository implements IChannelsListRepository {
             return serverDataSource.getChannelFromApi(urlList).subscribeOn(Schedulers.io())
                     .map(channelsList -> {
                         putUpdatedData(command, channelsList);
-                        return channelsList.get(channelsList.size()-1).getFeed();
+                        return channelsList.get(channelsList.size() - 1).getFeed();
                     });
         } else {
             return Single.error(new RuntimeException());

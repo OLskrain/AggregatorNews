@@ -1,8 +1,8 @@
 package com.olskrain.aggregatornews.presentation.presenter;
 
-import com.olskrain.aggregatornews.Common.App;
+import android.annotation.SuppressLint;
+
 import com.olskrain.aggregatornews.Common.Command;
-import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import com.olskrain.aggregatornews.domain.usecase.NewsListUseCase;
 import com.olskrain.aggregatornews.presentation.presenter.list.INewsListPresenter;
@@ -13,39 +13,56 @@ import java.util.List;
 
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.subjects.PublishSubject;
 
 /**
  * Created by Andrey Ievlev on 03,Май,2019
  */
 
 public class ChannelDetailFragmentPresenter {
-
     public class NewsListPresenter implements INewsListPresenter {
+
+        private final PublishSubject<INewsListItemView> clickItem = PublishSubject.create();
+
+        @Override
+        public PublishSubject<INewsListItemView> getClickOnItem() {
+            return clickItem;
+        }
+
         @Override
         public void bindView(INewsListItemView rowView) {
             String newTitle = newsListLocal.get(rowView.getPos()).getTitle();
             String pubDate = newsListLocal.get(rowView.getPos()).getPubDate();
-            String description = newsListLocal.get(rowView.getPos()).getDescription();
+
             rowView.setTitle(newTitle);
             rowView.setLastBuildDate(pubDate);
-            rowView.setDescription(description);
         }
+
         @Override
         public int getNewCount() {
             return newsListLocal == null ? 0 : newsListLocal.size();
         }
     }
 
+    @SuppressLint("CheckResult")
+    public void attachView() {
+        newsListPresenter.clickItem.subscribe(iChannelListItemView ->
+                channelDetailFragmentView.goToNewsDetailActivity(newsListLocal.get(iChannelListItemView.getCurrentPosition()).getLink()));
+    }
+
     public NewsListPresenter newsListPresenter;
     private IChannelDetailFragmentView channelDetailFragmentView;
     private NewsListUseCase newsListUseCase;
     private Scheduler mainThreadScheduler;
+    private CompositeDisposable compositeDisposable;
     private Disposable disposable;
     private List<ItemNew> newsListLocal;
 
-    public ChannelDetailFragmentPresenter(IChannelDetailFragmentView view, Scheduler mainThreadScheduler) {
+    public ChannelDetailFragmentPresenter(IChannelDetailFragmentView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
         this.channelDetailFragmentView = view;
+        this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
         this.newsListPresenter = new NewsListPresenter();
         this.newsListUseCase = new NewsListUseCase();
@@ -57,8 +74,8 @@ public class ChannelDetailFragmentPresenter {
 
         disposable = responseRepository
                 .observeOn(mainThreadScheduler)
-                .subscribe(itemNews -> {
-                    newsListLocal = itemNews;
+                .subscribe(newsList -> {
+                    newsListLocal = newsList;
                     channelDetailFragmentView.hideLoading();
                     channelDetailFragmentView.refreshChannelsListRVAdapter();
                 }, throwable -> {
@@ -66,7 +83,7 @@ public class ChannelDetailFragmentPresenter {
                     channelDetailFragmentView.showError(Command.REFRESH_NEWS);
                 });
 
-       App.getInstance().getCompositeDisposable().add(disposable);
+        compositeDisposable.add(disposable);
     }
 }
 
