@@ -21,7 +21,6 @@ import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 03,Май,2019
@@ -97,7 +96,7 @@ public class ChannelsListPresenter {
                     addNewChannel(urlChannel);
                 }, throwable -> {
                     channelsListView.hideLoading();
-                    channelsListView.showError(Command.CHECK_DUPLICATE);
+                    channelsListView.showError(Command.ERROR_CHECK_DUPLICATE);
                 });
 
         compositeDisposable.add(disposable);
@@ -142,7 +141,7 @@ public class ChannelsListPresenter {
             compositeDisposable.add(disposable);
 
         }, throwable -> {
-            channelsListView.showError(Command.ERROR_DIFFERENT);
+            //channelsListView.showError(Command.ERROR_DIFFERENT);
         });
 
         compositeDisposable.add(disposable);

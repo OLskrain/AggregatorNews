@@ -30,6 +30,7 @@ import java.util.Objects;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 03,Май,2019
@@ -59,6 +60,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     private Button deleteAllChannels;
     private CustomBottomSheetFragment customBottomSheetFragment;
     private CompositeDisposable compositeDisposable;
+    View.OnClickListener snackbarOnCliclListener;
 
     private ChannelsListRVAdapter allChannelsListRVAdapter;
     private ChannelsListPresenter channelsListPresenter;
@@ -107,6 +109,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         deleteAllChannels.setOnClickListener(view -> channelsListPresenter.deleteAllChannels());
 
         swipeRefreshLayout.setOnRefreshListener(() -> channelsListPresenter.refreshChannelsList());
+        snackbarOnCliclListener = view -> Timber.d("rty WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
     }
 
     @Override
@@ -143,7 +146,17 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         return Completable.create(emitter -> {
             switch (command) {
                 case DELETE_CHANNEL:
-                    emitter.onComplete();
+                    Snackbar.make(Objects.requireNonNull(getView()), R.string.warning_delete_channel, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.button_action_cancel, snackbarOnCliclListener).addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                            if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT){
+                                emitter.onComplete();
+                            } else if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                                emitter.onError(new RuntimeException());
+                            }
+                        }
+                    }).show();
                     break;
                 case DELETE_ALL_CHANNELS:
                     emitter.onComplete();
@@ -158,9 +171,6 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     @Override
     public void showError(Command command) {
         switch (command) {
-            case CHECK_DUPLICATE:
-                Snackbar.make(Objects.requireNonNull(getView()), R.string.check_duplicate, Snackbar.LENGTH_SHORT).show();
-                break;
             case ADD_CHANNEL:
                 Snackbar.make(Objects.requireNonNull(getView()), R.string.error_connection, Snackbar.LENGTH_SHORT).show();
                 break;
@@ -172,6 +182,9 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
                 break;
             case ERROR_DIFFERENT:
                 Snackbar.make(Objects.requireNonNull(getView()), R.string.error_defferent, Snackbar.LENGTH_SHORT).show();
+                break;
+            case ERROR_CHECK_DUPLICATE:
+                Snackbar.make(Objects.requireNonNull(getView()), R.string.check_duplicate, Snackbar.LENGTH_SHORT).show();
                 break;
             default:
                 Snackbar.make(Objects.requireNonNull(getView()), R.string.error_defferent, Snackbar.LENGTH_SHORT).show();
