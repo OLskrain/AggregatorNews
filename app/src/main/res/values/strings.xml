@@ -1,8 +1,15 @@
 <resources>
-    <string name="app_name">AggregatorNews</string>
-    <string name="title_item_detail">Item Detail</string>
-    <string name="settings_button_title">settings</string>
+    <!--Label name-->
+    <string name="app_name">Aggregator News</string>
+    <string name="channel_detail_name">News</string>
+    <string name="new_detail_name">Web page</string>
+    <string name="add_channel_name">Add channel</string>
 
+    <!--Menu-->
+    <string name="settings_button_title">settings</string>
+    <string name="send_button_menu">SEND</string>
+
+    <!--Title Fragment-->
     <string name="channels_list_tab_title">All</string>
     <string name="favorites_list_tab_title">Favorites</string>
     <string name="fab_behavior_name">com.olskrain.aggregatornews.presentation.ui.FABHideOnScroll</string>
@@ -11,13 +18,18 @@
     <string name="bottom_sheet_share">Share</string>
     <string name="bottom_sheet_add_to_favorites_list">Add to favorites list</string>
     <string name="bottom_sheet_delete_channel">Delete channel</string>
+    <string name="button_action_cancel">CANCEL</string>
 
     <!--Error message-->
     <string name="error_connection">No internet connection!</string>
     <string name="error_no_channels">You have not added any channels!</string>
     <string name="error_failed_update">Failed to update the list!</string>
-    <string name="check_duplicate">This channel already exists.</string>
-    <string name="error_defferent">Error</string>
+    <string name="error_check_duplicate">This channel already exists.</string>
+    <string name="error_different">Error</string>
+    <string name="error_invalid_url">You entered an invalid string</string>
+
+    <!--Warning and hint message-->
     <string name="warning_delete_channel">Delete channel?</string>
-    <string name="button_action_cancel">CANCEL</string>
+    <string name="hint_to_user">"Enter the URL of the rss resource"</string>
+
 </resources>

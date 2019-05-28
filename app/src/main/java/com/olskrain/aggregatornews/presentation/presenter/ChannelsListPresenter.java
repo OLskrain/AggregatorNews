@@ -141,7 +141,7 @@ public class ChannelsListPresenter {
             compositeDisposable.add(disposable);
 
         }, throwable -> {
-            //channelsListView.showError(Command.ERROR_DIFFERENT);
+            //channelsListView.showErrorEditText(Command.ERROR_DIFFERENT);
         });
 
         compositeDisposable.add(disposable);
@@ -213,6 +213,10 @@ public class ChannelsListPresenter {
 
     public void putUrlsChannelList() {
         urlsChannelListUseCase.putUrlChannelsList(urlChannelsListLocal);
+    }
+
+    public void goToAddChannelActivity(){
+        channelsListView.goToAddChannelActivity();
     }
 }
 

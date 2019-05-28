@@ -26,7 +26,7 @@
         </activity>
         <activity
             android:name=".presentation.ui.activity.ChannelDetailActivity"
-            android:label="@string/title_item_detail"
+            android:label="@string/channel_detail_name"
             android:parentActivityName=".presentation.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -35,13 +35,24 @@
         </activity>
         <activity
             android:name=".presentation.ui.activity.NewDetailActivity"
-            android:label="@string/title_item_detail"
+            android:label="@string/new_detail_name"
             android:parentActivityName=".presentation.ui.activity.ChannelDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.olskrain.aggregatornews.presentation.ui.activity.ChannelDetailActivity" />
+        </activity>
+        <activity
+            android:name=".presentation.ui.activity.AddChannelActivity"
+            android:label="@string/add_channel_name"
+            android:parentActivityName=".presentation.ui.activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.olskrain.aggregatornews.presentation.ui.activity.MainActivity" />
         </activity>
     </application>
 

@@ -15,10 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.presentation.presenter.NewDetailActivityPresenter;
-import com.olskrain.aggregatornews.presentation.ui.fragment.ChannelDetailFragment;
 import com.olskrain.aggregatornews.presentation.ui.view.INewDetailActivityView;
-
-import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -54,7 +51,7 @@ public class NewDetailActivity extends AppCompatActivity implements INewDetailAc
     }
 
     private void initUi() {
-        toolbar = findViewById(R.id.detail_toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         actionBar = getSupportActionBar();

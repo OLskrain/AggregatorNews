@@ -13,6 +13,7 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 01,Май,2019
@@ -29,6 +30,7 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
     @SuppressLint("CheckResult")
     @Override
     public Single<Feed> addNewChannel(Command command, String urlChannel) {
+        Timber.d("rty pop" + urlChannel);
         List<String> urlList = new ArrayList<>();
         urlList.add(urlChannel);
         return channelsListRepository.getChannel(command, urlList);
@@ -39,7 +41,10 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
     public Completable checkDuplicate(String urlChannel, List<String> urlsList) {
         return Completable.create(emitter -> {
             for (int i = 0; i < urlsList.size(); i++) {
-                if (urlChannel.equalsIgnoreCase(urlsList.get(i))) {
+                String incomingURL = urlChannel.replace("http://", "").replace("https://", "");
+                String currentUrl = urlsList.get(i).replace("http://", "").replace("https://", "");
+
+                if (incomingURL.equalsIgnoreCase(currentUrl)) {
                     emitter.onError(new RuntimeException());
                 }
             }

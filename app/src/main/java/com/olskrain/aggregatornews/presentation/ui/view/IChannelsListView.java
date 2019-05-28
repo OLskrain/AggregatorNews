@@ -15,8 +15,6 @@ public interface IChannelsListView {
 
     void hideLoading();
 
-    void goToChannelDetailFragment(String urlChannel);
-
     void showBottomSheet(Feed feed);
 
     Completable showWarning(Command command);
@@ -24,4 +22,8 @@ public interface IChannelsListView {
     void showError(Command command);
 
     void refreshChannelsListRVAdapter();
+
+    void goToChannelDetailFragment(String urlChannel);
+
+    void goToAddChannelActivity();
 }

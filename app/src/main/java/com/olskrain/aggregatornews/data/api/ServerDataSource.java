@@ -18,7 +18,7 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 public class ServerDataSource implements IServerDataSource {
-    private static final String ERROR_SERVER = "Ошибка на сервере или парсера";
+    private static final String ERROR_SERVER = "Ошибкасервера или парсера";
     private static final String GET_REQUEST = "GET";
     private XmlRssParser xmlRssParser;
     private String responseServer;
@@ -33,17 +33,16 @@ public class ServerDataSource implements IServerDataSource {
     public Single<List<Channel>> getChannelFromApi(List<String> urlList) {
         return Single.create(emitter -> {
             for (int i = 0; i < urlList.size(); i++) {
-                getHTTPData(urlList.get(i));
-                Channel channel = xmlRssParser.parseData(urlList.get(i), responseServer);
-                channelsList.add(channel);
+                String currentResponseServer = getHTTPData(urlList.get(i));
+                if (currentResponseServer.equals(ERROR_SERVER)) {
+                    emitter.onError(new RuntimeException());
+                } else {
+                    Channel channel = xmlRssParser.parseData(urlList.get(i), currentResponseServer);
+                    channelsList.add(channel);
+                }
             }
-
-            if (channelsList.isEmpty()) {
-                emitter.onError(new RuntimeException(ERROR_SERVER));
-            } else {
-                emitter.onSuccess(channelsList);
-                channelsList.clear();
-            }
+            emitter.onSuccess(channelsList);
+            channelsList.clear();
         }).subscribeOn(Schedulers.io()).cast((Class<List<Channel>>) (Class) List.class);
     }
 
@@ -72,8 +71,10 @@ public class ServerDataSource implements IServerDataSource {
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            return ERROR_SERVER;
         } catch (IOException e) {
             e.printStackTrace();
+            return ERROR_SERVER;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

@@ -1,9 +1,11 @@
 package com.olskrain.aggregatornews.presentation.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +13,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,16 +25,22 @@ import com.olskrain.aggregatornews.Common.myObserver.ICustomObserver;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelsListPresenter;
+import com.olskrain.aggregatornews.presentation.ui.activity.AddChannelActivity;
 import com.olskrain.aggregatornews.presentation.ui.activity.ChannelDetailActivity;
 import com.olskrain.aggregatornews.presentation.ui.adapter.ChannelsListRVAdapter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelsListView;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Andrey Ievlev on 03,Май,2019
@@ -46,6 +56,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         return fragment;
     }
 
+    public static final String URL_CHANNEL = "urlChannel";
     public static final String CHANNEL_POSITION = "channel position";
     public static final String ARG_ACLF_ID = "allChannelListId";
     public static final String CHANNEL_ONE = "https://news.yandex.ru/Khanty-Mansiysk/index.rss";
@@ -58,9 +69,10 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     private Button addChannelTwo;
     private Button addChannelThree;
     private Button deleteAllChannels;
+    private FloatingActionButton addNewChannel;
     private CustomBottomSheetFragment customBottomSheetFragment;
     private CompositeDisposable compositeDisposable;
-    View.OnClickListener snackbarOnCliclListener;
+    View.OnClickListener snackbarOnClickListener;
 
     private ChannelsListRVAdapter allChannelsListRVAdapter;
     private ChannelsListPresenter channelsListPresenter;
@@ -95,6 +107,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         swipeRefreshLayout = view.findViewById(R.id.swipe_refreshLayout_channels);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
 
+        addNewChannel = view.findViewById(R.id.add_new_channel);
         addChannelOne = view.findViewById(R.id.add_channel_one);
         addChannelTwo = view.findViewById(R.id.add_channel_two);
         addChannelThree = view.findViewById(R.id.add_channel_three);
@@ -103,18 +116,18 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     }
 
     public void initOnClick() {
+        addNewChannel.setOnClickListener(view -> channelsListPresenter.goToAddChannelActivity());
         addChannelOne.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_ONE));
         addChannelTwo.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_TWO));
         addChannelThree.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_THREE));
         deleteAllChannels.setOnClickListener(view -> channelsListPresenter.deleteAllChannels());
 
         swipeRefreshLayout.setOnRefreshListener(() -> channelsListPresenter.refreshChannelsList());
-        snackbarOnCliclListener = view -> Timber.d("rty WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+        snackbarOnClickListener = view -> Timber.d("rty WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
     }
 
     @Override
     public void showLoading() {
-
         loadingProgressBar.setVisibility(View.VISIBLE);
     }
 
@@ -129,6 +142,26 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         Intent intent = new Intent(getContext(), ChannelDetailActivity.class);
         intent.putExtra(ChannelDetailFragment.ARG_CDF_ID, urlChannel);
         Objects.requireNonNull(getContext()).startActivity(intent);
+    }
+
+    @Override
+    public void goToAddChannelActivity() {
+        Intent intent = new Intent(getContext(), AddChannelActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && data != null) {
+            String urlChannel = data.getStringExtra(URL_CHANNEL);
+            if (!urlChannel.equals("")) {
+                Completable.complete().delay(500, TimeUnit.MICROSECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            channelsListPresenter.checkDuplicate(urlChannel);
+                        });
+            }
+        }
     }
 
     @Override
@@ -147,10 +180,10 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
             switch (command) {
                 case DELETE_CHANNEL:
                     Snackbar.make(Objects.requireNonNull(getView()), R.string.warning_delete_channel, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.button_action_cancel, snackbarOnCliclListener).addCallback(new Snackbar.Callback() {
+                            .setAction(R.string.button_action_cancel, snackbarOnClickListener).addCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar transientBottomBar, int event) {
-                            if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT){
+                            if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
                                 emitter.onComplete();
                             } else if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
                                 emitter.onError(new RuntimeException());
@@ -181,13 +214,13 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
                 Snackbar.make(Objects.requireNonNull(getView()), R.string.error_failed_update, Snackbar.LENGTH_SHORT).show();
                 break;
             case ERROR_DIFFERENT:
-                Snackbar.make(Objects.requireNonNull(getView()), R.string.error_defferent, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(Objects.requireNonNull(getView()), R.string.error_different, Snackbar.LENGTH_SHORT).show();
                 break;
             case ERROR_CHECK_DUPLICATE:
-                Snackbar.make(Objects.requireNonNull(getView()), R.string.check_duplicate, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(Objects.requireNonNull(getView()), R.string.error_check_duplicate, Snackbar.LENGTH_SHORT).show();
                 break;
             default:
-                Snackbar.make(Objects.requireNonNull(getView()), R.string.error_defferent, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(Objects.requireNonNull(getView()), R.string.error_different, Snackbar.LENGTH_SHORT).show();
                 break;
         }
 
