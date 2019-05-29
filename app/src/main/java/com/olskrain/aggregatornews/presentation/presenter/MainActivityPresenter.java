@@ -7,9 +7,9 @@ import com.olskrain.aggregatornews.presentation.ui.view.IMainView;
  */
 
 public class MainActivityPresenter {
-    private IMainView mainView;
+    private final IMainView mainView;
 
-    public MainActivityPresenter(IMainView view) {
+    public MainActivityPresenter(final IMainView view) {
         this.mainView = view;
     }
 

@@ -16,15 +16,15 @@ public class CustomPublisher {
         observers = new ArrayList<>();
     }
 
-    public void subscribe(ICustomObserver observer) {
+    public void subscribe(final ICustomObserver observer) {
         observers.add(observer);
     }
 
-    public void unsubscribe(ICustomObserver observer) {
+    public void unsubscribe(final ICustomObserver observer) {
         observers.remove(observer);
     }
 
-    public void notify(Command command) {
+    public void notify(final Command command) {
         for (ICustomObserver observer : observers)
             observer.actionAboveChannelsList(command);
     }

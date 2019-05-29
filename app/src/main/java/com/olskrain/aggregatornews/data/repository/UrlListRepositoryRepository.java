@@ -35,7 +35,7 @@ public class UrlListRepositoryRepository implements IUrlsChannelListRepository {
     }
 
     @Override
-    public void putUrlChannelsList(List<String> urlChannelsList) {
+    public void putUrlChannelsList(final List<String> urlChannelsList) {
         SharedPreferences.Editor editor = App.getInstance().getSharedPreferences().edit();
 
         if (urlChannelsList != null) {

@@ -24,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
 public class ChannelsListRepository implements IChannelsListRepository {
     private IChannelsListCache cache;
     private IServerDataSource serverDataSource;
-    private List<Feed> channelsList;
+    private final List<Feed> channelsList;
     private boolean fistUpdate = true;
 
     public ChannelsListRepository() {
@@ -34,12 +34,12 @@ public class ChannelsListRepository implements IChannelsListRepository {
     }
 
     @Override
-    public void putUpdatedData(Command command, List<Channel> channelsList) {
+    public void putUpdatedData(final Command command, final List<Channel> channelsList) {
         cache.updateDatabase(command, channelsList);
     }
 
     @Override
-    public Single<List<Feed>> refreshChannelsList(Command command, List<String> urlList) {
+    public Single<List<Feed>> refreshChannelsList(final Command command, final List<String> urlList) {
         if (NetworkStatus.isOnline()) {
             return serverDataSource.getChannelFromApi(urlList).subscribeOn(Schedulers.io())
                     .map(channelsList -> {
@@ -60,7 +60,7 @@ public class ChannelsListRepository implements IChannelsListRepository {
     }
 
     @Override
-    public Single<Feed> getChannel(Command command, List<String> urlList) {
+    public Single<Feed> getChannel(final Command command, final List<String> urlList) {
         if (NetworkStatus.isOnline()) {
             return serverDataSource.getChannelFromApi(urlList).subscribeOn(Schedulers.io())
                     .map(channelsList -> {
@@ -68,7 +68,7 @@ public class ChannelsListRepository implements IChannelsListRepository {
                         return channelsList.get(channelsList.size() - 1).getFeed();
                     });
         } else {
-            return Single.error(new RuntimeException());
+            return Single.error(new IllegalAccessError());
         }
     }
 
@@ -83,7 +83,7 @@ public class ChannelsListRepository implements IChannelsListRepository {
     }
 
     @Override
-    public Completable deleteChannel(String urlChannel) {
+    public Completable deleteChannel(final String urlChannel) {
         return cache.deleteChannel(urlChannel);
     }
 }

@@ -30,7 +30,7 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
 
     @SuppressLint("CheckResult")
     @Override
-    public Single<Feed> addNewChannel(Command command, String urlChannel) {
+    public Single<Feed> addNewChannel(final Command command, final String urlChannel) {
         Timber.d("rty pop" + urlChannel);
         List<String> urlList = new ArrayList<>();
         urlList.add(urlChannel);
@@ -39,7 +39,7 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
     }
 
     @Override
-    public Completable checkDuplicate(String urlChannel, List<String> urlsList) {
+    public Completable checkDuplicate(final String urlChannel, final List<String> urlsList) {
         return Completable.create(emitter -> {
             for (int i = 0; i < urlsList.size(); i++) {
                 String incomingURL = urlChannel.replace("http://", "").replace("https://", "");
@@ -54,7 +54,7 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
     }
 
     @Override
-    public Completable deleteChannel(String urlChannel) {
+    public Completable deleteChannel(final String urlChannel) {
         return channelsListRepository.deleteChannel(urlChannel);
     }
 
@@ -64,7 +64,7 @@ public class ChannelsListUseCase implements IChannelsListUseCase {
     }
 
     @Override
-    public Single<List<Feed>> refreshChannelsList(Command command, List<String> urlList) {
+    public Single<List<Feed>> refreshChannelsList(final Command command, final List<String> urlList) {
         return channelsListRepository.refreshChannelsList(command, urlList);
     }
 

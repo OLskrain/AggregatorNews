@@ -72,7 +72,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     private FloatingActionButton addNewChannel;
     private CustomBottomSheetFragment customBottomSheetFragment;
     private CompositeDisposable compositeDisposable;
-    View.OnClickListener snackbarOnClickListener;
+    private View.OnClickListener snackbarOnClickListener;
 
     private ChannelsListRVAdapter allChannelsListRVAdapter;
     private ChannelsListPresenter channelsListPresenter;
@@ -95,7 +95,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         return view;
     }
 
-    public void initUi(View view) {
+    public void initUi(final View view) {
         loadingProgressBar = view.findViewById(R.id.all_list_loading_progressBar);
 
         RecyclerView allChannelsListRecyclerView = view.findViewById(R.id.all_channels_list);
@@ -138,7 +138,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     }
 
     @Override
-    public void goToChannelDetailFragment(String urlChannel) {
+    public void goToChannelDetailFragment(final String urlChannel) {
         Intent intent = new Intent(getContext(), ChannelDetailActivity.class);
         intent.putExtra(ChannelDetailFragment.ARG_CDF_ID, urlChannel);
         Objects.requireNonNull(getContext()).startActivity(intent);
@@ -152,7 +152,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
 
     @SuppressLint("CheckResult")
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         if (resultCode == RESULT_OK && data != null) {
             String urlChannel = data.getStringExtra(URL_CHANNEL);
             if (!urlChannel.equals("")) {
@@ -165,7 +165,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     }
 
     @Override
-    public void showBottomSheet(Feed feed) {
+    public void showBottomSheet(final Feed feed) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(CHANNEL_POSITION, feed);
         customBottomSheetFragment.setArguments(bundle);
@@ -175,7 +175,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     }
 
     @Override
-    public Completable showWarning(Command command) {
+    public Completable showWarning(final Command command) {
         return Completable.create(emitter -> {
             switch (command) {
                 case DELETE_CHANNEL:
@@ -202,7 +202,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     }
 
     @Override
-    public void showError(Command command) {
+    public void showError(final Command command) {
         switch (command) {
             case ADD_CHANNEL:
                 Snackbar.make(Objects.requireNonNull(getView()), R.string.error_connection, Snackbar.LENGTH_SHORT).show();
@@ -232,7 +232,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     }
 
     @Override
-    public void actionAboveChannelsList(Command command) {
+    public void actionAboveChannelsList(final Command command) {
         switch (command) {
             case ADD_FAVORITE:
                 break;

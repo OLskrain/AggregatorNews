@@ -64,7 +64,7 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
         return rootView;
     }
 
-    private void initUi(View view) {
+    private void initUi(final View view) {
         loadingProgressBar = view.findViewById(R.id.channel_detail_loading_progressBar);
 
         newsListRecyclerView = view.findViewById(R.id.news_list);

@@ -34,7 +34,7 @@ public class NewsListCache implements INewsListCache {
     private static final String ERROR_CACHE = "В базе нет данных";
 
     @Override
-    public Single<List<ItemNew>> getNewsList(String urlChannel) {
+    public Single<List<ItemNew>> getNewsList(final String urlChannel) {
         return Single.fromCallable(() -> {
             SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
             connectDB.execSQL("PRAGMA foreign_keys=ON");
@@ -46,7 +46,7 @@ public class NewsListCache implements INewsListCache {
         }).subscribeOn(Schedulers.io());
     }
 
-    private List<ItemNew> buildNewsList(SQLiteDatabase connectDB, String urlChannel) {
+    private List<ItemNew> buildNewsList(final SQLiteDatabase connectDB, final String urlChannel) {
         List<ItemNew> newsList = new ArrayList<>();
         Stack<ItemNew> stack = new Stack<>();
         Cursor cursor;

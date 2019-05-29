@@ -22,7 +22,7 @@ public class NewsListUseCase implements INewsListUseCase {
     }
 
     @Override
-    public Single<List<ItemNew>> refreshNewsList(String urlChannel) {
+    public Single<List<ItemNew>> refreshNewsList(final String urlChannel) {
        return newsListRepository.getNewsList(urlChannel);
     }
 }

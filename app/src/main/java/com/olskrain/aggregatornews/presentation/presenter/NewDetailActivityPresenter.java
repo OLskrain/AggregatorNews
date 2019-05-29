@@ -14,20 +14,20 @@ import io.reactivex.disposables.Disposable;
 
 public class NewDetailActivityPresenter {
 
-    private Scheduler mainThreadScheduler;
-    private INewDetailActivityView newDetailActivityView;
+    private final Scheduler mainThreadScheduler;
+    private final INewDetailActivityView newDetailActivityView;
     private NewDetailUseCase newDetailUseCase;
-    private CompositeDisposable compositeDisposable;
+    private final CompositeDisposable compositeDisposable;
     private Disposable disposable;
 
-    public NewDetailActivityPresenter(INewDetailActivityView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
+    public NewDetailActivityPresenter(final INewDetailActivityView view, final CompositeDisposable compositeDisposable, final Scheduler mainThreadScheduler) {
         this.newDetailActivityView = view;
         this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
         this.newDetailUseCase = new NewDetailUseCase();
     }
 
-    public void getWebPage(String urlNews) {
+    public void getWebPage(final String urlNews) {
         newDetailActivityView.showLoading();
 
         Single<String> responseRepository = newDetailUseCase.getWebPage(urlNews);

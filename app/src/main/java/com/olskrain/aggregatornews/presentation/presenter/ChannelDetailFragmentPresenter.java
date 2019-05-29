@@ -32,7 +32,7 @@ public class ChannelDetailFragmentPresenter {
         }
 
         @Override
-        public void bindView(INewsListItemView rowView) {
+        public void bindView(final INewsListItemView rowView) {
             String newTitle = newsListLocal.get(rowView.getPos()).getTitle();
             String pubDate = newsListLocal.get(rowView.getPos()).getPubDate();
 
@@ -53,14 +53,14 @@ public class ChannelDetailFragmentPresenter {
     }
 
     public NewsListPresenter newsListPresenter;
-    private IChannelDetailFragmentView channelDetailFragmentView;
+    private final IChannelDetailFragmentView channelDetailFragmentView;
     private NewsListUseCase newsListUseCase;
-    private Scheduler mainThreadScheduler;
-    private CompositeDisposable compositeDisposable;
+    private final Scheduler mainThreadScheduler;
+    private final CompositeDisposable compositeDisposable;
     private Disposable disposable;
     private List<ItemNew> newsListLocal;
 
-    public ChannelDetailFragmentPresenter(IChannelDetailFragmentView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
+    public ChannelDetailFragmentPresenter(final IChannelDetailFragmentView view, final CompositeDisposable compositeDisposable, final Scheduler mainThreadScheduler) {
         this.channelDetailFragmentView = view;
         this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
@@ -68,7 +68,7 @@ public class ChannelDetailFragmentPresenter {
         this.newsListUseCase = new NewsListUseCase();
     }
 
-    public void refreshNewsList(String urlChannel) {
+    public void refreshNewsList(final String urlChannel) {
         channelDetailFragmentView.showLoading();
         Single<List<ItemNew>> responseRepository = newsListUseCase.refreshNewsList(urlChannel);
 

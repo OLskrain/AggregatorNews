@@ -21,7 +21,7 @@ public class NewsListRepository implements INewsListRepository {
     }
 
     @Override
-    public Single<List<ItemNew>> getNewsList(String urlChannel) {
+    public Single<List<ItemNew>> getNewsList(final String urlChannel) {
        return cache.getNewsList(urlChannel);
     }
 }

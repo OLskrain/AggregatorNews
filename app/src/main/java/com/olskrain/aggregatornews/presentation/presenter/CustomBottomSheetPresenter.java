@@ -11,27 +11,27 @@ import timber.log.Timber;
  */
 
 public class CustomBottomSheetPresenter {
-    private ICustomBottomSheetView customBottomSheetView;
+    private final ICustomBottomSheetView customBottomSheetView;
 
     public CustomBottomSheetPresenter(ICustomBottomSheetView customBottomSheetView) {
         this.customBottomSheetView = customBottomSheetView;
     }
 
-    public void addFavorite(Command command) {
+    public void addFavorite(final Command command) {
         customBottomSheetView.closeBottomSheet();
     }
 
-    public void shareChannel(Command command) {
+    public void shareChannel(final Command command) {
 
         customBottomSheetView.closeBottomSheet();
     }
 
-    public void deleteChannel(Command command) {
+    public void deleteChannel(final Command command) {
         customBottomSheetView.deleteChannel(command);
         customBottomSheetView.closeBottomSheet();
     }
 
-    public void setChannelCard(Feed channel) {
+    public void setChannelCard(final Feed channel) {
         String title = channel.getTitle();
         String lastBuild = channel.getLastBuildDate();
         customBottomSheetView.setChannelCard(title, lastBuild);

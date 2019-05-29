@@ -22,7 +22,7 @@ public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAd
 
     private IChannelListPresenter presenter;
 
-    public ChannelsListRVAdapter(IChannelListPresenter presenter) {
+    public ChannelsListRVAdapter(final IChannelListPresenter presenter) {
         this.presenter = presenter;
     }
 
@@ -81,12 +81,12 @@ public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAd
         }
 
         @Override
-        public void setTitle(String title) {
+        public void setTitle(final String title) {
             this.channelTitle.setText(title);
         }
 
         @Override
-        public void setLastBuildDate(String lastBuildDate) {
+        public void setLastBuildDate(final String lastBuildDate) {
             this.lastBuildDate.setText(lastBuildDate);
         }
 

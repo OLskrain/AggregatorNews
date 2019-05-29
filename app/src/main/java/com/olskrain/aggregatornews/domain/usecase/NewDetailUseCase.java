@@ -19,7 +19,7 @@ public class NewDetailUseCase implements INewDetailUseCase {
     }
 
     @Override
-    public Single<String> getWebPage(String urlNews) {
+    public Single<String> getWebPage(final String urlNews) {
         return newsDetailRepository.getWebPage(urlNews);
     }
 }

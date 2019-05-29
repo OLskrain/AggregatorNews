@@ -45,7 +45,7 @@ public class ChannelsListCache implements IChannelsListCache {
     private static final String COLUMN_URL_FEED = "url_feed";
 
     @Override
-    public void updateDatabase(Command command, List<Channel> channelsList) {
+    public void updateDatabase(final Command command, final List<Channel> channelsList) {
         SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
         connectDB.execSQL("PRAGMA foreign_keys=ON");
 
@@ -85,7 +85,7 @@ public class ChannelsListCache implements IChannelsListCache {
     }
 
     @Override
-    public Completable deleteChannel(String urlChannel) {
+    public Completable deleteChannel(final String urlChannel) {
         return Completable.fromAction(() -> {
             SQLiteDatabase connectDB = App.getInstance().getDbHelper().getWritableDatabase();
             connectDB.execSQL("PRAGMA foreign_keys=ON");
@@ -94,7 +94,7 @@ public class ChannelsListCache implements IChannelsListCache {
         }).subscribeOn(Schedulers.io());
     }
 
-    private void refreshChannel(SQLiteDatabase connectDB, List<Channel> channelsList) {
+    private void refreshChannel(final SQLiteDatabase connectDB, final List<Channel> channelsList) {
         for (int i = 0; i < channelsList.size(); i++) {
             String feedUrl = channelsList.get(i).getFeed().getUrl();
             String feedTitle = channelsList.get(i).getFeed().getTitle();
@@ -126,7 +126,7 @@ public class ChannelsListCache implements IChannelsListCache {
         }
     }
 
-    private void addChannel(SQLiteDatabase connectDB, List<Channel> channelsList) {
+    private void addChannel(final SQLiteDatabase connectDB, final List<Channel> channelsList) {
         for (int i = 0; i < channelsList.size(); i++) {
             String feedUrl = channelsList.get(i).getFeed().getUrl();
             String feedTitle = channelsList.get(i).getFeed().getTitle();
@@ -156,8 +156,8 @@ public class ChannelsListCache implements IChannelsListCache {
         }
     }
 
-    private long insertFeed(SQLiteDatabase connectDB, String table, String url, String title, String link,
-                            String author, String description, String image, String lastBuildDate) {
+    private long insertFeed(final SQLiteDatabase connectDB, final String table, final String url, final String title, final String link,
+                            final String author, final String description, final String image, final String lastBuildDate) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_URL, url);
         contentValues.put(COLUMN_TITLE_FEED, title);
@@ -169,8 +169,8 @@ public class ChannelsListCache implements IChannelsListCache {
         return connectDB.insert(table, null, contentValues);
     }
 
-    private long insertItemNew(SQLiteDatabase connectDB, String table, String feedUrl, String title, String pubDate, String link,
-                               String guid, String author, String thumbnail, String description, String content) {
+    private long insertItemNew(final SQLiteDatabase connectDB, final String table, final String feedUrl, final String title, final String pubDate, String link,
+                               final String guid, final String author, final String thumbnail, final String description, final String content) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_TITLE, title);
@@ -185,7 +185,7 @@ public class ChannelsListCache implements IChannelsListCache {
         return connectDB.insert(table, null, contentValues);
     }
 
-    private List<Feed> buildChannelsList(SQLiteDatabase connectDB) {
+    private List<Feed> buildChannelsList(final SQLiteDatabase connectDB) {
         List<Feed> channelsList = new ArrayList<>();
         Cursor cursor;
         cursor = connectDB.query(TABLE_FEED, null, null, null, null, null, null);

@@ -68,7 +68,7 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
         return view;
     }
 
-    private void initUi(View view) {
+    private void initUi(final View view) {
         channelTitle = view.findViewById(R.id.channel_title_bs);
         lastBuildDate = view.findViewById(R.id.last_build_date_bs);
         addFavorite = view.findViewById(R.id.add_favorite);
@@ -104,23 +104,23 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     }
 
     @Override
-    public void setChannelCard(String title, String lastBuild) {
+    public void setChannelCard(final String title, final String lastBuild) {
         channelTitle.setText(title);
         lastBuildDate.setText(lastBuild);
     }
 
     @Override
-    public void addFavorite(Command command) {
+    public void addFavorite(final Command command) {
         publisher.notify(command);
     }
 
     @Override
-    public void shareChannel(Command command) {
+    public void shareChannel(final Command command) {
         publisher.notify(command);
     }
 
     @Override
-    public void deleteChannel(Command command) {
+    public void deleteChannel(final Command command) {
         publisher.notify(command);
     }
 

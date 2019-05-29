@@ -37,7 +37,7 @@ public class XmlRssParser {
     private Channel channel;
     private Feed feed;
     private ItemNew item;
-    private List<ItemNew> currentItemList = new ArrayList<>();
+    private final List<ItemNew> currentItemList = new ArrayList<>();
     private String current;
 
     public Channel parseData(String urlChannel, String responseServer) {
@@ -65,7 +65,7 @@ public class XmlRssParser {
         return channel;
     }
 
-    private void parseFeed(String urlChannel, XmlPullParser xpp) {
+    private void parseFeed(final String urlChannel, final XmlPullParser xpp) {
         try {
             String title = null, link = null, author = null, description = null, image = null, lastBuildDate = null;
             xpp.next();
@@ -111,7 +111,7 @@ public class XmlRssParser {
         }
     }
 
-    private void parseItem(XmlPullParser xpp) {
+    private void parseItem(final XmlPullParser xpp) {
         try {
             String title = null, link = null, author = null, description = null, image = null, lastBuildDate = null;
             String pubDate = null, guid = null, thumbnail = null, content = null;
@@ -171,7 +171,7 @@ public class XmlRssParser {
         }
     }
 
-    private XmlPullParser prepareXpp(String responseServer) throws XmlPullParserException {
+    private XmlPullParser prepareXpp(final String responseServer) throws XmlPullParserException {
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware(true);
         XmlPullParser xpp = factory.newPullParser();

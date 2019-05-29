@@ -19,7 +19,7 @@ public class NewDetailRepository implements INewsDetailRepository {
     }
 
     @Override
-    public Single<String> getWebPage(String urlNews) {
+    public Single<String> getWebPage(final String urlNews) {
         if (NetworkStatus.isOnline()) {
             return serverDataSource.getWebPage(urlNews);
         } else {

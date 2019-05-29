@@ -19,9 +19,9 @@ import com.olskrain.aggregatornews.presentation.ui.view.item.INewsListItemView;
 
 public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.NewListViewHolder> {
 
-    private INewsListPresenter presenter;
+    private final INewsListPresenter presenter;
 
-    public NewsListRVAdapter(INewsListPresenter presenter) {
+    public NewsListRVAdapter(final INewsListPresenter presenter) {
         this.presenter = presenter;
     }
 
@@ -71,12 +71,12 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ne
         }
 
         @Override
-        public void setTitle(String title) {
+        public void setTitle(final String title) {
             newTitle.setText(title);
         }
 
         @Override
-        public void setLastBuildDate(String lastBuildDate) {
+        public void setLastBuildDate(final String lastBuildDate) {
             pubDate.setText(lastBuildDate);
         }
 

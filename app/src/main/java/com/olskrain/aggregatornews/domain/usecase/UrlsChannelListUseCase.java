@@ -25,18 +25,18 @@ public class UrlsChannelListUseCase implements IUrlsChannelListUseCase {
     }
 
     @Override
-    public void putUrlChannelsList(List<String> urlsChannelList) {
+    public void putUrlChannelsList(final List<String> urlsChannelList) {
         urlsChannelListRepository.putUrlChannelsList(urlsChannelList);
     }
 
     @Override
-    public List<String> addUrlChannel(List<String> urlsChannelsList, String urlChannel) {
+    public List<String> addUrlChannel(final List<String> urlsChannelsList, final String urlChannel) {
         urlsChannelsList.add(urlChannel);
         return urlsChannelsList;
     }
 
     @Override
-    public List<String> deleteUrlChannel(List<String> urlsChannelsList, String urlChannel) {
+    public List<String> deleteUrlChannel(final List<String> urlsChannelsList, final String urlChannel) {
         for (int i = 0; i < urlsChannelsList.size(); i++) {
             if (urlChannel.equalsIgnoreCase(urlsChannelsList.get(i))) {
                 urlsChannelsList.remove(i);
@@ -46,7 +46,7 @@ public class UrlsChannelListUseCase implements IUrlsChannelListUseCase {
     }
 
     @Override
-    public List<String> deleteAllUrlsChannel(List<String> urlsChannelsList) {
+    public List<String> deleteAllUrlsChannel(final List<String> urlsChannelsList) {
         urlsChannelsList.clear();
         return urlsChannelsList;
     }

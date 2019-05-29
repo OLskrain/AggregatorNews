@@ -10,7 +10,7 @@ import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
 
 public class AddChannelPresenter {
 
-    private IAddChannelView addChannelView;
+    private final IAddChannelView addChannelView;
     private IAddChannelUseCase addChannelUseCase;
 
     public AddChannelPresenter(IAddChannelView addChannelView) {
@@ -18,7 +18,7 @@ public class AddChannelPresenter {
         addChannelUseCase = new AddChannelUseCase();
     }
 
-    public void checkError(String urlChannel) {
+    public void checkError(final String urlChannel) {
         if(addChannelUseCase.checkError(urlChannel)){
             addChannelView.showError();
         } else {

@@ -8,20 +8,20 @@ import java.util.ArrayList;
 
 public class CustomFragmentPA extends FragmentPagerAdapter {
 
-    private ArrayList<Fragment> fragments = new ArrayList<>();
-    private ArrayList<String> tabTitles = new ArrayList<>();
+    private final ArrayList<Fragment> fragments = new ArrayList<>();
+    private final ArrayList<String> tabTitles = new ArrayList<>();
 
     public CustomFragmentPA(FragmentManager fm) {
         super(fm);
     }
 
-    public void addFragment(Fragment fragment, String tabTitle) {
+    public void addFragment(final Fragment fragment, final String tabTitle) {
         this.fragments.add(fragment);
         this.tabTitles.add(tabTitle);
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public Fragment getItem(final int position) {
         return fragments.get(position);
     }
 
@@ -31,7 +31,7 @@ public class CustomFragmentPA extends FragmentPagerAdapter {
     }
 
     @Override
-    public CharSequence getPageTitle(int position) {
+    public CharSequence getPageTitle(final int position) {
         return tabTitles.get(position);
     }
 

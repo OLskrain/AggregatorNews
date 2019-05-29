@@ -42,7 +42,7 @@ public class ChannelsListPresenter {
         }
 
         @Override
-        public void bindView(IChannelListItemView rowView) {
+        public void bindView(final IChannelListItemView rowView) {
             String channelTitle = channelsListLocal.get(rowView.getPos()).getTitle();
             String lastBuildDate = channelsListLocal.get(rowView.getPos()).getLastBuildDate();
             rowView.setTitle(channelTitle);
@@ -56,17 +56,17 @@ public class ChannelsListPresenter {
     }
 
     public ChannelListPresenter channelListPresenter;
-    private IChannelsListView channelsListView;
+    private final IChannelsListView channelsListView;
     private IChannelsListUseCase channelsListUseCase;
     private IUrlsChannelListUseCase urlsChannelListUseCase;
-    private Scheduler mainThreadScheduler;
+    private final Scheduler mainThreadScheduler;
     private List<Feed> channelsListLocal = new ArrayList<>();
     private List<String> urlChannelsListLocal = new ArrayList<>();
-    private CompositeDisposable compositeDisposable;
+    private final CompositeDisposable compositeDisposable;
     private Disposable disposable;
     private String currentUrlChannel;
 
-    public ChannelsListPresenter(IChannelsListView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
+    public ChannelsListPresenter(final IChannelsListView view, final CompositeDisposable compositeDisposable, final Scheduler mainThreadScheduler) {
         this.channelsListView = view;
         this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
@@ -86,7 +86,7 @@ public class ChannelsListPresenter {
         });
     }
 
-    public void checkDuplicate(String urlChannel) {
+    public void checkDuplicate(final String urlChannel) {
         channelsListView.showLoading();
         Completable responseRepository = channelsListUseCase.checkDuplicate(urlChannel, urlChannelsListLocal);
 
@@ -102,7 +102,7 @@ public class ChannelsListPresenter {
         compositeDisposable.add(disposable);
     }
 
-    private void addNewChannel(String urlChannel) {
+    private void addNewChannel(final String urlChannel) {
         channelsListView.showLoading();
         Single<Feed> responseRepository = channelsListUseCase.addNewChannel(Command.ADD_CHANNEL, urlChannel);
 
@@ -121,7 +121,7 @@ public class ChannelsListPresenter {
         compositeDisposable.add(disposable);
     }
 
-    public void deleteChannel(Command command) {
+    public void deleteChannel(final Command command) {
         Completable responseUser = channelsListView.showWarning(command);
         disposable = responseUser.subscribe(() -> {
 

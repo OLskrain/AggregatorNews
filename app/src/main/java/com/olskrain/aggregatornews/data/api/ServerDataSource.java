@@ -22,7 +22,7 @@ public class ServerDataSource implements IServerDataSource {
     private static final String GET_REQUEST = "GET";
     private XmlRssParser xmlRssParser;
     private String responseServer;
-    private List<Channel> channelsList;
+    private final List<Channel> channelsList;
 
     public ServerDataSource() {
         this.xmlRssParser = new XmlRssParser();
@@ -30,12 +30,12 @@ public class ServerDataSource implements IServerDataSource {
     }
 
     @Override
-    public Single<List<Channel>> getChannelFromApi(List<String> urlList) {
+    public Single<List<Channel>> getChannelFromApi(final List<String> urlList) {
         return Single.create(emitter -> {
             for (int i = 0; i < urlList.size(); i++) {
                 String currentResponseServer = getHTTPData(urlList.get(i));
                 if (currentResponseServer.equals(ERROR_SERVER)) {
-                    emitter.onError(new RuntimeException());
+                    emitter.onError(new IllegalAccessException());
                 } else {
                     Channel channel = xmlRssParser.parseData(urlList.get(i), currentResponseServer);
                     channelsList.add(channel);
@@ -47,11 +47,11 @@ public class ServerDataSource implements IServerDataSource {
     }
 
     @Override
-    public Single<String> getWebPage(String urlNews) {
+    public Single<String> getWebPage(final String urlNews) {
         return Single.fromCallable(() -> getHTTPData(urlNews)).subscribeOn(Schedulers.io());
     }
 
-    private String getHTTPData(String urlString) {
+    private String getHTTPData(final String urlString) {
         HttpURLConnection urlConnection = null;
 
         try {

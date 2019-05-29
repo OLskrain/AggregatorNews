@@ -9,7 +9,7 @@ import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IAddChannelUs
 public class AddChannelUseCase implements IAddChannelUseCase {
 
     @Override
-    public boolean checkError(String urlChannel) {
+    public boolean checkError(final String urlChannel) {
         if (urlChannel.length() > 0) {
             if (urlChannel.length() < 12) {
                 return true;
