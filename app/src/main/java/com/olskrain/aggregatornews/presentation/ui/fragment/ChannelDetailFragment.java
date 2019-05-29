@@ -14,8 +14,9 @@ import android.widget.ProgressBar;
 
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.R;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
-import com.olskrain.aggregatornews.presentation.presenter.ChannelDetailFragmentPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.NewsListFragmentPresenter;
 import com.olskrain.aggregatornews.presentation.ui.activity.NewDetailActivity;
 import com.olskrain.aggregatornews.presentation.ui.adapter.NewsListRVAdapter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
@@ -42,7 +43,7 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
     public static final String ARG_CDF_ID = "channelDetailId";
     private RecyclerView newsListRecyclerView;
     private NewsListRVAdapter newsListRVAdapter;
-    private ChannelDetailFragmentPresenter channelDetailFragmentPresenter;
+    private NewsListFragmentPresenter newsListFragmentPresenter;
     private CompositeDisposable compositeDisposable;
     private ProgressBar loadingProgressBar;
     private String urlChannel;
@@ -55,12 +56,12 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
 
         if (getArguments() != null && getArguments().containsKey(ARG_CDF_ID)) {
             urlChannel = getArguments().getString(ARG_CDF_ID);
-            channelDetailFragmentPresenter = new ChannelDetailFragmentPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
-            channelDetailFragmentPresenter.attachView();
+            newsListFragmentPresenter = FactoryProvider.providerPresenterFactory().createNewsListFragmentPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
+            newsListFragmentPresenter.attachView();
         }
 
         initUi(rootView);
-        channelDetailFragmentPresenter.refreshNewsList(urlChannel);
+        newsListFragmentPresenter.refreshNewsList(urlChannel);
         return rootView;
     }
 
@@ -70,7 +71,7 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
         newsListRecyclerView = view.findViewById(R.id.news_list);
         newsListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         newsListRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL));
-        newsListRVAdapter = new NewsListRVAdapter(channelDetailFragmentPresenter.newsListPresenter);
+        newsListRVAdapter = new NewsListRVAdapter(newsListFragmentPresenter.newsRecycleListPresenter);
         newsListRecyclerView.setAdapter(newsListRVAdapter);
     }
 

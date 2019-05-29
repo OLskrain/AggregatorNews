@@ -2,6 +2,7 @@ package com.olskrain.aggregatornews.data.repository;
 
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.Common.NetworkStatus;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.api.IServerDataSource;
 import com.olskrain.aggregatornews.data.api.ServerDataSource;
 import com.olskrain.aggregatornews.data.cache.ChannelsListCache;
@@ -22,16 +23,10 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class ChannelsListRepository implements IChannelsListRepository {
-    private IChannelsListCache cache;
-    private IServerDataSource serverDataSource;
-    private final List<Feed> channelsList;
+    private final IChannelsListCache cache = FactoryProvider.providerCacheFactory().createChannelsListCache();
+    private final IServerDataSource serverDataSource = FactoryProvider.providerServerDataSourceFactory().createServerDataSource();
+    private final List<Feed> channelsList = new ArrayList<>();
     private boolean fistUpdate = true;
-
-    public ChannelsListRepository() {
-        this.cache = new ChannelsListCache();
-        this.serverDataSource = new ServerDataSource();
-        this.channelsList = new ArrayList<>();
-    }
 
     @Override
     public void putUpdatedData(final Command command, final List<Channel> channelsList) {

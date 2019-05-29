@@ -5,5 +5,5 @@ package com.olskrain.aggregatornews.Common.myObserver;
  */
 
 public interface ICustomPublishGetter {
-    CustomPublisher getPublisher();
+    ICustomPublisher getPublisher();
 }

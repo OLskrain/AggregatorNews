@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.olskrain.aggregatornews.R;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.presentation.presenter.FavoriteChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IFavoriteChannelsListView;
 
@@ -34,7 +35,7 @@ public class FavoriteChannelsListFragment extends Fragment implements IFavoriteC
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite_list, null);
 
-        favoriteChannelsListPresenter = new FavoriteChannelsListPresenter();
+        favoriteChannelsListPresenter = FactoryProvider.providerPresenterFactory().createFavoriteChannelsListPresenter();
         return view;
     }
 }

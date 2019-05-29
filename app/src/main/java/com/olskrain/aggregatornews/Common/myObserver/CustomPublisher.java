@@ -9,21 +9,20 @@ import java.util.List;
  * Created by Andrey Ievlev on 22,Май,2019
  */
 
-public class CustomPublisher {
-    private final List<ICustomObserver> observers;
+public class CustomPublisher implements ICustomPublisher {
+    private final List<ICustomObserver> observers = new ArrayList<>();
 
-    public CustomPublisher() {
-        observers = new ArrayList<>();
-    }
-
+    @Override
     public void subscribe(final ICustomObserver observer) {
         observers.add(observer);
     }
 
+    @Override
     public void unsubscribe(final ICustomObserver observer) {
         observers.remove(observer);
     }
 
+    @Override
     public void notify(final Command command) {
         for (ICustomObserver observer : observers)
             observer.actionAboveChannelsList(command);

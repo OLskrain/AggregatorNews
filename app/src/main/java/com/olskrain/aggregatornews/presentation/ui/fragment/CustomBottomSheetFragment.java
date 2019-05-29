@@ -14,7 +14,9 @@ import android.widget.TextView;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.Common.myObserver.CustomPublisher;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublishGetter;
+import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.R;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.CustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
@@ -43,7 +45,7 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     private Feed channel;
 
     private CustomBottomSheetPresenter customBottomSheetPresenter;
-    private CustomPublisher publisher;
+    private ICustomPublisher publisher;
 
     @Override
     public void onAttach(Context context) {
@@ -55,7 +57,8 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottom_sheet_layout, container, false);
-        customBottomSheetPresenter = new CustomBottomSheetPresenter(this);
+
+        customBottomSheetPresenter = FactoryProvider.providerPresenterFactory().createCustomBottomSheetPresenter(this);
 
         if (getArguments() != null) {
             channel = getArguments().getParcelable(CHANNEL_POSITION);

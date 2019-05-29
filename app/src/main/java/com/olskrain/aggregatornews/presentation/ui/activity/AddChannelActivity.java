@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.olskrain.aggregatornews.R;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.presentation.presenter.AddChannelPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
 
@@ -35,7 +36,7 @@ public class AddChannelActivity extends AppCompatActivity implements IAddChannel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_channel);
 
-        addChannelPresenter = new AddChannelPresenter(this);
+        addChannelPresenter = FactoryProvider.providerPresenterFactory().createAddChannelPresenter(this);
 
         initUi();
     }

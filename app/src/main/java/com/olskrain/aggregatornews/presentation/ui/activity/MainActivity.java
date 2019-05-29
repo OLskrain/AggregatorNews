@@ -10,7 +10,9 @@ import android.view.MenuItem;
 
 import com.olskrain.aggregatornews.Common.myObserver.CustomPublisher;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublishGetter;
+import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.R;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.presentation.presenter.MainActivityPresenter;
 import com.olskrain.aggregatornews.presentation.ui.adapter.CustomFragmentPA;
 import com.olskrain.aggregatornews.presentation.ui.fragment.ChannelsListFragment;
@@ -32,15 +34,15 @@ public class MainActivity extends AppCompatActivity implements IMainView, ICusto
     private MainActivityPresenter mainPresenter;
     private ChannelsListFragment channelsListFragment;
     private FavoriteChannelsListFragment favoriteChannelsListFragment;
-    private CustomPublisher publisher;
+    private ICustomPublisher publisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        publisher = new CustomPublisher();
-        mainPresenter = new MainActivityPresenter(this);
+        publisher = FactoryProvider.providerCustomPublisherFactory().createCustomPublisher();
+        mainPresenter = FactoryProvider.providerPresenterFactory().createMainActivityPresenter(this);
         initUI();
 
 //        if (ContextCompat.checkSelfPermission(App.getInstance(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
@@ -182,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, ICusto
     }
 
     @Override
-    public CustomPublisher getPublisher() {
+    public ICustomPublisher getPublisher() {
         return publisher;
     }
 }

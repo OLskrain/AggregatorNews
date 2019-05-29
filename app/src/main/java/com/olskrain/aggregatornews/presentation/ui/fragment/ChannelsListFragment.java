@@ -13,8 +13,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,6 +21,7 @@ import android.widget.ProgressBar;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomObserver;
 import com.olskrain.aggregatornews.R;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.activity.AddChannelActivity;
@@ -36,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -84,7 +82,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
 
         customBottomSheetFragment = new CustomBottomSheetFragment();
         compositeDisposable = new CompositeDisposable();
-        channelsListPresenter = new ChannelsListPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
+        channelsListPresenter = FactoryProvider.providerPresenterFactory().createChannelsListPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
         channelsListPresenter.attachView();
 
         initUi(view);
@@ -101,7 +99,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         RecyclerView allChannelsListRecyclerView = view.findViewById(R.id.all_channels_list);
         allChannelsListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         allChannelsListRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL));
-        allChannelsListRVAdapter = new ChannelsListRVAdapter(channelsListPresenter.channelListPresenter);
+        allChannelsListRVAdapter = new ChannelsListRVAdapter(channelsListPresenter.channelRecycleListPresenter);
         allChannelsListRecyclerView.setAdapter(allChannelsListRVAdapter);
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refreshLayout_channels);

@@ -3,8 +3,9 @@ package com.olskrain.aggregatornews.presentation.presenter;
 import android.annotation.SuppressLint;
 
 import com.olskrain.aggregatornews.Common.Command;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
-import com.olskrain.aggregatornews.domain.usecase.NewsListUseCase;
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsListUseCase;
 import com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList.INewsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
 import com.olskrain.aggregatornews.presentation.ui.view.item.INewsListItemView;
@@ -21,8 +22,8 @@ import io.reactivex.subjects.PublishSubject;
  * Created by Andrey Ievlev on 03,Май,2019
  */
 
-public class ChannelDetailFragmentPresenter {
-    public class NewsListPresenter implements INewsListPresenter {
+public class NewsListFragmentPresenter {
+    public class NewsRecycleListPresenter implements INewsListPresenter {
 
         private final PublishSubject<INewsListItemView> clickItem = PublishSubject.create();
 
@@ -48,24 +49,23 @@ public class ChannelDetailFragmentPresenter {
 
     @SuppressLint("CheckResult")
     public void attachView() {
-        newsListPresenter.clickItem.subscribe(iChannelListItemView ->
+        newsRecycleListPresenter.clickItem.subscribe(iChannelListItemView ->
                 channelDetailFragmentView.goToNewsDetailActivity(newsListLocal.get(iChannelListItemView.getCurrentPosition()).getLink()));
     }
 
-    public NewsListPresenter newsListPresenter;
+    public NewsRecycleListPresenter newsRecycleListPresenter;
     private final IChannelDetailFragmentView channelDetailFragmentView;
-    private NewsListUseCase newsListUseCase;
+    private final INewsListUseCase newsListUseCase = FactoryProvider.providerUseCaseFactory().createNewsListUseCase();
     private final Scheduler mainThreadScheduler;
     private final CompositeDisposable compositeDisposable;
     private Disposable disposable;
     private List<ItemNew> newsListLocal;
 
-    public ChannelDetailFragmentPresenter(final IChannelDetailFragmentView view, final CompositeDisposable compositeDisposable, final Scheduler mainThreadScheduler) {
+    public NewsListFragmentPresenter(final IChannelDetailFragmentView view, final CompositeDisposable compositeDisposable, final Scheduler mainThreadScheduler) {
         this.channelDetailFragmentView = view;
         this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
-        this.newsListPresenter = new NewsListPresenter();
-        this.newsListUseCase = new NewsListUseCase();
+        this.newsRecycleListPresenter = new NewsRecycleListPresenter();
     }
 
     public void refreshNewsList(final String urlChannel) {

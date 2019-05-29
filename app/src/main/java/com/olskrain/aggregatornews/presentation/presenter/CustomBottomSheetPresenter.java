@@ -13,7 +13,7 @@ import timber.log.Timber;
 public class CustomBottomSheetPresenter {
     private final ICustomBottomSheetView customBottomSheetView;
 
-    public CustomBottomSheetPresenter(ICustomBottomSheetView customBottomSheetView) {
+    public CustomBottomSheetPresenter(final ICustomBottomSheetView customBottomSheetView) {
         this.customBottomSheetView = customBottomSheetView;
     }
 

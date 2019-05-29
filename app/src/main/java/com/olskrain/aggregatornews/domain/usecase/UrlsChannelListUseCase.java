@@ -1,7 +1,8 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlsChannelListRepository;
-import com.olskrain.aggregatornews.data.repository.UrlListRepositoryRepository;
+import com.olskrain.aggregatornews.data.repository.UrlListChannelRepository;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IUrlsChannelListUseCase;
 
 import java.util.List;
@@ -13,11 +14,7 @@ import io.reactivex.Single;
  */
 
 public class UrlsChannelListUseCase implements IUrlsChannelListUseCase {
-    private IUrlsChannelListRepository urlsChannelListRepository;
-
-    public UrlsChannelListUseCase() {
-        this.urlsChannelListRepository = new UrlListRepositoryRepository();
-    }
+    private final IUrlsChannelListRepository urlsChannelListRepository = FactoryProvider.providerRepositoryFactory().createUrlsChannelListRepository();
 
     @Override
     public Single<List<String>> getUrlsChannelList() {

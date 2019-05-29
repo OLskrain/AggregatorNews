@@ -1,5 +1,6 @@
 package com.olskrain.aggregatornews.presentation.presenter;
 
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.usecase.AddChannelUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IAddChannelUseCase;
 import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
@@ -11,11 +12,10 @@ import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
 public class AddChannelPresenter {
 
     private final IAddChannelView addChannelView;
-    private IAddChannelUseCase addChannelUseCase;
+    private final IAddChannelUseCase addChannelUseCase = FactoryProvider.providerUseCaseFactory().createAddChannelUseCase();
 
-    public AddChannelPresenter(IAddChannelView addChannelView) {
+    public AddChannelPresenter(final IAddChannelView addChannelView) {
         this.addChannelView = addChannelView;
-        addChannelUseCase = new AddChannelUseCase();
     }
 
     public void checkError(final String urlChannel) {

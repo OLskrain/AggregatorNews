@@ -1,6 +1,8 @@
 package com.olskrain.aggregatornews.presentation.presenter;
 
-import com.olskrain.aggregatornews.domain.usecase.NewDetailUseCase;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
+import com.olskrain.aggregatornews.domain.usecase.NewsDetailUseCase;
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsDetailUseCase;
 import com.olskrain.aggregatornews.presentation.ui.view.INewDetailActivityView;
 
 import io.reactivex.Scheduler;
@@ -12,25 +14,24 @@ import io.reactivex.disposables.Disposable;
  * Created by Andrey Ievlev on 11,Май,2019
  */
 
-public class NewDetailActivityPresenter {
+public class NewsDetailActivityPresenter {
 
     private final Scheduler mainThreadScheduler;
     private final INewDetailActivityView newDetailActivityView;
-    private NewDetailUseCase newDetailUseCase;
+    private final INewsDetailUseCase newsDetailUseCase = FactoryProvider.providerUseCaseFactory().createNewsDetailUseCase();
     private final CompositeDisposable compositeDisposable;
     private Disposable disposable;
 
-    public NewDetailActivityPresenter(final INewDetailActivityView view, final CompositeDisposable compositeDisposable, final Scheduler mainThreadScheduler) {
+    public NewsDetailActivityPresenter(final INewDetailActivityView view, final CompositeDisposable compositeDisposable, final Scheduler mainThreadScheduler) {
         this.newDetailActivityView = view;
         this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
-        this.newDetailUseCase = new NewDetailUseCase();
     }
 
     public void getWebPage(final String urlNews) {
         newDetailActivityView.showLoading();
 
-        Single<String> responseRepository = newDetailUseCase.getWebPage(urlNews);
+        Single<String> responseRepository = newsDetailUseCase.getWebPage(urlNews);
         disposable = responseRepository
                 .observeOn(mainThreadScheduler)
                 .subscribe(webPage -> {

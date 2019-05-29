@@ -14,7 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.olskrain.aggregatornews.R;
-import com.olskrain.aggregatornews.presentation.presenter.NewDetailActivityPresenter;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
+import com.olskrain.aggregatornews.presentation.presenter.NewsDetailActivityPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.INewDetailActivityView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,7 +35,7 @@ public class NewDetailActivity extends AppCompatActivity implements INewDetailAc
     private ProgressBar loadingProgressBar;
     private String urlNew;
     private RelativeLayout webContainer;
-    private NewDetailActivityPresenter newDetailActivityPresenter;
+    private NewsDetailActivityPresenter newsDetailActivityPresenter;
     private CompositeDisposable compositeDisposable;
 
     @Override
@@ -46,8 +47,8 @@ public class NewDetailActivity extends AppCompatActivity implements INewDetailAc
         initUi();
 
         urlNew = getIntent().getStringExtra(EXTRA_URL_NEW_KEY);
-        newDetailActivityPresenter = new NewDetailActivityPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
-        newDetailActivityPresenter.getWebPage(urlNew);
+        newsDetailActivityPresenter = FactoryProvider.providerPresenterFactory().createNewsDetailActivityPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
+        newsDetailActivityPresenter.getWebPage(urlNew);
     }
 
     private void initUi() {
@@ -68,7 +69,7 @@ public class NewDetailActivity extends AppCompatActivity implements INewDetailAc
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            newDetailActivityPresenter.goToNewsList();
+            newsDetailActivityPresenter.goToNewsList();
             return true;
         }
         return super.onOptionsItemSelected(item);

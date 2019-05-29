@@ -6,6 +6,6 @@ import io.reactivex.Single;
  * Created by Andrey Ievlev on 11,Май,2019
  */
 
-public interface INewDetailUseCase {
+public interface INewsDetailUseCase {
     Single<String> getWebPage(String urlNews);
 }

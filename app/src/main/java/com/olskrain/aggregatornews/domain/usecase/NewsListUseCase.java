@@ -1,5 +1,6 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsListRepository;
 import com.olskrain.aggregatornews.data.repository.NewsListRepository;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
@@ -15,11 +16,7 @@ import io.reactivex.Single;
 
 public class NewsListUseCase implements INewsListUseCase {
 
-    private INewsListRepository newsListRepository;
-
-    public NewsListUseCase() {
-        this.newsListRepository = new NewsListRepository();
-    }
+    private final INewsListRepository newsListRepository = FactoryProvider.providerRepositoryFactory().createNewsListRepository();
 
     @Override
     public Single<List<ItemNew>> refreshNewsList(final String urlChannel) {

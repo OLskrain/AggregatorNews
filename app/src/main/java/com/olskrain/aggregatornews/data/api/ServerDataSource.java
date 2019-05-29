@@ -1,6 +1,7 @@
 package com.olskrain.aggregatornews.data.api;
 
-import com.olskrain.aggregatornews.Common.XmlRssParser;
+import com.olskrain.aggregatornews.Common.IXmlRssParser;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 
 import java.io.BufferedInputStream;
@@ -20,14 +21,9 @@ import io.reactivex.schedulers.Schedulers;
 public class ServerDataSource implements IServerDataSource {
     private static final String ERROR_SERVER = "Ошибкасервера или парсера";
     private static final String GET_REQUEST = "GET";
-    private XmlRssParser xmlRssParser;
+    private final IXmlRssParser xmlRssParser = FactoryProvider.providerXmlRssParserFactory().createXmlRssParser();
+    private final List<Channel> channelsList = new ArrayList<>();
     private String responseServer;
-    private final List<Channel> channelsList;
-
-    public ServerDataSource() {
-        this.xmlRssParser = new XmlRssParser();
-        this.channelsList = new ArrayList<>();
-    }
 
     @Override
     public Single<List<Channel>> getChannelFromApi(final List<String> urlList) {

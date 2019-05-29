@@ -3,6 +3,7 @@ package com.olskrain.aggregatornews.Common;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.cache.DBHelper;
 
 import timber.log.Timber;
@@ -21,7 +22,7 @@ public class App extends Application {
         instance = this;
 
         Timber.plant(new Timber.DebugTree());
-        dbHelper = new DBHelper(instance, NAME_DB, null, 1);
+        dbHelper = FactoryProvider.providerDBHelperFactory().createDBHelper(instance, NAME_DB, null, 1);
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_TAG, MODE_PRIVATE);
     }
 

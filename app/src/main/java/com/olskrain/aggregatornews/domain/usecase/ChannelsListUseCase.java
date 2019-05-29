@@ -3,6 +3,7 @@ package com.olskrain.aggregatornews.domain.usecase;
 import android.annotation.SuppressLint;
 
 import com.olskrain.aggregatornews.Common.Command;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.repository.ChannelsListRepository;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IChannelsListRepository;
 import com.olskrain.aggregatornews.domain.entities.Feed;
@@ -22,16 +23,11 @@ import timber.log.Timber;
 
 public class ChannelsListUseCase implements IChannelsListUseCase {
 
-    private IChannelsListRepository channelsListRepository;
-
-    public ChannelsListUseCase() {
-        this.channelsListRepository = new ChannelsListRepository();
-    }
+    private final IChannelsListRepository channelsListRepository = FactoryProvider.providerRepositoryFactory().createChannelsListRepository();
 
     @SuppressLint("CheckResult")
     @Override
     public Single<Feed> addNewChannel(final Command command, final String urlChannel) {
-        Timber.d("rty pop" + urlChannel);
         List<String> urlList = new ArrayList<>();
         urlList.add(urlChannel);
         return channelsListRepository.getChannel(command, urlList);

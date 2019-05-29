@@ -1,5 +1,6 @@
 package com.olskrain.aggregatornews.data.repository;
 
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.cache.interfaceCache.INewsListCache;
 import com.olskrain.aggregatornews.data.cache.NewsListCache;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsListRepository;
@@ -14,11 +15,7 @@ import io.reactivex.Single;
  */
 
 public class NewsListRepository implements INewsListRepository {
-    private INewsListCache cache;
-
-    public NewsListRepository() {
-        this.cache = new NewsListCache();
-    }
+    private final INewsListCache cache = FactoryProvider.providerCacheFactory().createNewsListCache();
 
     @Override
     public Single<List<ItemNew>> getNewsList(final String urlChannel) {

@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Andrey Ievlev on 20,Май,2019
  */
 
-public class UrlListRepositoryRepository implements IUrlsChannelListRepository {
+public class UrlListChannelRepository implements IUrlsChannelListRepository {
     private static final String ERROR_SHARED_PREFERENCES = "Ошибка: нет URL списка";
     private static final String BUNCH_KEYS = "bunch keys";
     private static final String DEFAULT_VALUE = "value";

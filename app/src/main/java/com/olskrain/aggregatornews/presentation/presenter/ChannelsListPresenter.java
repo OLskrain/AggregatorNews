@@ -3,11 +3,10 @@ package com.olskrain.aggregatornews.presentation.presenter;
 import android.annotation.SuppressLint;
 
 import com.olskrain.aggregatornews.Common.Command;
+import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Feed;
-import com.olskrain.aggregatornews.domain.usecase.ChannelsListUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IChannelsListUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IUrlsChannelListUseCase;
-import com.olskrain.aggregatornews.domain.usecase.UrlsChannelListUseCase;
 import com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList.IChannelListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelsListView;
 import com.olskrain.aggregatornews.presentation.ui.view.item.IChannelListItemView;
@@ -27,7 +26,7 @@ import io.reactivex.subjects.PublishSubject;
  */
 
 public class ChannelsListPresenter {
-    public class ChannelListPresenter implements IChannelListPresenter {
+    public class ChannelRecycleListPresenter implements IChannelListPresenter {
         private final PublishSubject<IChannelListItemView> clickItem = PublishSubject.create();
         private final PublishSubject<IChannelListItemView> clickMenu = PublishSubject.create();
 
@@ -55,14 +54,14 @@ public class ChannelsListPresenter {
         }
     }
 
-    public ChannelListPresenter channelListPresenter;
+    public ChannelRecycleListPresenter channelRecycleListPresenter;
     private final IChannelsListView channelsListView;
-    private IChannelsListUseCase channelsListUseCase;
-    private IUrlsChannelListUseCase urlsChannelListUseCase;
+    private final IChannelsListUseCase channelsListUseCase = FactoryProvider.providerUseCaseFactory().createChannelsListUseCase();
+    private final IUrlsChannelListUseCase urlsChannelListUseCase = FactoryProvider.providerUseCaseFactory().createUrlsChannelListUseCase();
     private final Scheduler mainThreadScheduler;
+    private final CompositeDisposable compositeDisposable;
     private List<Feed> channelsListLocal = new ArrayList<>();
     private List<String> urlChannelsListLocal = new ArrayList<>();
-    private final CompositeDisposable compositeDisposable;
     private Disposable disposable;
     private String currentUrlChannel;
 
@@ -70,17 +69,15 @@ public class ChannelsListPresenter {
         this.channelsListView = view;
         this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
-        this.channelsListUseCase = new ChannelsListUseCase();
-        this.channelListPresenter = new ChannelListPresenter();
-        this.urlsChannelListUseCase = new UrlsChannelListUseCase();
+        this.channelRecycleListPresenter = new ChannelRecycleListPresenter();
     }
 
     @SuppressLint("CheckResult")
     public void attachView() {
-        channelListPresenter.clickItem.subscribe(iChannelListItemView ->
+        channelRecycleListPresenter.clickItem.subscribe(iChannelListItemView ->
                 channelsListView.goToChannelDetailFragment(channelsListLocal.get(iChannelListItemView.getCurrentPosition()).getUrl()));
 
-        channelListPresenter.clickMenu.subscribe(iChannelListItemView -> {
+        channelRecycleListPresenter.clickMenu.subscribe(iChannelListItemView -> {
             currentUrlChannel = channelsListLocal.get(iChannelListItemView.getCurrentPosition()).getUrl();
             channelsListView.showBottomSheet(channelsListLocal.get(iChannelListItemView.getCurrentPosition()));
         });
