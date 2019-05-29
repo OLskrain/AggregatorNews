@@ -1,5 +1,7 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IAddChannelUseCase;
+
 /**
  * Created by Andrey Ievlev on 28,Май,2019
  */

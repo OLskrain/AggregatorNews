@@ -4,8 +4,9 @@ import android.annotation.SuppressLint;
 
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.data.repository.ChannelsListRepository;
-import com.olskrain.aggregatornews.data.repository.IChannelsListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IChannelsListRepository;
 import com.olskrain.aggregatornews.domain.entities.Feed;
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IChannelsListUseCase;
 
 import java.util.ArrayList;
 import java.util.List;

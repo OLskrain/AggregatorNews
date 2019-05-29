@@ -1,9 +1,7 @@
 package com.olskrain.aggregatornews.presentation.ui.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +11,8 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.olskrain.aggregatornews.R;
-import com.olskrain.aggregatornews.presentation.presenter.list.IChannelListPresenter;
-import com.olskrain.aggregatornews.presentation.ui.activity.ChannelDetailActivity;
-import com.olskrain.aggregatornews.presentation.ui.fragment.ChannelDetailFragment;
+import com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList.IChannelListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.item.IChannelListItemView;
-
-import io.reactivex.functions.Function;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 29,Апрель,2019

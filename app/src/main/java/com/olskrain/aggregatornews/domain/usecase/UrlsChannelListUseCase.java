@@ -1,10 +1,9 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
-import com.olskrain.aggregatornews.data.repository.IUrlsChannelListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlsChannelListRepository;
 import com.olskrain.aggregatornews.data.repository.UrlListRepositoryRepository;
-import com.olskrain.aggregatornews.domain.entities.Feed;
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IUrlsChannelListUseCase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;

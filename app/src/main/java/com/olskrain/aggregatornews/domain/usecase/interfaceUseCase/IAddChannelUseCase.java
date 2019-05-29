@@ -1,4 +1,4 @@
-package com.olskrain.aggregatornews.domain.usecase;
+package com.olskrain.aggregatornews.domain.usecase.interfaceUseCase;
 
 /**
  * Created by Andrey Ievlev on 28,Май,2019

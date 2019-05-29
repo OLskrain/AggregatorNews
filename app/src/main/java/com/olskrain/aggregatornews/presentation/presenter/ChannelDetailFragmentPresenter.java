@@ -5,7 +5,7 @@ import android.annotation.SuppressLint;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import com.olskrain.aggregatornews.domain.usecase.NewsListUseCase;
-import com.olskrain.aggregatornews.presentation.presenter.list.INewsListPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList.INewsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
 import com.olskrain.aggregatornews.presentation.ui.view.item.INewsListItemView;
 

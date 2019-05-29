@@ -1,7 +1,7 @@
 package com.olskrain.aggregatornews.presentation.presenter;
 
 import com.olskrain.aggregatornews.domain.usecase.AddChannelUseCase;
-import com.olskrain.aggregatornews.domain.usecase.IAddChannelUseCase;
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IAddChannelUseCase;
 import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
 
 /**

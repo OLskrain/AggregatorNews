@@ -1,4 +1,4 @@
-package com.olskrain.aggregatornews.presentation.presenter.list;
+package com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList;
 
 import com.olskrain.aggregatornews.presentation.ui.view.item.INewsListItemView;
 

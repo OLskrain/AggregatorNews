@@ -1,8 +1,9 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
-import com.olskrain.aggregatornews.data.repository.INewsListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsListRepository;
 import com.olskrain.aggregatornews.data.repository.NewsListRepository;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsListUseCase;
 
 import java.util.List;
 

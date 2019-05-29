@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.olskrain.aggregatornews.R;
-import com.olskrain.aggregatornews.presentation.presenter.list.INewsListPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList.INewsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.item.INewsListItemView;
 
 /**

@@ -1,4 +1,4 @@
-package com.olskrain.aggregatornews.data.cache;
+package com.olskrain.aggregatornews.data.cache.interfaceCache;
 
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 

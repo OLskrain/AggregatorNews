@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.olskrain.aggregatornews.Common.App;
+import com.olskrain.aggregatornews.data.cache.interfaceCache.INewsListCache;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 
 import java.util.ArrayList;

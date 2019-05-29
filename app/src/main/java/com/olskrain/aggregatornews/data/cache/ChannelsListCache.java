@@ -2,23 +2,20 @@ package com.olskrain.aggregatornews.data.cache;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.Command;
+import com.olskrain.aggregatornews.data.cache.interfaceCache.IChannelsListCache;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 

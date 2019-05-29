@@ -3,6 +3,7 @@ package com.olskrain.aggregatornews.data.repository;
 import com.olskrain.aggregatornews.Common.NetworkStatus;
 import com.olskrain.aggregatornews.data.api.IServerDataSource;
 import com.olskrain.aggregatornews.data.api.ServerDataSource;
+import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsDetailRepository;
 
 import io.reactivex.Single;
 

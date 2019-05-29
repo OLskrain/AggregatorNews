@@ -1,4 +1,4 @@
-package com.olskrain.aggregatornews.data.repository;
+package com.olskrain.aggregatornews.data.repository.interfaceRepositiry;
 
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Channel;

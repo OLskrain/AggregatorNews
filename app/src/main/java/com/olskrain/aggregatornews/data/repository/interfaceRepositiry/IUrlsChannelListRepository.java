@@ -1,4 +1,4 @@
-package com.olskrain.aggregatornews.data.repository;
+package com.olskrain.aggregatornews.data.repository.interfaceRepositiry;
 
 import java.util.List;
 

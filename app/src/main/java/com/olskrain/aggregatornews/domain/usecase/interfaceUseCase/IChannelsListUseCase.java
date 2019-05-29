@@ -1,4 +1,4 @@
-package com.olskrain.aggregatornews.domain.usecase;
+package com.olskrain.aggregatornews.domain.usecase.interfaceUseCase;
 
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Channel;

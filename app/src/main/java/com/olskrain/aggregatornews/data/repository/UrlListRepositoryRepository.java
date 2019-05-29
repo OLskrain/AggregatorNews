@@ -1,20 +1,15 @@
 package com.olskrain.aggregatornews.data.repository;
 
 import android.content.SharedPreferences;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.olskrain.aggregatornews.Common.App;
+import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlsChannelListRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 20,Май,2019

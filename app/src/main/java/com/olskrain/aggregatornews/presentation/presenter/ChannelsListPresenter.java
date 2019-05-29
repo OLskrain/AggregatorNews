@@ -5,10 +5,10 @@ import android.annotation.SuppressLint;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.domain.usecase.ChannelsListUseCase;
-import com.olskrain.aggregatornews.domain.usecase.IChannelsListUseCase;
-import com.olskrain.aggregatornews.domain.usecase.IUrlsChannelListUseCase;
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IChannelsListUseCase;
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IUrlsChannelListUseCase;
 import com.olskrain.aggregatornews.domain.usecase.UrlsChannelListUseCase;
-import com.olskrain.aggregatornews.presentation.presenter.list.IChannelListPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList.IChannelListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelsListView;
 import com.olskrain.aggregatornews.presentation.ui.view.item.IChannelListItemView;
 
