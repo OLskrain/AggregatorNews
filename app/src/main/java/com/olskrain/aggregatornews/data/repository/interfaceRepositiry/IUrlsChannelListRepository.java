@@ -12,5 +12,5 @@ import io.reactivex.Single;
 public interface IUrlsChannelListRepository {
     Single<List<String>> getUrlsChannelList();
 
-    void putUrlChannelsList(List<String> urlChannelsList);
+    void putUrlsChannelsList(List<String> urlChannelsList);
 }

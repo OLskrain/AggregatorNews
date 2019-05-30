@@ -12,4 +12,8 @@ import io.reactivex.Single;
 
 public interface INewsListUseCase {
     Single<List<ItemNew>> refreshNewsList(String urlChannel);
+
+    Single<String> getUrlChannel();
+
+    void saveUrlChannel(String urlChannel);
 }

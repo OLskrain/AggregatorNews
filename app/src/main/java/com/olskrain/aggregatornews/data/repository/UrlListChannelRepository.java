@@ -16,7 +16,6 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class UrlListChannelRepository implements IUrlsChannelListRepository {
-    private static final String ERROR_SHARED_PREFERENCES = "Ошибка: нет URL списка";
     private static final String BUNCH_KEYS = "bunch keys";
     private static final String DEFAULT_VALUE = "value";
     private static final int DEFAULT_VALUE_KEYS = 50;
@@ -35,7 +34,7 @@ public class UrlListChannelRepository implements IUrlsChannelListRepository {
     }
 
     @Override
-    public void putUrlChannelsList(final List<String> urlChannelsList) {
+    public void putUrlsChannelsList(final List<String> urlChannelsList) {
         SharedPreferences.Editor editor = App.getInstance().getSharedPreferences().edit();
 
         if (urlChannelsList != null) {

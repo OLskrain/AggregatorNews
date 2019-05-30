@@ -6,7 +6,7 @@
     <string name="add_channel_name">Add channel</string>
 
     <!--Menu-->
-    <string name="settings_button_title">settings</string>
+    <string name="settings_button_title">Settings</string>
     <string name="send_button_menu">SEND</string>
 
     <!--Title Fragment-->
@@ -26,10 +26,10 @@
     <string name="error_failed_update">Failed to update the list!</string>
     <string name="error_check_duplicate">This channel already exists.</string>
     <string name="error_different">Error</string>
-    <string name="error_invalid_url">You entered an invalid string</string>
+    <string name="error_invalid_url">You entered an invalid URL address</string>
 
     <!--Warning and hint message-->
     <string name="warning_delete_channel">Delete channel?</string>
-    <string name="hint_to_user">"Enter the URL of the rss resource"</string>
+    <string name="hint_to_user">Enter the URL address of the RSS resource</string>
 
 </resources>

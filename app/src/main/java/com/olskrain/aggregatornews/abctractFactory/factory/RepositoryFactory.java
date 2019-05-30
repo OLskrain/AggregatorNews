@@ -4,10 +4,12 @@ import com.olskrain.aggregatornews.abctractFactory.interfaceFactory.IRepositoryF
 import com.olskrain.aggregatornews.data.repository.ChannelsListRepository;
 import com.olskrain.aggregatornews.data.repository.NewsDetailRepository;
 import com.olskrain.aggregatornews.data.repository.NewsListRepository;
+import com.olskrain.aggregatornews.data.repository.UrlChannelRepository;
 import com.olskrain.aggregatornews.data.repository.UrlListChannelRepository;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IChannelsListRepository;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsDetailRepository;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlChannelRepository;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlsChannelListRepository;
 
 /**
@@ -34,5 +36,10 @@ public class RepositoryFactory implements IRepositoryFactory {
     @Override
     public IUrlsChannelListRepository createUrlsChannelListRepository() {
         return new UrlListChannelRepository();
+    }
+
+    @Override
+    public IUrlChannelRepository createUrlChannelRepository() {
+        return new UrlChannelRepository();
     }
 }

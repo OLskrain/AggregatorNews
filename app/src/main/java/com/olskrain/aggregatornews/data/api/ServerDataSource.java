@@ -31,7 +31,7 @@ public class ServerDataSource implements IServerDataSource {
             for (int i = 0; i < urlList.size(); i++) {
                 String currentResponseServer = getHTTPData(urlList.get(i));
                 if (currentResponseServer.equals(ERROR_SERVER)) {
-                    emitter.onError(new IllegalAccessException());
+                    emitter.onError(new RuntimeException());
                 } else {
                     Channel channel = xmlRssParser.parseData(urlList.get(i), currentResponseServer);
                     channelsList.add(channel);

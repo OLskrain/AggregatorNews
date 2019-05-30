@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Label name-->
+    <string name="app_name">Агрегатор новостей</string>
+    <string name="channel_detail_name">Новости</string>
+    <string name="new_detail_name">Интернет страница</string>
+    <string name="add_channel_name">Добавить канал</string>
+
+    <!--Menu-->
+    <string name="settings_button_title">Настройки</string>
+    <string name="send_button_menu">ОТПРАВИТЬ</string>
+
+    <!--Title Fragment-->
+    <string name="channels_list_tab_title">Все новости</string>
+    <string name="favorites_list_tab_title">Избранные новости</string>
+    <string name="fab_behavior_name">com.olskrain.aggregatornews.presentation.ui.FABHideOnScroll</string>
+
+    <!--Channel list bottom sheet-->
+    <string name="bottom_sheet_share">Поделиться</string>
+    <string name="bottom_sheet_add_to_favorites_list">Добавить в избранное</string>
+    <string name="bottom_sheet_delete_channel">Удалить канал</string>
+    <string name="button_action_cancel">ОТМЕНА</string>
+
+    <!--Error message-->
+    <string name="error_connection">Отсутствует подключение к интернету!</string>
+    <string name="error_no_channels">У вас нет ни одного добавленного канала!</string>
+    <string name="error_failed_update">Неудалось обновить список!</string>
+    <string name="error_check_duplicate">Такой канал уже добавлен.</string>
+    <string name="error_different">Ошибка!</string>
+    <string name="error_invalid_url">Вы ввели некорректный URL адресс!</string>
+
+    <!--Warning and hint message-->
+    <string name="warning_delete_channel">Удалить канал?</string>
+    <string name="hint_to_user">Введите URL адресс RSS ресурса</string>
+</resources>

@@ -51,6 +51,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         Bundle arguments = new Bundle();
         arguments.putString("arg", arg);
         fragment.setArguments(arguments);
+        fragment.setRetainInstance(true);
         return fragment;
     }
 
@@ -75,15 +76,20 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     private ChannelsListRVAdapter allChannelsListRVAdapter;
     private ChannelsListPresenter channelsListPresenter;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        customBottomSheetFragment = new CustomBottomSheetFragment();
+        compositeDisposable = new CompositeDisposable();
+        Timber.d("rty НОВЫЙ ФРАГМЕНТ");
+        channelsListPresenter = FactoryProvider.providerPresenterFactory().createChannelsListPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
+        channelsListPresenter.attachView();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_channel_list, container, false);
-
-        customBottomSheetFragment = new CustomBottomSheetFragment();
-        compositeDisposable = new CompositeDisposable();
-        channelsListPresenter = FactoryProvider.providerPresenterFactory().createChannelsListPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
-        channelsListPresenter.attachView();
 
         initUi(view);
         initOnClick();
@@ -238,6 +244,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
                 break;
             case DELETE_CHANNEL:
                 //TODO : возникает баг при перевороте и попытке вызвать метод
+                Timber.d("rty ссылка " + channelsListPresenter);
                 channelsListPresenter.deleteChannel(command);
                 break;
             default:
@@ -248,7 +255,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     @Override
     public void onStop() {
         super.onStop();
-        channelsListPresenter.putUrlsChannelList();
+        channelsListPresenter.saveUrlsChannelList();
         compositeDisposable.clear();
     }
 

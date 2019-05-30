@@ -20,6 +20,7 @@ import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
+import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 03,Май,2019
@@ -70,6 +71,7 @@ public class ChannelsListPresenter {
         this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
         this.channelRecycleListPresenter = new ChannelRecycleListPresenter();
+        Timber.d("rty НОВЫЙ ПРЕЗЕНТЕР");
     }
 
     @SuppressLint("CheckResult")
@@ -208,8 +210,8 @@ public class ChannelsListPresenter {
         compositeDisposable.add(disposable);
     }
 
-    public void putUrlsChannelList() {
-        urlsChannelListUseCase.putUrlChannelsList(urlChannelsListLocal);
+    public void saveUrlsChannelList() {
+        urlsChannelListUseCase.saveUrlChannelsList(urlChannelsListLocal);
     }
 
     public void goToAddChannelActivity(){

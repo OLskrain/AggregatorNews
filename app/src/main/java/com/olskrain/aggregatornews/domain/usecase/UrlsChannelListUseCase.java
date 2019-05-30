@@ -2,7 +2,6 @@ package com.olskrain.aggregatornews.domain.usecase;
 
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlsChannelListRepository;
-import com.olskrain.aggregatornews.data.repository.UrlListChannelRepository;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IUrlsChannelListUseCase;
 
 import java.util.List;
@@ -22,8 +21,8 @@ public class UrlsChannelListUseCase implements IUrlsChannelListUseCase {
     }
 
     @Override
-    public void putUrlChannelsList(final List<String> urlsChannelList) {
-        urlsChannelListRepository.putUrlChannelsList(urlsChannelList);
+    public void saveUrlChannelsList(final List<String> urlsChannelList) {
+        urlsChannelListRepository.putUrlsChannelsList(urlsChannelList);
     }
 
     @Override

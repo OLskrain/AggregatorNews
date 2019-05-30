@@ -26,7 +26,7 @@ import io.reactivex.disposables.CompositeDisposable;
  */
 
 @SuppressLint("Registered")
-public class NewDetailActivity extends AppCompatActivity implements INewDetailActivityView {
+public class NewsDetailActivity extends AppCompatActivity implements INewDetailActivityView {
 
     private static final String EXTRA_URL_NEW_KEY = "urlNews";
     private Toolbar toolbar;
@@ -46,7 +46,10 @@ public class NewDetailActivity extends AppCompatActivity implements INewDetailAc
         compositeDisposable = new CompositeDisposable();
         initUi();
 
-        urlNew = getIntent().getStringExtra(EXTRA_URL_NEW_KEY);
+        if (Intent.ACTION_VIEW.equals(getIntent().getAction()) && getIntent().getDataString() != null){
+            urlNew = getIntent().getDataString();
+        } else urlNew = getIntent().getStringExtra(EXTRA_URL_NEW_KEY);
+
         newsDetailActivityPresenter = FactoryProvider.providerPresenterFactory().createNewsDetailActivityPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
         newsDetailActivityPresenter.getWebPage(urlNew);
     }

@@ -3,6 +3,7 @@ package com.olskrain.aggregatornews.abctractFactory.interfaceFactory;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IChannelsListRepository;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsDetailRepository;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlChannelRepository;
 import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlsChannelListRepository;
 
 /**
@@ -17,4 +18,6 @@ public interface IRepositoryFactory {
     INewsListRepository createNewsListRepository();
 
     IUrlsChannelListRepository createUrlsChannelListRepository();
+
+    IUrlChannelRepository createUrlChannelRepository();
 }

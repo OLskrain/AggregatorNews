@@ -17,6 +17,7 @@ import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
+import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 03,Май,2019
@@ -60,6 +61,7 @@ public class NewsListFragmentPresenter {
     private final CompositeDisposable compositeDisposable;
     private Disposable disposable;
     private List<ItemNew> newsListLocal;
+    private String urlChannelLocal;
 
     public NewsListFragmentPresenter(final IChannelDetailFragmentView view, final CompositeDisposable compositeDisposable, final Scheduler mainThreadScheduler) {
         this.channelDetailFragmentView = view;
@@ -69,6 +71,7 @@ public class NewsListFragmentPresenter {
     }
 
     public void refreshNewsList(final String urlChannel) {
+        urlChannelLocal = urlChannel;
         channelDetailFragmentView.showLoading();
         Single<List<ItemNew>> responseRepository = newsListUseCase.refreshNewsList(urlChannel);
 
@@ -84,6 +87,25 @@ public class NewsListFragmentPresenter {
                 });
 
         compositeDisposable.add(disposable);
+    }
+
+    public void saveCurrentUrlChannel() {
+        newsListUseCase.saveUrlChannel(urlChannelLocal);
+    }
+
+    public void getUrlChannel() {
+        channelDetailFragmentView.showLoading();
+        Single<String> responseRepository = newsListUseCase.getUrlChannel();
+
+        disposable = responseRepository
+                .observeOn(mainThreadScheduler)
+                .subscribe(urlChannel -> {
+                    urlChannelLocal = urlChannel;
+                    refreshNewsList(urlChannel);
+                }, throwable -> {
+                    channelDetailFragmentView.hideLoading();
+                    channelDetailFragmentView.showError(Command.REFRESH_NEWS);
+                });
     }
 }
 
