@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.presentation.presenter.FavoriteChannelsListPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IFavoriteChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IFavoriteChannelsListView;
 
 /**
@@ -24,18 +25,22 @@ public class FavoriteChannelsListFragment extends Fragment implements IFavoriteC
         Bundle arguments = new Bundle();
         arguments.putString("arg", arg);
         fragment.setArguments(arguments);
+        fragment.setRetainInstance(true);
         return fragment;
     }
 
     public static final String ARG_FCLF_ID = "favoriteChannelListId";
-    private FavoriteChannelsListPresenter favoriteChannelsListPresenter;
+    private IFavoriteChannelsListPresenter favoriteChannelsListPresenter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_favorite_list, null);
+        return inflater.inflate(R.layout.fragment_favorite_list, null);
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         favoriteChannelsListPresenter = FactoryProvider.providerPresenterFactory().createFavoriteChannelsListPresenter();
-        return view;
     }
 }

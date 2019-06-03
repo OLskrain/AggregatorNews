@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.presentation.presenter.NewsDetailActivityPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.INewsDetailActivityPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.INewDetailActivityView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -35,7 +35,7 @@ public class NewsDetailActivity extends AppCompatActivity implements INewDetailA
     private ProgressBar loadingProgressBar;
     private String urlNew;
     private RelativeLayout webContainer;
-    private NewsDetailActivityPresenter newsDetailActivityPresenter;
+    private INewsDetailActivityPresenter newsDetailActivityPresenter;
     private CompositeDisposable compositeDisposable;
 
     @Override
@@ -46,7 +46,7 @@ public class NewsDetailActivity extends AppCompatActivity implements INewDetailA
         compositeDisposable = new CompositeDisposable();
         initUi();
 
-        if (Intent.ACTION_VIEW.equals(getIntent().getAction()) && getIntent().getDataString() != null){
+        if (Intent.ACTION_VIEW.equals(getIntent().getAction()) && getIntent().getDataString() != null) {
             urlNew = getIntent().getDataString();
         } else urlNew = getIntent().getStringExtra(EXTRA_URL_NEW_KEY);
 
@@ -95,7 +95,7 @@ public class NewsDetailActivity extends AppCompatActivity implements INewDetailA
 
     @Override
     public void goToNewsList() {
-        navigateUpTo(new Intent(this, ChannelDetailActivity.class));
+        navigateUpTo(new Intent(this, NewsListActivity.class));
     }
 
     @Override

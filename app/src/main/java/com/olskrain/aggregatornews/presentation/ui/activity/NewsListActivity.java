@@ -7,14 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.olskrain.aggregatornews.R;
-import com.olskrain.aggregatornews.presentation.ui.fragment.ChannelDetailFragment;
+import com.olskrain.aggregatornews.presentation.ui.fragment.NewsListFragment;
 
 /**
  * Created by Andrey Ievlev on 10,Май,2019
  */
 
 @SuppressLint("Registered")
-public class ChannelDetailActivity extends AppCompatActivity {
+public class NewsListActivity extends AppCompatActivity {
 
     private static final String NEW_FRAGMENT_TAG = "43ddDldd-c9e8-4554-B7e6-cf05jf49dbf0";
     private Toolbar toolbar;
@@ -28,10 +28,10 @@ public class ChannelDetailActivity extends AppCompatActivity {
         initUi();
 
         if (savedInstanceState == null) {
-            String urlChannel = getIntent().getStringExtra(ChannelDetailFragment.ARG_CDF_ID);
+            String urlChannel = getIntent().getStringExtra(NewsListFragment.ARG_CDF_ID);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.channel_detail_container, ChannelDetailFragment.getInstance(ChannelDetailFragment.ARG_CDF_ID, urlChannel), NEW_FRAGMENT_TAG)
+                    .add(R.id.channel_detail_container, NewsListFragment.getInstance(NewsListFragment.ARG_CDF_ID, urlChannel), NEW_FRAGMENT_TAG)
                     .commit();
         }
     }

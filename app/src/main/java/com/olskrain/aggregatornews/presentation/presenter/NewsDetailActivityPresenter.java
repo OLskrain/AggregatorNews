@@ -3,6 +3,7 @@ package com.olskrain.aggregatornews.presentation.presenter;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.usecase.NewsDetailUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsDetailUseCase;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.INewsDetailActivityPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.INewDetailActivityView;
 
 import io.reactivex.Scheduler;
@@ -15,7 +16,7 @@ import timber.log.Timber;
  * Created by Andrey Ievlev on 11,Май,2019
  */
 
-public class NewsDetailActivityPresenter {
+public class NewsDetailActivityPresenter implements INewsDetailActivityPresenter {
 
     private final Scheduler mainThreadScheduler;
     private final INewDetailActivityView newDetailActivityView;
@@ -29,6 +30,7 @@ public class NewsDetailActivityPresenter {
         this.mainThreadScheduler = mainThreadScheduler;
     }
 
+    @Override
     public void getWebPage(final String urlNews) {
         newDetailActivityView.showLoading();
 
@@ -46,6 +48,7 @@ public class NewsDetailActivityPresenter {
         compositeDisposable.add(disposable);
     }
 
+    @Override
     public void goToNewsList() {
         newDetailActivityView.goToNewsList();
     }

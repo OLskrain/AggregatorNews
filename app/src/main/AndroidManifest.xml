@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.ui.activity.ChannelDetailActivity"
+            android:name=".presentation.ui.activity.NewsListActivity"
             android:label="@string/channel_detail_name"
             android:parentActivityName=".presentation.ui.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -37,7 +37,7 @@
         <activity
             android:name=".presentation.ui.activity.NewsDetailActivity"
             android:label="@string/new_detail_name"
-            android:parentActivityName=".presentation.ui.activity.ChannelDetailActivity"
+            android:parentActivityName=".presentation.ui.activity.NewsListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -48,7 +48,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.olskrain.aggregatornews.presentation.ui.activity.ChannelDetailActivity" />
+                android:value="com.olskrain.aggregatornews.presentation.ui.activity.NewsListActivity" />
         </activity>
         <activity
             android:name=".presentation.ui.activity.AddChannelActivity"

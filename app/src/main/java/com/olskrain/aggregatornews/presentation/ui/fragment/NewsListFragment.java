@@ -14,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import com.olskrain.aggregatornews.presentation.presenter.NewsListFragmentPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.INewsListFragmentPresenter;
 import com.olskrain.aggregatornews.presentation.ui.activity.NewsDetailActivity;
 import com.olskrain.aggregatornews.presentation.ui.adapter.NewsListRVAdapter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
@@ -30,13 +30,12 @@ import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
 
 
-public class ChannelDetailFragment extends Fragment implements IChannelDetailFragmentView {
+public class NewsListFragment extends Fragment implements IChannelDetailFragmentView {
 
-    public static ChannelDetailFragment getInstance(String arg, String urlChannel) {
-        ChannelDetailFragment fragment = new ChannelDetailFragment();
+    public static NewsListFragment getInstance(String arg, String urlChannel) {
+        NewsListFragment fragment = new NewsListFragment();
         Bundle arguments = new Bundle();
         arguments.putString(arg, urlChannel);
         fragment.setArguments(arguments);
@@ -54,26 +53,25 @@ public class ChannelDetailFragment extends Fragment implements IChannelDetailFra
     private String urlChannel;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        compositeDisposable = new CompositeDisposable();
-        newsListFragmentPresenter = FactoryProvider.providerPresenterFactory().createNewsListFragmentPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
-        newsListFragmentPresenter.attachView();
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_channel_detail, container, false);
     }
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_channel_detail, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        initUi(rootView);
+        compositeDisposable = new CompositeDisposable();
+        newsListFragmentPresenter = FactoryProvider.providerPresenterFactory().createNewsListFragmentPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
+        newsListFragmentPresenter.attachView();
+
+        initUi(view);
         if (getArguments() != null && getArguments().containsKey(ARG_CDF_ID)) {
             urlChannel = getArguments().getString(ARG_CDF_ID);
         }
-        if (urlChannel != null){
+        if (urlChannel != null) {
             newsListFragmentPresenter.refreshNewsList(urlChannel);
-        }else newsListFragmentPresenter.getUrlChannel();
-
-        return rootView;
+        } else newsListFragmentPresenter.getUrlChannel();
     }
 
     private void initUi(final View view) {

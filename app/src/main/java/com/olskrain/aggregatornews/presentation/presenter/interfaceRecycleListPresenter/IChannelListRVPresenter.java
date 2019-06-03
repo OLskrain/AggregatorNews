@@ -1,4 +1,4 @@
-package com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList;
+package com.olskrain.aggregatornews.presentation.presenter.interfaceRecycleListPresenter;
 
 import com.olskrain.aggregatornews.presentation.ui.view.item.IChannelListItemView;
 
@@ -8,7 +8,7 @@ import io.reactivex.subjects.PublishSubject;
  * Created by Andrey Ievlev on 29,Апрель,2019
  */
 
-public interface IChannelListPresenter {
+public interface IChannelListRVPresenter {
 
     PublishSubject<IChannelListItemView> getClickOnItem();
 

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.olskrain.aggregatornews.R;
-import com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList.INewsListPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfaceRecycleListPresenter.INewsListRVPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.item.INewsListItemView;
 
 /**
@@ -19,9 +19,9 @@ import com.olskrain.aggregatornews.presentation.ui.view.item.INewsListItemView;
 
 public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.NewListViewHolder> {
 
-    private final INewsListPresenter presenter;
+    private final INewsListRVPresenter presenter;
 
-    public NewsListRVAdapter(final INewsListPresenter presenter) {
+    public NewsListRVAdapter(final INewsListRVPresenter presenter) {
         this.presenter = presenter;
     }
 

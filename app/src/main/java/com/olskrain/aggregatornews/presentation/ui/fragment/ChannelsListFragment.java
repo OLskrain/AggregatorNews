@@ -24,8 +24,9 @@ import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelsListPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.activity.AddChannelActivity;
-import com.olskrain.aggregatornews.presentation.ui.activity.ChannelDetailActivity;
+import com.olskrain.aggregatornews.presentation.ui.activity.NewsListActivity;
 import com.olskrain.aggregatornews.presentation.ui.adapter.ChannelsListRVAdapter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelsListView;
 
@@ -76,27 +77,26 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     private ChannelsListRVAdapter allChannelsListRVAdapter;
     private ChannelsListPresenter channelsListPresenter;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        customBottomSheetFragment = new CustomBottomSheetFragment();
-        compositeDisposable = new CompositeDisposable();
-        Timber.d("rty НОВЫЙ ФРАГМЕНТ");
-        channelsListPresenter = FactoryProvider.providerPresenterFactory().createChannelsListPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
-        channelsListPresenter.attachView();
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_channel_list, container, false);
+        return inflater.inflate(R.layout.fragment_channel_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        customBottomSheetFragment = new CustomBottomSheetFragment();
+        compositeDisposable = new CompositeDisposable();
+
+        channelsListPresenter = FactoryProvider.providerPresenterFactory().createChannelsListPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
+        channelsListPresenter.attachView();
 
         initUi(view);
         initOnClick();
 
         channelsListPresenter.getUrlsChannelList();
-
-        return view;
     }
 
     public void initUi(final View view) {
@@ -143,8 +143,8 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
 
     @Override
     public void goToChannelDetailFragment(final String urlChannel) {
-        Intent intent = new Intent(getContext(), ChannelDetailActivity.class);
-        intent.putExtra(ChannelDetailFragment.ARG_CDF_ID, urlChannel);
+        Intent intent = new Intent(getContext(), NewsListActivity.class);
+        intent.putExtra(NewsListFragment.ARG_CDF_ID, urlChannel);
         Objects.requireNonNull(getContext()).startActivity(intent);
     }
 
@@ -239,13 +239,13 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     public void actionAboveChannelsList(final Command command) {
         switch (command) {
             case ADD_FAVORITE:
+                Timber.d("rty Добавить канал в избраное");
                 break;
             case SHARE_CHANNEL:
+                Timber.d("rty Поделиться каналом");
                 break;
             case DELETE_CHANNEL:
-                //TODO : возникает баг при перевороте и попытке вызвать метод
-                Timber.d("rty ссылка " + channelsListPresenter);
-                channelsListPresenter.deleteChannel(command);
+                channelsListPresenter.showDeletionWarning(command);
                 break;
             default:
                 break;

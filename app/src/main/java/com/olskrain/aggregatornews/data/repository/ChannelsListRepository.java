@@ -63,7 +63,7 @@ public class ChannelsListRepository implements IChannelsListRepository {
                         return channelsList.get(channelsList.size() - 1).getFeed();
                     });
         } else {
-            return Single.error(new IllegalAccessError());
+            return Single.error(new RuntimeException());
         }
     }
 

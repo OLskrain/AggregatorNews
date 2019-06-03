@@ -2,7 +2,6 @@ package com.olskrain.aggregatornews.presentation.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,7 @@ import android.widget.EditText;
 
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.presentation.presenter.AddChannelPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IAddChannelPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
 
 /**
@@ -29,7 +28,7 @@ public class AddChannelActivity extends AppCompatActivity implements IAddChannel
     private ActionBar actionBar;
     private TextInputLayout textInputEditText;
     private EditText addChannelET;
-    private AddChannelPresenter addChannelPresenter;
+    private IAddChannelPresenter addChannelPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

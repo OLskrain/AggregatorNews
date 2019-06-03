@@ -12,20 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.olskrain.aggregatornews.Common.Command;
-import com.olskrain.aggregatornews.Common.myObserver.CustomPublisher;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublishGetter;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Feed;
-import com.olskrain.aggregatornews.presentation.presenter.CustomBottomSheetPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ICustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
-
-import java.util.concurrent.Callable;
-
-import io.reactivex.Completable;
-import io.reactivex.Single;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 18,Май,2019
@@ -44,7 +37,7 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     private ImageView deleteChannelImage;
     private Feed channel;
 
-    private CustomBottomSheetPresenter customBottomSheetPresenter;
+    private ICustomBottomSheetPresenter customBottomSheetPresenter;
     private ICustomPublisher publisher;
 
     @Override
@@ -56,7 +49,12 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.bottom_sheet_layout, container, false);
+        return inflater.inflate(R.layout.bottom_sheet_layout, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         customBottomSheetPresenter = FactoryProvider.providerPresenterFactory().createCustomBottomSheetPresenter(this);
 
@@ -68,7 +66,6 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
         initOnClick();
 
         customBottomSheetPresenter.setChannelCard(channel);
-        return view;
     }
 
     private void initUi(final View view) {
@@ -85,21 +82,20 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
 
     private void initOnClick() {
         addFavorite.setOnClickListener(view -> {
-
+            customBottomSheetPresenter.addFavorite(Command.ADD_FAVORITE);
         });
         shareChannel.setOnClickListener(view -> {
-
+            customBottomSheetPresenter.shareChannel(Command.SHARE_CHANNEL);
 
         });
         deleteChannel.setOnClickListener(view -> {
             customBottomSheetPresenter.deleteChannel(Command.DELETE_CHANNEL);
         });
         addFavoriteImage.setOnClickListener(view -> {
-
+            customBottomSheetPresenter.addFavorite(Command.ADD_FAVORITE);
         });
         shareChannelImage.setOnClickListener(view -> {
-
-
+            customBottomSheetPresenter.shareChannel(Command.SHARE_CHANNEL);
         });
         deleteChannelImage.setOnClickListener(view -> {
             customBottomSheetPresenter.deleteChannel(Command.DELETE_CHANNEL);

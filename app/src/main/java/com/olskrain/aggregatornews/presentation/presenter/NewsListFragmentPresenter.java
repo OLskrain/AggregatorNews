@@ -6,7 +6,8 @@ import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsListUseCase;
-import com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList.INewsListPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.INewsListFragmentPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfaceRecycleListPresenter.INewsListRVPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
 import com.olskrain.aggregatornews.presentation.ui.view.item.INewsListItemView;
 
@@ -17,14 +18,13 @@ import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 03,Май,2019
  */
 
-public class NewsListFragmentPresenter {
-    public class NewsRecycleListPresenter implements INewsListPresenter {
+public class NewsListFragmentPresenter implements INewsListFragmentPresenter {
+    public class NewsRecycleListRVPresenter implements INewsListRVPresenter {
 
         private final PublishSubject<INewsListItemView> clickItem = PublishSubject.create();
 
@@ -49,12 +49,13 @@ public class NewsListFragmentPresenter {
     }
 
     @SuppressLint("CheckResult")
+    @Override
     public void attachView() {
         newsRecycleListPresenter.clickItem.subscribe(iChannelListItemView ->
                 channelDetailFragmentView.goToNewsDetailActivity(newsListLocal.get(iChannelListItemView.getCurrentPosition()).getLink()));
     }
 
-    public NewsRecycleListPresenter newsRecycleListPresenter;
+    public NewsRecycleListRVPresenter newsRecycleListPresenter;
     private final IChannelDetailFragmentView channelDetailFragmentView;
     private final INewsListUseCase newsListUseCase = FactoryProvider.providerUseCaseFactory().createNewsListUseCase();
     private final Scheduler mainThreadScheduler;
@@ -67,9 +68,10 @@ public class NewsListFragmentPresenter {
         this.channelDetailFragmentView = view;
         this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
-        this.newsRecycleListPresenter = new NewsRecycleListPresenter();
+        this.newsRecycleListPresenter = new NewsRecycleListRVPresenter();
     }
 
+    @Override
     public void refreshNewsList(final String urlChannel) {
         urlChannelLocal = urlChannel;
         channelDetailFragmentView.showLoading();
@@ -89,10 +91,12 @@ public class NewsListFragmentPresenter {
         compositeDisposable.add(disposable);
     }
 
+    @Override
     public void saveCurrentUrlChannel() {
         newsListUseCase.saveUrlChannel(urlChannelLocal);
     }
 
+    @Override
     public void getUrlChannel() {
         channelDetailFragmentView.showLoading();
         Single<String> responseRepository = newsListUseCase.getUrlChannel();

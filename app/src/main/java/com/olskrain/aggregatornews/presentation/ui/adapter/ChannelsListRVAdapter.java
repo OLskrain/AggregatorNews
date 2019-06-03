@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.olskrain.aggregatornews.R;
-import com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList.IChannelListPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfaceRecycleListPresenter.IChannelListRVPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.item.IChannelListItemView;
 
 /**
@@ -20,9 +20,9 @@ import com.olskrain.aggregatornews.presentation.ui.view.item.IChannelListItemVie
 
 public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAdapter.ChannelsListViewHolder> {
 
-    private IChannelListPresenter presenter;
+    private IChannelListRVPresenter presenter;
 
-    public ChannelsListRVAdapter(final IChannelListPresenter presenter) {
+    public ChannelsListRVAdapter(final IChannelListRVPresenter presenter) {
         this.presenter = presenter;
     }
 

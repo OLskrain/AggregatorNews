@@ -7,7 +7,8 @@ import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IChannelsListUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IUrlsChannelListUseCase;
-import com.olskrain.aggregatornews.presentation.presenter.intefaceRecycleList.IChannelListPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IChannelsListPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfaceRecycleListPresenter.IChannelListRVPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelsListView;
 import com.olskrain.aggregatornews.presentation.ui.view.item.IChannelListItemView;
 
@@ -20,14 +21,13 @@ import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 03,Май,2019
  */
 
-public class ChannelsListPresenter {
-    public class ChannelRecycleListPresenter implements IChannelListPresenter {
+public class ChannelsListPresenter implements IChannelsListPresenter {
+    public class ChannelRecycleListRVPresenter implements IChannelListRVPresenter {
         private final PublishSubject<IChannelListItemView> clickItem = PublishSubject.create();
         private final PublishSubject<IChannelListItemView> clickMenu = PublishSubject.create();
 
@@ -55,7 +55,7 @@ public class ChannelsListPresenter {
         }
     }
 
-    public ChannelRecycleListPresenter channelRecycleListPresenter;
+    public ChannelRecycleListRVPresenter channelRecycleListPresenter;
     private final IChannelsListView channelsListView;
     private final IChannelsListUseCase channelsListUseCase = FactoryProvider.providerUseCaseFactory().createChannelsListUseCase();
     private final IUrlsChannelListUseCase urlsChannelListUseCase = FactoryProvider.providerUseCaseFactory().createUrlsChannelListUseCase();
@@ -70,11 +70,11 @@ public class ChannelsListPresenter {
         this.channelsListView = view;
         this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
-        this.channelRecycleListPresenter = new ChannelRecycleListPresenter();
-        Timber.d("rty НОВЫЙ ПРЕЗЕНТЕР");
+        this.channelRecycleListPresenter = new ChannelRecycleListRVPresenter();
     }
 
     @SuppressLint("CheckResult")
+    @Override
     public void attachView() {
         channelRecycleListPresenter.clickItem.subscribe(iChannelListItemView ->
                 channelsListView.goToChannelDetailFragment(channelsListLocal.get(iChannelListItemView.getCurrentPosition()).getUrl()));
@@ -85,6 +85,7 @@ public class ChannelsListPresenter {
         });
     }
 
+    @Override
     public void checkDuplicate(final String urlChannel) {
         channelsListView.showLoading();
         Completable responseRepository = channelsListUseCase.checkDuplicate(urlChannel, urlChannelsListLocal);
@@ -120,25 +121,11 @@ public class ChannelsListPresenter {
         compositeDisposable.add(disposable);
     }
 
-    public void deleteChannel(final Command command) {
+    @Override
+    public void showDeletionWarning(Command command) {
         Completable responseUser = channelsListView.showWarning(command);
         disposable = responseUser.subscribe(() -> {
-
-            channelsListView.showLoading();
-            Completable responseRepository = channelsListUseCase.deleteChannel(currentUrlChannel);
-            disposable = responseRepository
-                    .observeOn(mainThreadScheduler)
-                    .subscribe(() -> {
-                        getChannelListDB();
-                        urlChannelsListLocal = urlsChannelListUseCase.deleteUrlChannel(urlChannelsListLocal, currentUrlChannel);
-                        channelsListView.hideLoading();
-                        channelsListView.refreshChannelsListRVAdapter();
-                    }, throwable -> {
-                        channelsListView.hideLoading();
-                        channelsListView.showError(Command.ERROR_DIFFERENT);
-                    });
-            compositeDisposable.add(disposable);
-
+            deleteChannel();
         }, throwable -> {
             //channelsListView.showErrorEditText(Command.ERROR_DIFFERENT);
         });
@@ -146,6 +133,24 @@ public class ChannelsListPresenter {
         compositeDisposable.add(disposable);
     }
 
+    private void deleteChannel() {
+        channelsListView.showLoading();
+        Completable responseRepository = channelsListUseCase.deleteChannel(currentUrlChannel);
+        disposable = responseRepository
+                .observeOn(mainThreadScheduler)
+                .subscribe(() -> {
+                    getChannelListDB();
+                    urlChannelsListLocal = urlsChannelListUseCase.deleteUrlChannel(urlChannelsListLocal, currentUrlChannel);
+                    channelsListView.hideLoading();
+                    channelsListView.refreshChannelsListRVAdapter();
+                }, throwable -> {
+                    channelsListView.hideLoading();
+                    channelsListView.showError(Command.ERROR_DIFFERENT);
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
     public void deleteAllChannels() {
         channelsListView.showLoading();
         Completable responseRepository = channelsListUseCase.deleteAllChannels();
@@ -177,6 +182,7 @@ public class ChannelsListPresenter {
         compositeDisposable.add(disposable);
     }
 
+    @Override
     public void getUrlsChannelList() {
         channelsListView.showLoading();
         Single<List<String>> responseRepository = urlsChannelListUseCase.getUrlsChannelList();
@@ -193,6 +199,7 @@ public class ChannelsListPresenter {
         compositeDisposable.add(disposable);
     }
 
+    @Override
     public void refreshChannelsList() {
         Single<List<Feed>> responseRepository = channelsListUseCase.refreshChannelsList(Command.REFRESH_CHANNELS, urlChannelsListLocal);
 
@@ -210,11 +217,13 @@ public class ChannelsListPresenter {
         compositeDisposable.add(disposable);
     }
 
+    @Override
     public void saveUrlsChannelList() {
         urlsChannelListUseCase.saveUrlChannelsList(urlChannelsListLocal);
     }
 
-    public void goToAddChannelActivity(){
+    @Override
+    public void goToAddChannelActivity() {
         channelsListView.goToAddChannelActivity();
     }
 }

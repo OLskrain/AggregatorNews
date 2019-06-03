@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.presentation.presenter.OtherPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IOtherPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IOtherView;
 
 /**
@@ -28,14 +29,17 @@ public class OtherFragment extends Fragment implements IOtherView {
     }
 
     public static final String ARG_OF_ID = "otherId";
-    private OtherPresenter otherPresenter;
+    private IOtherPresenter otherPresenter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_other, null);
+        return inflater.inflate(R.layout.fragment_other, null);
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         otherPresenter = FactoryProvider.providerPresenterFactory().createOtherPresenter();
-        return view;
     }
 }

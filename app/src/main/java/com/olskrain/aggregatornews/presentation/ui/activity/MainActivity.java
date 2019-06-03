@@ -8,12 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.olskrain.aggregatornews.Common.myObserver.CustomPublisher;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublishGetter;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.presentation.presenter.MainActivityPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IMainActivityPresenter;
 import com.olskrain.aggregatornews.presentation.ui.adapter.CustomFragmentPA;
 import com.olskrain.aggregatornews.presentation.ui.fragment.ChannelsListFragment;
 import com.olskrain.aggregatornews.presentation.ui.fragment.FavoriteChannelsListFragment;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, ICusto
     private CustomFragmentPA customFragmentPA;
     private TabLayout mainTabLayout;
     private Toolbar toolbar;
-    private MainActivityPresenter mainPresenter;
+    private IMainActivityPresenter mainPresenter;
     private ChannelsListFragment channelsListFragment;
     private FavoriteChannelsListFragment favoriteChannelsListFragment;
     private ICustomPublisher publisher;
@@ -43,6 +42,24 @@ public class MainActivity extends AppCompatActivity implements IMainView, ICusto
 
         publisher = FactoryProvider.providerCustomPublisherFactory().createCustomPublisher();
         mainPresenter = FactoryProvider.providerPresenterFactory().createMainActivityPresenter(this);
+
+        if (savedInstanceState == null) {
+            channelsListFragment = ChannelsListFragment.getInstance(ChannelsListFragment.ARG_ACLF_ID);
+            favoriteChannelsListFragment = FavoriteChannelsListFragment.getInstance(FavoriteChannelsListFragment.ARG_FCLF_ID);
+
+            customFragmentPA = new CustomFragmentPA(getSupportFragmentManager());
+            customFragmentPA.addFragment(channelsListFragment, getString(R.string.channels_list_tab_title));
+            customFragmentPA.addFragment(favoriteChannelsListFragment, getString(R.string.favorites_list_tab_title));
+
+        } else {
+            channelsListFragment = (ChannelsListFragment) getSupportFragmentManager().getFragment(savedInstanceState, ChannelsListFragment.ARG_ACLF_ID);
+            favoriteChannelsListFragment = (FavoriteChannelsListFragment) getSupportFragmentManager().getFragment(savedInstanceState, FavoriteChannelsListFragment.ARG_FCLF_ID);
+
+            customFragmentPA = new CustomFragmentPA(getSupportFragmentManager());
+            customFragmentPA.addFragment(channelsListFragment, getString(R.string.channels_list_tab_title));
+            customFragmentPA.addFragment(favoriteChannelsListFragment, getString(R.string.favorites_list_tab_title));
+        }
+
         initUI();
 
 //        if (ContextCompat.checkSelfPermission(App.getInstance(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
@@ -58,20 +75,15 @@ public class MainActivity extends AppCompatActivity implements IMainView, ICusto
 //                    .commit();
 //        }
         // }
+
+
     }
 
     public void initUI() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        channelsListFragment = ChannelsListFragment.getInstance(ChannelsListFragment.ARG_ACLF_ID);
-        favoriteChannelsListFragment = FavoriteChannelsListFragment.getInstance(FavoriteChannelsListFragment.ARG_FCLF_ID);
-
         publisher.subscribe(channelsListFragment);
-
-        customFragmentPA = new CustomFragmentPA(getSupportFragmentManager());
-        customFragmentPA.addFragment(channelsListFragment, getString(R.string.channels_list_tab_title));
-        customFragmentPA.addFragment(favoriteChannelsListFragment, getString(R.string.favorites_list_tab_title));
 
         mainViewPager = findViewById(R.id.container);
         mainViewPager.setAdapter(customFragmentPA);
@@ -162,6 +174,14 @@ public class MainActivity extends AppCompatActivity implements IMainView, ICusto
 //            }
 //        }
 //    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, ChannelsListFragment.ARG_ACLF_ID, channelsListFragment);
+        getSupportFragmentManager().putFragment(outState, FavoriteChannelsListFragment.ARG_FCLF_ID, favoriteChannelsListFragment);
+    }
+
     @Override
     public void goToSettingsActivity() {
         Timber.d("rty set ");
