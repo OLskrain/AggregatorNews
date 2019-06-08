@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryDefault</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDefault</item>
+        <item name="colorAccent">@color/colorAccentDefault</item>
+
+        <item name="colorWindowBackground">@color/colorPrimaryLightDefault</item>
+        <item name="myColorPrimary">@color/colorPrimaryDefault</item>
+        <item name="myColorPrimaryDark">@color/colorPrimaryDarkDefault</item>
+        <item name="myColorAccent">@color/colorAccentDefault</item>
+        <item name="colorPicture">@color/colorBlack</item>
+        <item name="colorCard">@color/colorCardDefault</item>
+        <item name="actionMenuTextColor">@color/colorBlack</item>
+
+        <item name="radioButtonStyle">@style/radioButtonBlackStyle</item>
+        <item name="textTitleStyle">@style/textTitleDefaultStyle</item>
+        <item name="textStyle">@style/textDefaultStyle</item>
+        <item name="textSubtitleStyle">@style/textSubtitleDefaultStyle</item>
+    </style>
+
+    <style name="MyTheme.Black" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryBlack</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkBlack</item>
+        <item name="colorAccent">@color/colorAccentBlack</item>
+
+        <item name="colorWindowBackground">@color/colorPrimaryLightBlack</item>
+        <item name="myColorPrimary">@color/colorPrimaryBlack</item>
+        <item name="myColorPrimaryDark">@color/colorPrimaryDarkBlack</item>
+        <item name="myColorAccent">@color/colorAccentBlack</item>
+        <item name="colorPicture">@color/colorWhite</item>
+        <item name="colorCard">@color/colorCardBlack</item>
+        <item name="actionMenuTextColor">@color/colorWhite</item>
+
+        <item name="radioButtonStyle">@style/radioButtonWhiteStyle</item>
+        <item name="textTitleStyle">@style/textTitleBlackStyle</item>
+        <item name="textStyle">@style/textBlackStyle</item>
+        <item name="textSubtitleStyle">@style/textSubtitleBlackStyle</item>
+
+    </style>
+
+    <style name="MyTheme.Purple" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryPurple</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkPurple</item>
+        <item name="colorAccent">@color/colorAccentPurple</item>
+
+        <item name="colorWindowBackground">@color/colorPrimaryLightPurple</item>
+        <item name="myColorPrimary">@color/colorPrimaryPurple</item>
+        <item name="myColorPrimaryDark">@color/colorPrimaryDarkPurple</item>
+        <item name="myColorAccent">@color/colorAccentPurple</item>
+        <item name="colorPicture">@color/colorBlack</item>
+        <item name="colorCard">@color/colorCardPurple</item>
+        <item name="actionMenuTextColor">@color/colorBlack</item>
+
+        <item name="radioButtonStyle">@style/radioButtonWhiteStyle</item>
+        <item name="textTitleStyle">@style/textTitlePurpleStyle</item>
+        <item name="textStyle">@style/textPurpleStyle</item>
+        <item name="textSubtitleStyle">@style/textSubtitlePurpleStyle</item>
+    </style>
+</resources>

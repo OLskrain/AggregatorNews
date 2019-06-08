@@ -5,28 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/margin_4dp"
-    android:layout_marginTop="@dimen/margin_4dp"
     android:layout_marginEnd="@dimen/margin_4dp"
-    android:layout_marginBottom="@dimen/margin_4dp"
-    app:cardBackgroundColor="@color/colorCard"
-
     app:cardCornerRadius="@dimen/radius"
     app:cardElevation="@dimen/card_elevation">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/colorCard">
 
         <TextView
             android:id="@+id/new_title"
+            style="?attr/textTitleStyle"
             android:layout_width="@dimen/width_0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8dp"
             android:layout_marginTop="@dimen/margin_8dp"
             android:layout_marginEnd="@dimen/margin_8dp"
             android:layout_marginBottom="@dimen/margin_8dp"
-            android:textSize="@dimen/text_size_18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/new_pubDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -49,10 +45,9 @@
 
         <TextView
             android:id="@+id/new_pubDate"
+            style="?attr/textSubtitleStyle"
             android:layout_width="@dimen/width_0dp"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_12sp"
-            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="@+id/new_title"
             app:layout_constraintStart_toStartOf="@+id/new_title"
             app:layout_constraintTop_toBottomOf="@+id/new_title" />

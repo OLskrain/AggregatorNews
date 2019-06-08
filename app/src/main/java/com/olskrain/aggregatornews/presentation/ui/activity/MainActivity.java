@@ -1,5 +1,7 @@
 package com.olskrain.aggregatornews.presentation.ui.activity;
 
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -18,13 +20,11 @@ import com.olskrain.aggregatornews.presentation.ui.fragment.ChannelsListFragment
 import com.olskrain.aggregatornews.presentation.ui.fragment.FavoriteChannelsListFragment;
 import com.olskrain.aggregatornews.presentation.ui.view.IMainView;
 
-import timber.log.Timber;
-
 /**
  * Created by Andrey Ievlev on 22,Апрель,2019
  */
 
-public class MainActivity extends AppCompatActivity implements IMainView, ICustomPublishGetter {
+public class MainActivity extends BaseActivity implements IMainView, ICustomPublishGetter {
     private static final int PERMISSION_REQUEST_CODE = 156;
     private ViewPager mainViewPager;
     private CustomFragmentPA customFragmentPA;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements IMainView, ICusto
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
         publisher = FactoryProvider.providerCustomPublisherFactory().createCustomPublisher();
         mainPresenter = FactoryProvider.providerPresenterFactory().createMainActivityPresenter(this);
@@ -100,14 +100,14 @@ public class MainActivity extends AppCompatActivity implements IMainView, ICusto
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.settings_menu) {
-            mainPresenter.goToFragment();
+            mainPresenter.goToSettingsActivity();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
 //    @Override
-//    public void goToFragment(int buttonID) {
+//    public void goToSettingsActivity(int buttonID) {
 //        switch (buttonID) {
 //            case R.id.navigation_home:
 //                addFragment(ChannelsListFragment.getInstance(ChannelsListFragment.ARG_ACLF_ID), ALL_CHANNEL_FRAGMENT_TAG);
@@ -184,7 +184,8 @@ public class MainActivity extends AppCompatActivity implements IMainView, ICusto
 
     @Override
     public void goToSettingsActivity() {
-        Timber.d("rty set ");
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivityForResult(intent, 2);
     }
 
     @Override

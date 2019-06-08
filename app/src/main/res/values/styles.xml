@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimaryDefault</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDefault</item>
+        <item name="colorAccent">@color/colorAccentDefault</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,4 +17,69 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!--Text title style 18sp-->
+    <style name="textTitleDefaultStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_18sp</item>
+    </style>
+
+    <style name="textTitleBlackStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_18sp</item>
+    </style>
+
+    <style name="textTitlePurpleStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_18sp</item>
+    </style>
+
+    <!--Text style 14sp-->
+    <style name="textDefaultStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+    </style>
+
+    <style name="textBlackStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+    </style>
+
+    <style name="textPurpleStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+    </style>
+
+    <!--Text subtitle style 12sp-->
+    <style name="textSubtitleDefaultStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">@dimen/text_size_12sp</item>
+    </style>
+
+    <style name="textSubtitleBlackStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">@dimen/text_size_12sp</item>
+    </style>
+
+    <style name="textSubtitlePurpleStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">@dimen/text_size_12sp</item>
+    </style>
+
+    <!--Color radiobutton-->
+    <style name="radioButtonWhiteStyle" parent="android:Widget.Material.CompoundButton.RadioButton">
+        <item name="colorControlNormal">@color/colorWhite</item>
+    </style>
+
+    <style name="radioButtonBlackStyle" parent="android:Widget.Material.CompoundButton.RadioButton">
+        <item name="colorControlNormal">@color/colorBlack</item>
+    </style>
 </resources>

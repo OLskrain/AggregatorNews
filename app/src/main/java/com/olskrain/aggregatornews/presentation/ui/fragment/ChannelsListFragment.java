@@ -24,7 +24,6 @@ import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelsListPresenter;
-import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.activity.AddChannelActivity;
 import com.olskrain.aggregatornews.presentation.ui.activity.NewsListActivity;
 import com.olskrain.aggregatornews.presentation.ui.adapter.ChannelsListRVAdapter;
@@ -80,7 +79,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_channel_list, container, false);
+        return inflater.inflate(R.layout.channel_list_fragment, container, false);
     }
 
     @Override
@@ -109,7 +108,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         allChannelsListRecyclerView.setAdapter(allChannelsListRVAdapter);
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refreshLayout_channels);
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        //swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
 
         addNewChannel = view.findViewById(R.id.add_new_channel);
         addChannelOne = view.findViewById(R.id.add_channel_one);
@@ -127,7 +126,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         deleteAllChannels.setOnClickListener(view -> channelsListPresenter.deleteAllChannels());
 
         swipeRefreshLayout.setOnRefreshListener(() -> channelsListPresenter.refreshChannelsList());
-        snackbarOnClickListener = view -> Timber.d("rty WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+        snackbarOnClickListener = view -> Timber.d("");
     }
 
     @Override
@@ -179,6 +178,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     }
 
     @Override
+    //Todo: возможно тут стоит исправить в дальнешем
     public Completable showWarning(final Command command) {
         return Completable.create(emitter -> {
             switch (command) {

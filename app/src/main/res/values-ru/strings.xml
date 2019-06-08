@@ -5,6 +5,7 @@
     <string name="channel_detail_name">Новости</string>
     <string name="new_detail_name">Интернет страница</string>
     <string name="add_channel_name">Добавить канал</string>
+    <string name="settings">Настройки</string>
 
     <!--Menu-->
     <string name="settings_button_title">Настройки</string>
@@ -32,4 +33,9 @@
     <!--Warning and hint message-->
     <string name="warning_delete_channel">Удалить канал?</string>
     <string name="hint_to_user">Введите URL адресс RSS ресурса</string>
+
+    <string name="theme_color">Цвет темы</string>
+    <string name="theme1">Theme 1</string>
+    <string name="theme2">Theme 2</string>
+    <string name="theme3">Theme 3</string>
 </resources>

@@ -8,6 +8,7 @@ import com.olskrain.aggregatornews.presentation.ui.view.IMainView;
  */
 
 public class MainActivityPresenter implements IMainActivityPresenter {
+
     private final IMainView mainView;
 
     public MainActivityPresenter(final IMainView view) {
@@ -15,7 +16,7 @@ public class MainActivityPresenter implements IMainActivityPresenter {
     }
 
     @Override
-    public void goToFragment() {
+    public void goToSettingsActivity() {
         mainView.goToSettingsActivity();
     }
 }

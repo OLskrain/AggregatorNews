@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_add"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorWindowBackground"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.AppBarLayout
@@ -19,11 +19,13 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:theme="?attr/colorPicture"
             app:layout_collapseMode="pin"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextColor="?attr/colorPicture" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_activity_add_channel" />
+    <include layout="@layout/add_channel_activity_content" />
 
 </android.support.design.widget.CoordinatorLayout>

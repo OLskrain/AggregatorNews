@@ -4,6 +4,7 @@ import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IAddChannelUs
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IChannelsListUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsDetailUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsListUseCase;
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.ISettingsUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IUrlsChannelListUseCase;
 
 /**
@@ -20,4 +21,6 @@ public interface IUseCaseFactory {
     INewsListUseCase createNewsListUseCase();
 
     IUrlsChannelListUseCase createUrlsChannelListUseCase();
+
+    ISettingsUseCase createSettingsUseCase();
 }

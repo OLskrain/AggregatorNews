@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_4dp"
+    android:layout_marginEnd="@dimen/margin_4dp"
     app:cardCornerRadius="@dimen/radius"
     app:cardElevation="@dimen/card_elevation">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_8dp">
+        android:background="?attr/colorCard">
 
         <TextView
             android:id="@+id/channel_title"
+            style="?attr/textTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8dp"
-            android:textSize="@dimen/text_size_18sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/channel_imageView"
             app:layout_constraintTop_toTopOf="@+id/channel_imageView" />
 
@@ -37,11 +38,10 @@
 
         <TextView
             android:id="@+id/last_build_date"
+            style="?attr/textSubtitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8dp"
-            android:textSize="@dimen/text_size_12sp"
-            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="@+id/channel_imageView"
             app:layout_constraintStart_toEndOf="@+id/channel_imageView" />
 

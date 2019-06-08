@@ -29,7 +29,7 @@ public class ChannelsListRVAdapter extends RecyclerView.Adapter<ChannelsListRVAd
     @NonNull
     @Override
     public ChannelsListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        return new ChannelsListViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_channel, viewGroup, false));
+        return new ChannelsListViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.channel_item, viewGroup, false));
     }
 
     @Override

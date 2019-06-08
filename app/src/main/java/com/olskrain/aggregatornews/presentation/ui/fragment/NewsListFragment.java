@@ -19,7 +19,6 @@ import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import com.olskrain.aggregatornews.presentation.presenter.NewsListFragmentPresenter;
-import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.INewsListFragmentPresenter;
 import com.olskrain.aggregatornews.presentation.ui.activity.NewsDetailActivity;
 import com.olskrain.aggregatornews.presentation.ui.adapter.NewsListRVAdapter;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
@@ -54,7 +53,7 @@ public class NewsListFragment extends Fragment implements IChannelDetailFragment
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_channel_detail, container, false);
+        return inflater.inflate(R.layout.news_fragment, container, false);
     }
 
     @Override

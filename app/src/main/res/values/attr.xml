@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><!--файл атрибут, чтобы работали наши темы-->
+<resources>
+    <declare-styleable name="MyTheme">
+        <attr name="textTitleStyle" format="reference" />
+        <attr name="textStyle" format="reference" />
+        <attr name="textSubtitleStyle" format="reference" />
+
+        <attr name="myColorPrimary" format="reference" />
+        <attr name="myColorPrimaryDark" format="reference" />
+        <attr name="myColorAccent" format="reference" />
+        <attr name="colorCard" format="reference" />
+        <attr name="colorPicture" format="reference" />
+        <attr name="colorWindowBackground" format="reference" />
+        <attr name="radioButtonStyle" format="reference" />
+    </declare-styleable>
+</resources>

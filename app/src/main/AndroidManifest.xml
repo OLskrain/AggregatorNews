@@ -14,11 +14,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/MyTheme">
         <activity
             android:name=".presentation.ui.activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/MyTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +29,7 @@
             android:name=".presentation.ui.activity.NewsListActivity"
             android:label="@string/channel_detail_name"
             android:parentActivityName=".presentation.ui.activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/MyTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.olskrain.aggregatornews.presentation.ui.activity.MainActivity" />
@@ -38,7 +38,7 @@
             android:name=".presentation.ui.activity.NewsDetailActivity"
             android:label="@string/new_detail_name"
             android:parentActivityName=".presentation.ui.activity.NewsListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/MyTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE"/>
@@ -54,12 +54,28 @@
             android:name=".presentation.ui.activity.AddChannelActivity"
             android:label="@string/add_channel_name"
             android:parentActivityName=".presentation.ui.activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/MyTheme">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.olskrain.aggregatornews.presentation.ui.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".presentation.ui.activity.SettingsActivity"
+            android:label="@string/settings"
+            android:theme="@style/MyTheme"
+            android:parentActivityName=".presentation.ui.activity.MainActivity"
             android:windowSoftInputMode="adjustResize">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.olskrain.aggregatornews.presentation.ui.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".presentation.ui.activity.BaseActivity"
+            android:theme="@style/MyTheme"
+            android:windowSoftInputMode="adjustResize">
         </activity>
     </application>
 

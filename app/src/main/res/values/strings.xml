@@ -4,6 +4,7 @@
     <string name="channel_detail_name">News</string>
     <string name="new_detail_name">Web page</string>
     <string name="add_channel_name">Add channel</string>
+    <string name="settings">Settings</string>
 
     <!--Menu-->
     <string name="settings_button_title">Settings</string>
@@ -31,5 +32,10 @@
     <!--Warning and hint message-->
     <string name="warning_delete_channel">Delete channel?</string>
     <string name="hint_to_user">Enter the URL address of the RSS resource</string>
+
+    <string name="theme_color">Theme color</string>
+    <string name="theme1">Theme 1</string>
+    <string name="theme2">Theme 2</string>
+    <string name="theme3">Theme 3</string>
 
 </resources>

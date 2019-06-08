@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.presentation.presenter.FavoriteChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IFavoriteChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IFavoriteChannelsListView;
 
@@ -35,7 +34,7 @@ public class FavoriteChannelsListFragment extends Fragment implements IFavoriteC
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_favorite_list, null);
+        return inflater.inflate(R.layout.favorite_list_fragment, null);
     }
 
     @Override

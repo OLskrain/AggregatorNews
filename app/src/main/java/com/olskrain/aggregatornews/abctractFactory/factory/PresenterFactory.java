@@ -8,13 +8,15 @@ import com.olskrain.aggregatornews.presentation.presenter.FavoriteChannelsListPr
 import com.olskrain.aggregatornews.presentation.presenter.MainActivityPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.NewsDetailActivityPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.NewsListFragmentPresenter;
-import com.olskrain.aggregatornews.presentation.presenter.OtherPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.SettingsPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ISettingsPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelsListView;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 import com.olskrain.aggregatornews.presentation.ui.view.IMainView;
 import com.olskrain.aggregatornews.presentation.ui.view.INewDetailActivityView;
+import com.olskrain.aggregatornews.presentation.ui.view.ISettingsView;
 
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
@@ -61,7 +63,7 @@ public class PresenterFactory implements IPresenterFactory {
     }
 
     @Override
-    public OtherPresenter createOtherPresenter() {
-        return new OtherPresenter();
+    public ISettingsPresenter createSettingsPresenter(ISettingsView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
+        return new SettingsPresenter(view, compositeDisposable, mainThreadScheduler);
     }
 }

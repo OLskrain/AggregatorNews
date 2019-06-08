@@ -14,7 +14,7 @@ import com.olskrain.aggregatornews.presentation.ui.fragment.NewsListFragment;
  */
 
 @SuppressLint("Registered")
-public class NewsListActivity extends AppCompatActivity {
+public class NewsListActivity extends BaseActivity {
 
     private static final String NEW_FRAGMENT_TAG = "43ddDldd-c9e8-4554-B7e6-cf05jf49dbf0";
     private Toolbar toolbar;
@@ -23,7 +23,7 @@ public class NewsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_channel_detail);
+        setContentView(R.layout.news_activity);
 
         initUi();
 

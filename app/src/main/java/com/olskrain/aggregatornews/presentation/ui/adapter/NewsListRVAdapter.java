@@ -28,7 +28,7 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ne
     @NonNull
     @Override
     public NewListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        return new NewListViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_new, viewGroup, false));
+        return new NewListViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.news_item, viewGroup, false));
     }
 
     @Override

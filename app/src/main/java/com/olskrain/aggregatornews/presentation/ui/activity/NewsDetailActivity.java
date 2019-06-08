@@ -26,7 +26,7 @@ import io.reactivex.disposables.CompositeDisposable;
  */
 
 @SuppressLint("Registered")
-public class NewsDetailActivity extends AppCompatActivity implements INewDetailActivityView {
+public class NewsDetailActivity extends BaseActivity implements INewDetailActivityView {
 
     private static final String EXTRA_URL_NEW_KEY = "urlNews";
     private Toolbar toolbar;
@@ -41,7 +41,7 @@ public class NewsDetailActivity extends AppCompatActivity implements INewDetailA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_detail_web);
+        setContentView(R.layout.news_detail_web_activity);
 
         compositeDisposable = new CompositeDisposable();
         initUi();
