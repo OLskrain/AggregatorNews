@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 
 import com.olskrain.aggregatornews.Common.App;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlChannelRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.IUrlChannelRepository;
 
 import java.util.Objects;
 

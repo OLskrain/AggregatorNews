@@ -1,8 +1,7 @@
-package com.olskrain.aggregatornews.data.repository.interfaceRepositiry;
+package com.olskrain.aggregatornews.data.repository.interfaceRepository;
 
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**

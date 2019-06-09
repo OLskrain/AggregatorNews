@@ -2,8 +2,7 @@ package com.olskrain.aggregatornews.data.repository;
 
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.cache.interfaceCache.INewsListCache;
-import com.olskrain.aggregatornews.data.cache.NewsListCache;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.INewsListRepository;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 
 import java.util.List;

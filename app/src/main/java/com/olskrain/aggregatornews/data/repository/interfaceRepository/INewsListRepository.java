@@ -1,4 +1,4 @@
-package com.olskrain.aggregatornews.data.repository.interfaceRepositiry;
+package com.olskrain.aggregatornews.data.repository.interfaceRepository;
 
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 

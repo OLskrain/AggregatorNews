@@ -1,8 +1,7 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsDetailRepository;
-import com.olskrain.aggregatornews.data.repository.NewsDetailRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.INewsDetailRepository;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsDetailUseCase;
 
 import io.reactivex.Single;

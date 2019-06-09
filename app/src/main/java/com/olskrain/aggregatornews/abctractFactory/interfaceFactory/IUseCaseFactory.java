@@ -1,6 +1,7 @@
 package com.olskrain.aggregatornews.abctractFactory.interfaceFactory;
 
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IAddChannelUseCase;
+import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IBaseUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IChannelsListUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsDetailUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsListUseCase;
@@ -23,4 +24,6 @@ public interface IUseCaseFactory {
     IUrlsChannelListUseCase createUrlsChannelListUseCase();
 
     ISettingsUseCase createSettingsUseCase();
+
+    IBaseUseCase createBaseUseCase();
 }

@@ -1,7 +1,7 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlsChannelListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.IUrlsChannelListRepository;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IUrlsChannelListUseCase;
 
 import java.util.List;

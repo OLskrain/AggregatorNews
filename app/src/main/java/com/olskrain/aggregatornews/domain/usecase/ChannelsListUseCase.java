@@ -4,8 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.data.repository.ChannelsListRepository;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IChannelsListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.IChannelsListRepository;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.IChannelsListUseCase;
 
@@ -15,7 +14,6 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 01,Май,2019

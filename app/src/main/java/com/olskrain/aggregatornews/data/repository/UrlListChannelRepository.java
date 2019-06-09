@@ -3,7 +3,7 @@ package com.olskrain.aggregatornews.data.repository;
 import android.content.SharedPreferences;
 
 import com.olskrain.aggregatornews.Common.App;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlsChannelListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.IUrlsChannelListRepository;
 
 import java.util.ArrayList;
 import java.util.List;

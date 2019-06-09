@@ -4,10 +4,8 @@ import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.Common.NetworkStatus;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.api.IServerDataSource;
-import com.olskrain.aggregatornews.data.api.ServerDataSource;
-import com.olskrain.aggregatornews.data.cache.ChannelsListCache;
 import com.olskrain.aggregatornews.data.cache.interfaceCache.IChannelsListCache;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IChannelsListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.IChannelsListRepository;
 import com.olskrain.aggregatornews.domain.entities.Channel;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 

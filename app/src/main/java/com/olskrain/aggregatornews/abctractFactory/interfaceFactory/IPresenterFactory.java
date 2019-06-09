@@ -3,12 +3,14 @@ package com.olskrain.aggregatornews.abctractFactory.interfaceFactory;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.NewsListFragmentPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IAddChannelPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IBasePresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ICustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IFavoriteChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IMainActivityPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.INewsDetailActivityPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ISettingsPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
+import com.olskrain.aggregatornews.presentation.ui.view.IBaseView;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelsListView;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
@@ -39,4 +41,6 @@ public interface IPresenterFactory {
     NewsListFragmentPresenter createNewsListFragmentPresenter(IChannelDetailFragmentView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler);
 
     ISettingsPresenter createSettingsPresenter(ISettingsView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler);
+
+    IBasePresenter createBasePresenter(IBaseView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler);
 }

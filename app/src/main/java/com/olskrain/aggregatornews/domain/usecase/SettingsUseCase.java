@@ -2,7 +2,7 @@ package com.olskrain.aggregatornews.domain.usecase;
 
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.ISettingsRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.ISettingsRepository;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.ISettingsUseCase;
 
 import io.reactivex.Completable;

@@ -1,11 +1,12 @@
 package com.olskrain.aggregatornews.abctractFactory.interfaceFactory;
 
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IChannelsListRepository;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsDetailRepository;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsListRepository;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.ISettingsRepository;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlChannelRepository;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlsChannelListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.IBaseRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.IChannelsListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.INewsDetailRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.INewsListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.ISettingsRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.IUrlChannelRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.IUrlsChannelListRepository;
 
 /**
  * Created by Andrey Ievlev on 29,Май,2019
@@ -23,4 +24,6 @@ public interface IRepositoryFactory {
     IUrlChannelRepository createUrlChannelRepository();
 
     ISettingsRepository createSettingsRepository();
+
+    IBaseRepository createBaseRepository();
 }

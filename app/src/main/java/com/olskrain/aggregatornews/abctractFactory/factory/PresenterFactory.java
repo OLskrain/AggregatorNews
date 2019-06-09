@@ -2,6 +2,7 @@ package com.olskrain.aggregatornews.abctractFactory.factory;
 
 import com.olskrain.aggregatornews.abctractFactory.interfaceFactory.IPresenterFactory;
 import com.olskrain.aggregatornews.presentation.presenter.AddChannelPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.BasePresenter;
 import com.olskrain.aggregatornews.presentation.presenter.ChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.CustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.FavoriteChannelsListPresenter;
@@ -9,8 +10,10 @@ import com.olskrain.aggregatornews.presentation.presenter.MainActivityPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.NewsDetailActivityPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.NewsListFragmentPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.SettingsPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IBasePresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ISettingsPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
+import com.olskrain.aggregatornews.presentation.ui.view.IBaseView;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelsListView;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
@@ -65,5 +68,10 @@ public class PresenterFactory implements IPresenterFactory {
     @Override
     public ISettingsPresenter createSettingsPresenter(ISettingsView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
         return new SettingsPresenter(view, compositeDisposable, mainThreadScheduler);
+    }
+
+    @Override
+    public IBasePresenter createBasePresenter(IBaseView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
+        return new BasePresenter(view, compositeDisposable, mainThreadScheduler);
     }
 }

@@ -1,7 +1,7 @@
 package com.olskrain.aggregatornews.data.repository;
 
 import com.olskrain.aggregatornews.data.cache.SettingsSharedPref;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.ISettingsRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.ISettingsRepository;
 
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;

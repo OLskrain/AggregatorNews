@@ -1,9 +1,8 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.INewsListRepository;
-import com.olskrain.aggregatornews.data.repository.NewsListRepository;
-import com.olskrain.aggregatornews.data.repository.interfaceRepositiry.IUrlChannelRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.INewsListRepository;
+import com.olskrain.aggregatornews.data.repository.interfaceRepository.IUrlChannelRepository;
 import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsListUseCase;
 
