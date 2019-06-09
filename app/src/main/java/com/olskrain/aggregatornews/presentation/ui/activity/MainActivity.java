@@ -14,6 +14,7 @@ import com.olskrain.aggregatornews.Common.myObserver.ICustomPublishGetter;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
+import com.olskrain.aggregatornews.presentation.presenter.MainActivityPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IMainActivityPresenter;
 import com.olskrain.aggregatornews.presentation.ui.adapter.CustomFragmentPA;
 import com.olskrain.aggregatornews.presentation.ui.fragment.ChannelsListFragment;
@@ -30,7 +31,7 @@ public class MainActivity extends BaseActivity implements IMainView, ICustomPubl
     private CustomFragmentPA customFragmentPA;
     private TabLayout mainTabLayout;
     private Toolbar toolbar;
-    private IMainActivityPresenter mainPresenter;
+    private MainActivityPresenter mainPresenter;
     private ChannelsListFragment channelsListFragment;
     private FavoriteChannelsListFragment favoriteChannelsListFragment;
     private ICustomPublisher publisher;
@@ -189,23 +190,30 @@ public class MainActivity extends BaseActivity implements IMainView, ICustomPubl
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    public ICustomPublisher getPublisher() {
+        return publisher;
     }
 
     @Override
-    protected void onStop() {
+    public void onResume() {
+        super.onResume();
+        mainPresenter.onAttachView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mainPresenter.onDetachView();
+    }
+
+    @Override
+    public void onStop() {
         super.onStop();
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         publisher.unsubscribe(channelsListFragment);
-    }
-
-    @Override
-    public ICustomPublisher getPublisher() {
-        return publisher;
     }
 }

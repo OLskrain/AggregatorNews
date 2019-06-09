@@ -253,6 +253,18 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        channelsListPresenter.onAttachView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        channelsListPresenter.onDetachView();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         channelsListPresenter.saveUrlsChannelList();

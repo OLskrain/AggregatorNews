@@ -9,7 +9,6 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 09,Июнь,2019
@@ -35,7 +34,6 @@ public class BasePresenter implements IBasePresenter {
 
         disposable = responseRepository
                 .subscribe(themeId -> {
-                    Timber.d("rty theme " + themeId);
                     baseView.applyTheme(themeId);
                 }, throwable -> {
 

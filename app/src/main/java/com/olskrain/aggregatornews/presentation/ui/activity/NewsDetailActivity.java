@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +14,8 @@ import android.widget.RelativeLayout;
 
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.INewsDetailActivityPresenter;
-import com.olskrain.aggregatornews.presentation.ui.view.INewDetailActivityView;
+import com.olskrain.aggregatornews.presentation.presenter.NewsDetailActivityPresenter;
+import com.olskrain.aggregatornews.presentation.ui.view.INewsDetailActivityView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -26,7 +25,7 @@ import io.reactivex.disposables.CompositeDisposable;
  */
 
 @SuppressLint("Registered")
-public class NewsDetailActivity extends BaseActivity implements INewDetailActivityView {
+public class NewsDetailActivity extends BaseActivity implements INewsDetailActivityView {
 
     private static final String EXTRA_URL_NEW_KEY = "urlNews";
     private Toolbar toolbar;
@@ -35,7 +34,7 @@ public class NewsDetailActivity extends BaseActivity implements INewDetailActivi
     private ProgressBar loadingProgressBar;
     private String urlNew;
     private RelativeLayout webContainer;
-    private INewsDetailActivityPresenter newsDetailActivityPresenter;
+    private NewsDetailActivityPresenter newsDetailActivityPresenter;
     private CompositeDisposable compositeDisposable;
 
     @Override
@@ -101,6 +100,18 @@ public class NewsDetailActivity extends BaseActivity implements INewDetailActivi
     @Override
     public void sendWebPageData(String webPage) {
         webView.loadData(webPage, "text/html; charset=utf-8", "utf-8");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        newsDetailActivityPresenter.onAttachView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        newsDetailActivityPresenter.onDetachView();
     }
 
     @Override

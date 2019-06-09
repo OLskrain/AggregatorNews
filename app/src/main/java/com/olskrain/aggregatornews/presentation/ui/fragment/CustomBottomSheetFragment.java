@@ -17,6 +17,7 @@ import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Feed;
+import com.olskrain.aggregatornews.presentation.presenter.CustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ICustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 
@@ -37,7 +38,7 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     private ImageView deleteChannelImage;
     private Feed channel;
 
-    private ICustomBottomSheetPresenter customBottomSheetPresenter;
+    private CustomBottomSheetPresenter customBottomSheetPresenter;
     private ICustomPublisher publisher;
 
     @Override
@@ -126,5 +127,17 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     @Override
     public void closeBottomSheet() {
         dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        customBottomSheetPresenter.onAttachView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        customBottomSheetPresenter.onDetachView();
     }
 }

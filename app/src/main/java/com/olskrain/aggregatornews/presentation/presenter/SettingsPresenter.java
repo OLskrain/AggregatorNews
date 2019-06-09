@@ -3,6 +3,7 @@ package com.olskrain.aggregatornews.presentation.presenter;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.ISettingsUseCase;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ISettingsPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.presenterNullCheck.SettingsPresenterNullCheck;
 import com.olskrain.aggregatornews.presentation.ui.view.ISettingsView;
 
 import io.reactivex.Completable;
@@ -14,7 +15,7 @@ import io.reactivex.disposables.Disposable;
  * Created by Andrey Ievlev on 06,Июнь,2019
  */
 
-public class SettingsPresenter implements ISettingsPresenter {
+public class SettingsPresenter extends SettingsPresenterNullCheck implements ISettingsPresenter {
 
     private final ISettingsView settingsView;
     private final CompositeDisposable compositeDisposable;
@@ -35,7 +36,7 @@ public class SettingsPresenter implements ISettingsPresenter {
         disposable = responseRepository
                 .observeOn(mainThreadScheduler)
                 .subscribe(() -> {
-                    settingsView.setAppTheme();
+                    getView().setAppTheme();
                 }, throwable -> {
 
                 });

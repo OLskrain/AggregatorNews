@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
+import com.olskrain.aggregatornews.presentation.presenter.FavoriteChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IFavoriteChannelsListPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IFavoriteChannelsListView;
 
@@ -29,7 +30,7 @@ public class FavoriteChannelsListFragment extends Fragment implements IFavoriteC
     }
 
     public static final String ARG_FCLF_ID = "favoriteChannelListId";
-    private IFavoriteChannelsListPresenter favoriteChannelsListPresenter;
+    private FavoriteChannelsListPresenter favoriteChannelsListPresenter;
 
     @Nullable
     @Override
@@ -41,5 +42,17 @@ public class FavoriteChannelsListFragment extends Fragment implements IFavoriteC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         favoriteChannelsListPresenter = FactoryProvider.providerPresenterFactory().createFavoriteChannelsListPresenter();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        favoriteChannelsListPresenter.onAttachView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        favoriteChannelsListPresenter.onDetachView();
     }
 }

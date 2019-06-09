@@ -7,7 +7,7 @@ import com.olskrain.aggregatornews.domain.entities.ItemNew;
  * Created by Andrey Ievlev on 10,Май,2019
  */
 
-public interface IChannelDetailFragmentView {
+public interface INewsListFragmentView {
     void showLoading();
 
     void hideLoading();

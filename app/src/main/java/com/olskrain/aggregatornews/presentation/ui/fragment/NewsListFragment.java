@@ -21,7 +21,7 @@ import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import com.olskrain.aggregatornews.presentation.presenter.NewsListFragmentPresenter;
 import com.olskrain.aggregatornews.presentation.ui.activity.NewsDetailActivity;
 import com.olskrain.aggregatornews.presentation.ui.adapter.NewsListRVAdapter;
-import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
+import com.olskrain.aggregatornews.presentation.ui.view.INewsListFragmentView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 
-public class NewsListFragment extends Fragment implements IChannelDetailFragmentView {
+public class NewsListFragment extends Fragment implements INewsListFragmentView {
 
     public static NewsListFragment getInstance(String arg, String urlChannel) {
         NewsListFragment fragment = new NewsListFragment();
@@ -113,6 +113,18 @@ public class NewsListFragment extends Fragment implements IChannelDetailFragment
     @Override
     public void refreshChannelsListRVAdapter() {
         newsListRVAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        newsListFragmentPresenter.onAttachView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        newsListFragmentPresenter.onDetachView();
     }
 
     @Override

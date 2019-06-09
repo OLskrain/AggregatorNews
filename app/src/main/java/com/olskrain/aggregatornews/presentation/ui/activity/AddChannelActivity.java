@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
+import com.olskrain.aggregatornews.presentation.presenter.AddChannelPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IAddChannelPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
 
@@ -27,7 +28,7 @@ public class AddChannelActivity extends BaseActivity implements IAddChannelView 
     private ActionBar actionBar;
     private TextInputLayout textInputEditText;
     private EditText addChannelET;
-    private IAddChannelPresenter addChannelPresenter;
+    private AddChannelPresenter addChannelPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,18 @@ public class AddChannelActivity extends BaseActivity implements IAddChannelView 
     @Override
     public void hideError() {
         textInputEditText.setError(EMPTY_STRING);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        addChannelPresenter.onAttachView(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        addChannelPresenter.onDetachView();
     }
 }
 

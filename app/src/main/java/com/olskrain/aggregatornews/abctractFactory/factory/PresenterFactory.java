@@ -10,15 +10,13 @@ import com.olskrain.aggregatornews.presentation.presenter.MainActivityPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.NewsDetailActivityPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.NewsListFragmentPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.SettingsPresenter;
-import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IBasePresenter;
-import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ISettingsPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IAddChannelView;
 import com.olskrain.aggregatornews.presentation.ui.view.IBaseView;
-import com.olskrain.aggregatornews.presentation.ui.view.IChannelDetailFragmentView;
 import com.olskrain.aggregatornews.presentation.ui.view.IChannelsListView;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 import com.olskrain.aggregatornews.presentation.ui.view.IMainView;
-import com.olskrain.aggregatornews.presentation.ui.view.INewDetailActivityView;
+import com.olskrain.aggregatornews.presentation.ui.view.INewsDetailActivityView;
+import com.olskrain.aggregatornews.presentation.ui.view.INewsListFragmentView;
 import com.olskrain.aggregatornews.presentation.ui.view.ISettingsView;
 
 import io.reactivex.Scheduler;
@@ -56,22 +54,22 @@ public class PresenterFactory implements IPresenterFactory {
     }
 
     @Override
-    public NewsDetailActivityPresenter createNewsDetailActivityPresenter(INewDetailActivityView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
+    public NewsDetailActivityPresenter createNewsDetailActivityPresenter(INewsDetailActivityView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
         return new NewsDetailActivityPresenter(view, compositeDisposable, mainThreadScheduler);
     }
 
     @Override
-    public NewsListFragmentPresenter createNewsListFragmentPresenter(IChannelDetailFragmentView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
+    public NewsListFragmentPresenter createNewsListFragmentPresenter(INewsListFragmentView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
         return new NewsListFragmentPresenter(view, compositeDisposable, mainThreadScheduler);
     }
 
     @Override
-    public ISettingsPresenter createSettingsPresenter(ISettingsView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
+    public SettingsPresenter createSettingsPresenter(ISettingsView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
         return new SettingsPresenter(view, compositeDisposable, mainThreadScheduler);
     }
 
     @Override
-    public IBasePresenter createBasePresenter(IBaseView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
+    public BasePresenter createBasePresenter(IBaseView view, CompositeDisposable compositeDisposable, Scheduler mainThreadScheduler) {
         return new BasePresenter(view, compositeDisposable, mainThreadScheduler);
     }
 }

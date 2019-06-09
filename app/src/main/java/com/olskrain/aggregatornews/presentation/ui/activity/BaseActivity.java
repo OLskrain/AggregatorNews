@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
+import com.olskrain.aggregatornews.presentation.presenter.BasePresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IBasePresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IBaseView;
 
@@ -18,7 +19,7 @@ import io.reactivex.disposables.CompositeDisposable;
 public class BaseActivity extends AppCompatActivity implements IBaseView {
 
     private CompositeDisposable compositeDisposable;
-    private IBasePresenter basePresenter;
+    private BasePresenter basePresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

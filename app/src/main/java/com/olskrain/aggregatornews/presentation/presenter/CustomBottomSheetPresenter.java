@@ -3,6 +3,8 @@ package com.olskrain.aggregatornews.presentation.presenter;
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ICustomBottomSheetPresenter;
+import com.olskrain.aggregatornews.presentation.presenter.presenterNullCheck.ChannelsListPresenterNullCheck;
+import com.olskrain.aggregatornews.presentation.presenter.presenterNullCheck.CustomBottomSheetPresenterNullCheck;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 
 import timber.log.Timber;
@@ -11,7 +13,7 @@ import timber.log.Timber;
  * Created by Andrey Ievlev on 18,Май,2019
  */
 
-public class CustomBottomSheetPresenter implements ICustomBottomSheetPresenter {
+public class CustomBottomSheetPresenter extends CustomBottomSheetPresenterNullCheck implements ICustomBottomSheetPresenter {
     private final ICustomBottomSheetView customBottomSheetView;
 
     public CustomBottomSheetPresenter(final ICustomBottomSheetView customBottomSheetView) {
@@ -20,26 +22,26 @@ public class CustomBottomSheetPresenter implements ICustomBottomSheetPresenter {
 
     @Override
     public void addFavorite(final Command command) {
-        customBottomSheetView.addFavorite(command);
-        customBottomSheetView.closeBottomSheet();
+        getView().addFavorite(command);
+        getView().closeBottomSheet();
     }
 
     @Override
     public void shareChannel(final Command command) {
-        customBottomSheetView.shareChannel(command);
-        customBottomSheetView.closeBottomSheet();
+        getView().shareChannel(command);
+        getView().closeBottomSheet();
     }
 
     @Override
     public void deleteChannel(final Command command) {
-        customBottomSheetView.deleteChannel(command);
-        customBottomSheetView.closeBottomSheet();
+        getView().deleteChannel(command);
+        getView().closeBottomSheet();
     }
 
     @Override
     public void setChannelCard(final Feed channel) {
         String title = channel.getTitle();
         String lastBuild = channel.getLastBuildDate();
-        customBottomSheetView.setChannelCard(title, lastBuild);
+        getView().setChannelCard(title, lastBuild);
     }
 }

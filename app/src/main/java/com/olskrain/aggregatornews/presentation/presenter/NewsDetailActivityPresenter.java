@@ -1,30 +1,29 @@
 package com.olskrain.aggregatornews.presentation.presenter;
 
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
-import com.olskrain.aggregatornews.domain.usecase.NewsDetailUseCase;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsDetailUseCase;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.INewsDetailActivityPresenter;
-import com.olskrain.aggregatornews.presentation.ui.view.INewDetailActivityView;
+import com.olskrain.aggregatornews.presentation.presenter.presenterNullCheck.NewsDetailActivityPresenterNullCheck;
+import com.olskrain.aggregatornews.presentation.ui.view.INewsDetailActivityView;
 
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 11,Май,2019
  */
 
-public class NewsDetailActivityPresenter implements INewsDetailActivityPresenter {
+public class NewsDetailActivityPresenter extends NewsDetailActivityPresenterNullCheck implements INewsDetailActivityPresenter {
 
     private final Scheduler mainThreadScheduler;
-    private final INewDetailActivityView newDetailActivityView;
+    private final INewsDetailActivityView newDetailActivityView;
     private final INewsDetailUseCase newsDetailUseCase = FactoryProvider.providerUseCaseFactory().createNewsDetailUseCase();
     private final CompositeDisposable compositeDisposable;
     private Disposable disposable;
 
-    public NewsDetailActivityPresenter(final INewDetailActivityView view, final CompositeDisposable compositeDisposable, final Scheduler mainThreadScheduler) {
+    public NewsDetailActivityPresenter(final INewsDetailActivityView view, final CompositeDisposable compositeDisposable, final Scheduler mainThreadScheduler) {
         this.newDetailActivityView = view;
         this.compositeDisposable = compositeDisposable;
         this.mainThreadScheduler = mainThreadScheduler;
@@ -32,17 +31,17 @@ public class NewsDetailActivityPresenter implements INewsDetailActivityPresenter
 
     @Override
     public void getWebPage(final String urlNews) {
-        newDetailActivityView.showLoading();
+        getView().showLoading();
 
         Single<String> responseRepository = newsDetailUseCase.getWebPage(urlNews);
         disposable = responseRepository
                 .observeOn(mainThreadScheduler)
                 .subscribe(webPage -> {
-                    newDetailActivityView.sendWebPageData(webPage);
-                    newDetailActivityView.hideLoading();
+                    getView().sendWebPageData(webPage);
+                    getView().hideLoading();
                 }, throwable -> {
-                    newDetailActivityView.hideLoading();
-                    newDetailActivityView.showError();
+                    getView().hideLoading();
+                    getView().showError();
                 });
 
         compositeDisposable.add(disposable);
@@ -50,7 +49,7 @@ public class NewsDetailActivityPresenter implements INewsDetailActivityPresenter
 
     @Override
     public void goToNewsList() {
-        newDetailActivityView.goToNewsList();
+        getView().goToNewsList();
     }
 }
 

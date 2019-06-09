@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.cache.SettingsSharedPref;
+import com.olskrain.aggregatornews.presentation.presenter.SettingsPresenter;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ISettingsPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ISettingsView;
 
@@ -26,7 +27,7 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
 
     private Toolbar toolbar;
     private ActionBar actionBar;
-    private ISettingsPresenter settingsPresenter;
+    private SettingsPresenter settingsPresenter;
     private CompositeDisposable compositeDisposable;
     private RadioGroup radioGroup;
 
@@ -77,6 +78,18 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
             overridePendingTransition(0, 0);
             startActivity(intent);
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        settingsPresenter.onAttachView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        settingsPresenter.onDetachView();
     }
 
     @Override
