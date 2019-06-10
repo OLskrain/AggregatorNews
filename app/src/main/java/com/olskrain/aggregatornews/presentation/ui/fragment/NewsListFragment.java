@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.R;
@@ -49,11 +50,13 @@ public class NewsListFragment extends Fragment implements INewsListFragmentView 
     private NewsListFragmentPresenter newsListFragmentPresenter;
     private CompositeDisposable compositeDisposable;
     private ProgressBar loadingProgressBar;
+    private TextView titleRandomNews;
+    private TextView pubDateRandomNews;
     private String urlChannel;
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.news_fragment, container, false);
+        return inflater.inflate(R.layout.news_list_fragment, container, false);
     }
 
     @Override
@@ -65,6 +68,7 @@ public class NewsListFragment extends Fragment implements INewsListFragmentView 
         newsListFragmentPresenter.attachView();
 
         initUi(view);
+
         if (getArguments() != null && getArguments().containsKey(ARG_CDF_ID)) {
             urlChannel = getArguments().getString(ARG_CDF_ID);
         }
@@ -81,6 +85,9 @@ public class NewsListFragment extends Fragment implements INewsListFragmentView 
         newsListRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL));
         newsListRVAdapter = new NewsListRVAdapter(newsListFragmentPresenter.newsRecycleListPresenter);
         newsListRecyclerView.setAdapter(newsListRVAdapter);
+
+        titleRandomNews = getActivity().findViewById(R.id.title_random_news);
+        pubDateRandomNews = getActivity().findViewById(R.id.pubDate_random_news);
     }
 
     @Override
@@ -103,6 +110,12 @@ public class NewsListFragment extends Fragment implements INewsListFragmentView 
     @Override
     public void showBottomSheet(ItemNew itemNew) {
 
+    }
+
+    @Override
+    public void setRandomNews(String titleNews, String pubDateNews) {
+        titleRandomNews.setText(titleNews);
+        pubDateRandomNews.setText(pubDateNews);
     }
 
     @Override

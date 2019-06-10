@@ -82,8 +82,7 @@ public class NewsListFragmentPresenter extends NewsListFragmentPresenterNullChec
                 .observeOn(mainThreadScheduler)
                 .subscribe(newsList -> {
                     newsListLocal = newsList;
-                    getView().hideLoading();
-                    getView().refreshChannelsListRVAdapter();
+                    getRandomNews(newsListLocal);
                 }, throwable -> {
                     getView().hideLoading();
                     getView().showError(Command.REFRESH_NEWS);
@@ -111,6 +110,24 @@ public class NewsListFragmentPresenter extends NewsListFragmentPresenterNullChec
                     getView().hideLoading();
                     getView().showError(Command.REFRESH_NEWS);
                 });
+    }
+
+    @Override
+    public void getRandomNews(List<ItemNew> newsList) {
+        Single<ItemNew> responseUseCase = newsListUseCase.getRandomNews(newsList);
+
+        disposable = responseUseCase
+                .observeOn(mainThreadScheduler)
+                .subscribe(randomNews -> {
+                    getView().setRandomNews(randomNews.getTitle(), randomNews.getPubDate());
+                    getView().hideLoading();
+                    getView().refreshChannelsListRVAdapter();
+                }, throwable -> {
+                    getView().hideLoading();
+                    getView().showError(Command.REFRESH_NEWS);
+                });
+
+        compositeDisposable.add(disposable);
     }
 }
 

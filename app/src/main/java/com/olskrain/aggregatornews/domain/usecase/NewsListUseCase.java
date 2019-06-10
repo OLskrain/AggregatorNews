@@ -7,8 +7,11 @@ import com.olskrain.aggregatornews.domain.entities.ItemNew;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.INewsListUseCase;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
+import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 10,Май,2019
@@ -21,7 +24,7 @@ public class NewsListUseCase implements INewsListUseCase {
 
     @Override
     public Single<List<ItemNew>> refreshNewsList(final String urlChannel) {
-       return newsListRepository.getNewsList(urlChannel);
+        return newsListRepository.getNewsList(urlChannel);
     }
 
     @Override
@@ -32,5 +35,20 @@ public class NewsListUseCase implements INewsListUseCase {
     @Override
     public void saveUrlChannel(String urlChannel) {
         urlChannelRepository.putUrlChannel(urlChannel);
+    }
+
+    @Override
+    public Single<ItemNew> getRandomNews(List<ItemNew> newsList) {
+        return Single.fromCallable(() -> {
+            int min = 0;
+            int max = newsList.size();
+            int diff = max - min;
+
+            Random random = new Random();
+            int i = random.nextInt(diff + 1);
+            i += min;
+
+            return newsList.get(i);
+        });
     }
 }

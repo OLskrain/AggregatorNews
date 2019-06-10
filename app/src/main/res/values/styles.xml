@@ -116,4 +116,10 @@
         <item name="android:textColorPrimary">@color/colorBlack</item>
         <item name="android:textColorAlertDialogListItem">@color/colorBlack</item>
     </style>
+
+    <!--CollapsingToolbarLayout-->
+    <!--<style name="collapsingToolbarLayoutExpandedTextStyle" >-->
+        <!--<item name="android:textColor">@color/colorBlack</item>-->
+        <!--<item name="android:textColorPrimary">@color/colorBlack</item>-->
+    <!--</style>-->
 </resources>

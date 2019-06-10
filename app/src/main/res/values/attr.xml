@@ -12,5 +12,6 @@
         <attr name="colorPicture" format="reference" />
         <attr name="colorWindowBackground" format="reference" />
         <attr name="radioButtonStyle" format="reference" />
+        <!--<attr name="collapsingToolbarLayoutExpandedTextStyle" format="reference" />-->
     </declare-styleable>
 </resources>

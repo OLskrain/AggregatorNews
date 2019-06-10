@@ -1,7 +1,7 @@
 <resources>
     <!--Label name-->
     <string name="app_name">Aggregator News</string>
-    <string name="channel_detail_name">News</string>
+    <string name="news_list_name">News</string>
     <string name="new_detail_name">Web page</string>
     <string name="add_channel_name">Add channel</string>
     <string name="settings">Settings</string>

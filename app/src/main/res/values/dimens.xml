@@ -13,6 +13,7 @@
     <dimen name="card_elevation">0dp</dimen>
     <dimen name="refresh_elevation">2dp</dimen>
 
+    <dimen name="text_size_24sp">24sp</dimen>
     <dimen name="text_size_18sp">18sp</dimen>
     <dimen name="text_size_12sp">12sp</dimen>
     <dimen name="text_size_14sp">14sp</dimen>
@@ -32,4 +33,5 @@
     <dimen name="height_separator_bs_cl">5dp</dimen>
     <dimen name="height_separator_sa_cl">2dp</dimen>
     <dimen name="elevation_16dp">16dp</dimen>
+    <dimen name="height_appbar_news_list">300dp</dimen>
 </resources>

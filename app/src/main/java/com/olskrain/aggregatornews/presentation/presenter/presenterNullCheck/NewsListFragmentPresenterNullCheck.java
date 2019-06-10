@@ -34,6 +34,11 @@ public abstract class NewsListFragmentPresenterNullCheck extends DefaultPresente
             }
 
             @Override
+            public void setRandomNews(String titleNews, String pubDateRandomNews) {
+
+            }
+
+            @Override
             public void showError(Command command) {
 
             }

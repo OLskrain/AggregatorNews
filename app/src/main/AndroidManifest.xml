@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".presentation.ui.activity.NewsListActivity"
-            android:label="@string/channel_detail_name"
+            android:label="@string/news_list_name"
             android:parentActivityName=".presentation.ui.activity.MainActivity"
             android:theme="@style/MyTheme">
             <meta-data

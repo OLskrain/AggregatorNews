@@ -26,4 +26,6 @@
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorTransparentBlack">#4D000000</color>
+    <color name="colorTransparentWhite">#B3FFFFFF</color>
 </resources>

@@ -16,4 +16,6 @@ public interface INewsListUseCase {
     Single<String> getUrlChannel();
 
     void saveUrlChannel(String urlChannel);
+
+    Single<ItemNew> getRandomNews(List<ItemNew> newsList);
 }

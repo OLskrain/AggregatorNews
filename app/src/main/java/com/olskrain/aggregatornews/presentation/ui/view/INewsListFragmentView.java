@@ -16,6 +16,8 @@ public interface INewsListFragmentView {
 
     void showBottomSheet(ItemNew itemNew);
 
+    void setRandomNews(String titleNews, String pubDateRandomNews);
+
     void showError(Command command);
 
     void refreshChannelsListRVAdapter();

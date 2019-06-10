@@ -15,6 +15,7 @@
         <item name="actionMenuTextColor">@color/colorBlack</item>
 
         <item name="android:alertDialogTheme">@style/alertDialogDefaultStyle</item>
+        <!--<item name="collapsingToolbarLayoutExpandedTextStyle">@style/collapsingToolbarLayoutExpandedTextStyle</item>-->
 
         <item name="radioButtonStyle">@style/radioButtonBlackStyle</item>
         <item name="textTitleStyle">@style/textTitleDefaultStyle</item>
@@ -36,6 +37,7 @@
         <item name="actionMenuTextColor">@color/colorWhite</item>
 
         <item name="android:alertDialogTheme">@style/alertDialogBlackStyle</item>
+        <!--<item name="collapsingToolbarLayoutExpandedTextStyle">@style/collapsingToolbarLayoutExpandedTextStyle</item>-->
 
         <item name="radioButtonStyle">@style/radioButtonWhiteStyle</item>
         <item name="textTitleStyle">@style/textTitleBlackStyle</item>
@@ -58,6 +60,7 @@
         <item name="actionMenuTextColor">@color/colorBlack</item>
 
         <item name="android:alertDialogTheme">@style/alertDialogPurpleStyle</item>
+        <!--<item name="collapsingToolbarLayoutExpandedTextStyle">@style/collapsingToolbarLayoutExpandedTextStyle</item>-->
 
         <item name="radioButtonStyle">@style/radioButtonWhiteStyle</item>
         <item name="textTitleStyle">@style/textTitlePurpleStyle</item>
