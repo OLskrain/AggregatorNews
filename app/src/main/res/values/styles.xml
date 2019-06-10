@@ -82,4 +82,35 @@
     <style name="radioButtonBlackStyle" parent="android:Widget.Material.CompoundButton.RadioButton">
         <item name="colorControlNormal">@color/colorBlack</item>
     </style>
+
+    <!--Стиль для диалога-->
+    <style name="alertDialogDefaultStyle">
+        <item name="android:windowBackground">@color/colorPrimaryLightDefault</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+        <item name="android:textColorPrimary">@color/colorBlack</item>
+    </style>
+
+    <style name="alertDialogBlackStyle">
+        <item name="android:windowBackground">@color/colorPrimaryLightBlack</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+    </style>
+
+    <style name="alertDialogPurpleStyle">
+        <item name="android:windowBackground">@color/colorPrimaryLightPurple</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+        <item name="android:textColorPrimary">@color/colorBlack</item>
+    </style>
 </resources>
