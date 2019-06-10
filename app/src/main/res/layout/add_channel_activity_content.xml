@@ -22,6 +22,7 @@
             android:layout_marginTop="@dimen/margin_32dp"
             android:layout_marginEnd="@dimen/margin_8dp"
             android:layout_marginBottom="@dimen/margin_8dp"
+            android:textColorHint="?attr/colorHint"
             app:errorEnabled="true">
 
             <EditText

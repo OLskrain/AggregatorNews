@@ -12,6 +12,7 @@
         <item name="myColorAccent">@color/colorAccentDefault</item>
         <item name="colorPicture">@color/colorBlack</item>
         <item name="colorCard">@color/colorCardDefault</item>
+        <item name="colorHint">@color/colorTransparentBlack</item>
         <item name="actionMenuTextColor">@color/colorBlack</item>
 
         <item name="android:alertDialogTheme">@style/alertDialogDefaultStyle</item>
@@ -34,6 +35,7 @@
         <item name="myColorAccent">@color/colorAccentBlack</item>
         <item name="colorPicture">@color/colorWhite</item>
         <item name="colorCard">@color/colorCardBlack</item>
+        <item name="colorHint">@color/colorTransparentWhite</item>
         <item name="actionMenuTextColor">@color/colorWhite</item>
 
         <item name="android:alertDialogTheme">@style/alertDialogBlackStyle</item>
@@ -57,12 +59,13 @@
         <item name="myColorAccent">@color/colorAccentPurple</item>
         <item name="colorPicture">@color/colorBlack</item>
         <item name="colorCard">@color/colorCardPurple</item>
+        <item name="colorHint">@color/colorTransparentBlack</item>
         <item name="actionMenuTextColor">@color/colorBlack</item>
 
         <item name="android:alertDialogTheme">@style/alertDialogPurpleStyle</item>
         <!--<item name="collapsingToolbarLayoutExpandedTextStyle">@style/collapsingToolbarLayoutExpandedTextStyle</item>-->
 
-        <item name="radioButtonStyle">@style/radioButtonWhiteStyle</item>
+        <item name="radioButtonStyle">@style/radioButtonBlackStyle</item>
         <item name="textTitleStyle">@style/textTitlePurpleStyle</item>
         <item name="textStyle">@style/textPurpleStyle</item>
         <item name="textSubtitleStyle">@style/textSubtitlePurpleStyle</item>
