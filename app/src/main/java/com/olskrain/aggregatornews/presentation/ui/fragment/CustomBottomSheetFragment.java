@@ -20,6 +20,8 @@ import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.CustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 
+import timber.log.Timber;
+
 /**
  * Created by Andrey Ievlev on 18,Май,2019
  */
@@ -128,15 +130,4 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
         dismiss();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        customBottomSheetPresenter.onAttachView(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        customBottomSheetPresenter.onDetachView();
-    }
 }

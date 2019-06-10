@@ -3,6 +3,7 @@ package com.olskrain.aggregatornews.presentation.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.widget.RadioButton;
@@ -17,6 +18,7 @@ import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.cache.SettingsSharedPref;
 import com.olskrain.aggregatornews.presentation.presenter.SettingsPresenter;
+import com.olskrain.aggregatornews.presentation.ui.fragment.DeleteAllChannelDialog;
 import com.olskrain.aggregatornews.presentation.ui.view.ISettingsView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -35,14 +37,11 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
     private CompositeDisposable compositeDisposable;
     private RadioGroup radioGroup;
     private TextView deleteAllChannels;
-    private ICustomPublisher publisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-
-        publisher = App.getInstance().getPublisher();
 
         compositeDisposable = new CompositeDisposable();
         settingsPresenter = FactoryProvider.providerPresenterFactory().createSettingsPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
@@ -70,7 +69,8 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
 
     private void initOnClick() {
         deleteAllChannels.setOnClickListener(view -> {
-            publisher.notify(Command.DELETE_ALL_CHANNELS);
+            DialogFragment deleteAllChannelDialog = new DeleteAllChannelDialog();
+            deleteAllChannelDialog.show(getSupportFragmentManager(), "deleteAllChannelDialog");
         });
     }
 

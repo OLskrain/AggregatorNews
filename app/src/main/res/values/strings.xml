@@ -9,6 +9,7 @@
     <!--Menu-->
     <string name="settings_button_title">Settings</string>
     <string name="send_button_menu">SEND</string>
+    <string name="button_action_delete_channels">Delete channels</string>
 
     <!--Title Fragment-->
     <string name="channels_list_tab_title">All</string>
@@ -39,6 +40,7 @@
     <string name="theme2">Dark theme</string>
     <string name="theme3">Purple theme</string>
     <string name="delete_all_channel">Delete all channel</string>
+    <string name="delete_all_channel_dialog">Delete all channel?</string>
     <string name="delete_cache_channel">Delete cache channel</string>
 
 </resources>

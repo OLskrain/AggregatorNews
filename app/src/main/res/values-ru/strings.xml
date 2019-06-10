@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--Label name-->
     <string name="app_name">Агрегатор новостей</string>
     <string name="channel_detail_name">Новости</string>
@@ -10,6 +10,7 @@
     <!--Menu-->
     <string name="settings_button_title">Настройки</string>
     <string name="send_button_menu">ОТПРАВИТЬ</string>
+    <string name="button_action_delete_channels">Удалить каналы</string>
 
     <!--Title Fragment-->
     <string name="channels_list_tab_title">Все новости</string>
@@ -39,5 +40,6 @@
     <string name="theme2">Темная тема</string>
     <string name="theme3">Пурпурная тема</string>
     <string name="delete_all_channel">Удалить все каналы</string>
+    <string name="delete_all_channel_dialog">Удалить все каналы?</string>
     <string name="delete_cache_channel">Удалить кеш каналов</string>
 </resources>
