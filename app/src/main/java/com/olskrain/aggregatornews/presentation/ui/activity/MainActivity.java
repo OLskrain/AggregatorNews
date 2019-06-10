@@ -2,7 +2,6 @@ package com.olskrain.aggregatornews.presentation.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -19,8 +18,6 @@ import com.olskrain.aggregatornews.presentation.ui.fragment.ChannelsListFragment
 import com.olskrain.aggregatornews.presentation.ui.fragment.FavoriteChannelsListFragment;
 import com.olskrain.aggregatornews.presentation.ui.view.IMainView;
 
-import timber.log.Timber;
-
 /**
  * Created by Andrey Ievlev on 22,Апрель,2019
  */
@@ -34,14 +31,14 @@ public class MainActivity extends BaseActivity implements IMainView {
     private MainActivityPresenter mainPresenter;
     private ChannelsListFragment channelsListFragment;
     private FavoriteChannelsListFragment favoriteChannelsListFragment;
-    private ICustomPublisher publisher;
+    private ICustomPublisher.IActionAboveList publisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        publisher = App.getInstance().getPublisher();
+        publisher = App.getInstance().getPublisherActionAboveList();
         mainPresenter = FactoryProvider.providerPresenterFactory().createMainActivityPresenter(this);
 
         if (savedInstanceState == null) {

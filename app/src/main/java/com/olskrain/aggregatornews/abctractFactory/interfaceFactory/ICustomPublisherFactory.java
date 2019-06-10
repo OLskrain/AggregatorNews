@@ -7,5 +7,7 @@ import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
  */
 
 public interface ICustomPublisherFactory {
-    ICustomPublisher createCustomPublisher();
+    ICustomPublisher.IActionAboveList createActionAboveList();
+
+    ICustomPublisher.IActionAppParameters createActionAppParameters();
 }

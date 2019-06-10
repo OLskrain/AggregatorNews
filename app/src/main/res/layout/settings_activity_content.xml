@@ -38,23 +38,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="@string/theme1" />
+                android:text="@string/default_theme" />
 
             <RadioButton
                 android:id="@+id/black_theme_status"
                 style="?attr/textStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/theme2" />
+                android:text="@string/dark_theme" />
 
             <RadioButton
                 android:id="@+id/purple_theme_status"
                 style="?attr/textStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/theme3" />
+                android:text="@string/purple_theme" />
 
         </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_separator_sa_cl"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:background="?attr/myColorPrimary" />
+
+        <TextView
+            android:id="@+id/language_selection"
+            style="?attr/textStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_marginBottom="@dimen/margin_8dp"
+            android:paddingTop="@dimen/margin_4dp"
+            android:paddingBottom="@dimen/margin_4dp"
+            android:text="@string/language" />
 
         <TextView
             android:layout_width="match_parent"

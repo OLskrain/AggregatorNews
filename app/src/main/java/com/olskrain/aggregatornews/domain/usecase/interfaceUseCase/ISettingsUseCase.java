@@ -1,5 +1,7 @@
 package com.olskrain.aggregatornews.domain.usecase.interfaceUseCase;
 
+import android.content.Context;
+
 import io.reactivex.Completable;
 
 /**
@@ -8,6 +10,8 @@ import io.reactivex.Completable;
 
 public interface ISettingsUseCase {
     Completable saveAppTheme(int idRadioButton);
+
+    Completable setLanguage(Context context, String language);
 
     void saveIndexRadioButton(int indexRadioButton);
 }

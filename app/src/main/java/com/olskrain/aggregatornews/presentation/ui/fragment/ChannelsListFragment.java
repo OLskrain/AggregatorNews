@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.olskrain.aggregatornews.Common.Command;
-import com.olskrain.aggregatornews.Common.myObserver.ICustomObserver;
+import com.olskrain.aggregatornews.Common.myObserver.IActionAboveListCustomObserver;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Feed;
@@ -44,7 +44,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Andrey Ievlev on 03,Май,2019
  */
 
-public class ChannelsListFragment extends Fragment implements IChannelsListView, ICustomObserver {
+public class ChannelsListFragment extends Fragment implements IChannelsListView, IActionAboveListCustomObserver {
 
     public static ChannelsListFragment getInstance(String arg) {
         ChannelsListFragment fragment = new ChannelsListFragment();

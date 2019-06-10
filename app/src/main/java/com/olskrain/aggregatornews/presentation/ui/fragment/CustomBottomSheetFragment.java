@@ -20,8 +20,6 @@ import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.CustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 
-import timber.log.Timber;
-
 /**
  * Created by Andrey Ievlev on 18,Май,2019
  */
@@ -40,12 +38,12 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     private Feed channel;
 
     private CustomBottomSheetPresenter customBottomSheetPresenter;
-    private ICustomPublisher publisher;
+    private ICustomPublisher.IActionAboveList publisher;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        publisher = App.getInstance().getPublisher();
+        publisher = App.getInstance().getPublisherActionAboveList();
     }
 
     @Nullable

@@ -9,22 +9,23 @@ import java.util.List;
  * Created by Andrey Ievlev on 22,Май,2019
  */
 
-public class CustomPublisher implements ICustomPublisher {
-    private final List<ICustomObserver> observers = new ArrayList<>();
+public class ActionAboveList implements ICustomPublisher.IActionAboveList {
+
+    private final List<IActionAboveListCustomObserver> observers = new ArrayList<>();
 
     @Override
-    public void subscribe(final ICustomObserver observer) {
+    public void subscribe(final IActionAboveListCustomObserver observer) {
         observers.add(observer);
     }
 
     @Override
-    public void unsubscribe(final ICustomObserver observer) {
+    public void unsubscribe(final IActionAboveListCustomObserver observer) {
         observers.remove(observer);
     }
 
     @Override
     public void notify(final Command command) {
-        for (ICustomObserver observer : observers)
+        for (IActionAboveListCustomObserver observer : observers)
             observer.actionAboveChannelsList(command);
     }
 }

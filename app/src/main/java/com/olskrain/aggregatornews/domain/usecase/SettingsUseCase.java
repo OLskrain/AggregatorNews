@@ -1,5 +1,8 @@
 package com.olskrain.aggregatornews.domain.usecase;
 
+import android.content.Context;
+
+import com.olskrain.aggregatornews.Common.LocaleHelper;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.repository.interfaceRepository.ISettingsRepository;
@@ -28,20 +31,25 @@ public class SettingsUseCase implements ISettingsUseCase {
                 defaultThemeStatus = false;
                 blackThemeStatus = true;
                 purpleThemeStatus = false;
-
                 break;
             case R.id.purple_theme_status:
                 defaultThemeStatus = false;
                 blackThemeStatus = false;
                 purpleThemeStatus = true;
-
                 break;
         }
         return settingsRepository.saveAppTheme(idRadioButton, defaultThemeStatus, blackThemeStatus, purpleThemeStatus);
     }
 
     @Override
-    public void saveIndexRadioButton(int indexRadioButton) {
+    public Completable setLanguage(final Context context, final String language) {
+        return Completable.fromAction(() -> {
+            LocaleHelper.setLocale(context, language);
+        });
+    }
+
+    @Override
+    public void saveIndexRadioButton(final int indexRadioButton) {
         settingsRepository.saveIndexRadioButton(indexRadioButton);
     }
 }

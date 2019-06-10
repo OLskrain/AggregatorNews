@@ -7,9 +7,19 @@ import com.olskrain.aggregatornews.Common.Command;
  */
 
 public interface ICustomPublisher {
-    void subscribe(ICustomObserver observer);
+    interface IActionAboveList {
+        void subscribe(IActionAboveListCustomObserver observer);
 
-    void unsubscribe(ICustomObserver observer);
+        void unsubscribe(IActionAboveListCustomObserver observer);
 
-    void notify(Command command);
+        void notify(Command command);
+    }
+
+    interface IActionAppParameters {
+        void subscribe(IActionAboveApplicationParametersCustomObserver observer);
+
+        void unsubscribe(IActionAboveApplicationParametersCustomObserver observer);
+
+        void notify(Command command);
+    }
 }

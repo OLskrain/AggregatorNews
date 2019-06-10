@@ -12,36 +12,45 @@ import android.widget.TextView;
 
 import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.Command;
-import com.olskrain.aggregatornews.Common.myObserver.CustomPublisher;
+import com.olskrain.aggregatornews.Common.myObserver.IActionAboveApplicationParametersCustomObserver;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.cache.SettingsSharedPref;
 import com.olskrain.aggregatornews.presentation.presenter.SettingsPresenter;
 import com.olskrain.aggregatornews.presentation.ui.fragment.DeleteAllChannelDialog;
+import com.olskrain.aggregatornews.presentation.ui.fragment.LanguageSelectionDialog;
 import com.olskrain.aggregatornews.presentation.ui.view.ISettingsView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 06,Июнь,2019
  */
 
-public class SettingsActivity extends BaseActivity implements ISettingsView {
+public class SettingsActivity extends BaseActivity implements ISettingsView, IActionAboveApplicationParametersCustomObserver {
 
+    private static final String LANGUAGE_EN = "en";
+    private static final String LANGUAGE_RU = "ru";
+    private static final String DELETE_ALL_CHANNEL_DIALOG = "deleteAllChannelDialog";
+    private static final String LANGUAGE_SELECTION_DIALOG = "languageSelectionDialog";
     private Toolbar toolbar;
     private ActionBar actionBar;
     private SettingsPresenter settingsPresenter;
     private CompositeDisposable compositeDisposable;
     private RadioGroup radioGroup;
     private TextView deleteAllChannels;
+    private TextView language;
+    private ICustomPublisher.IActionAppParameters publisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
+        publisher = App.getInstance().getPublisherActionAppParameters();
+        publisher.subscribe(this);
 
         compositeDisposable = new CompositeDisposable();
         settingsPresenter = FactoryProvider.providerPresenterFactory().createSettingsPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
@@ -64,13 +73,17 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
 
         checkSelectionAppTheme();
 
+        language = findViewById(R.id.language_selection);
         deleteAllChannels = findViewById(R.id.delete_all_channels);
     }
 
     private void initOnClick() {
         deleteAllChannels.setOnClickListener(view -> {
-            DialogFragment deleteAllChannelDialog = new DeleteAllChannelDialog();
-            deleteAllChannelDialog.show(getSupportFragmentManager(), "deleteAllChannelDialog");
+            settingsPresenter.showDialog(Command.DELETE_ALL_CHANNELS);
+        });
+
+        language.setOnClickListener(view -> {
+            settingsPresenter.showDialog(Command.LANGUAGE_SELECTION);
         });
     }
 
@@ -85,7 +98,7 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
     }
 
     @Override
-    public void setAppTheme() {
+    public void restartActivity() {
         new Handler().post(() -> {
             Intent intent = getIntent();
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -95,6 +108,37 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
             overridePendingTransition(0, 0);
             startActivity(intent);
         });
+    }
+
+    @Override
+    public void showDialog(final Command command) {
+        switch (command) {
+            case DELETE_ALL_CHANNELS:
+                DialogFragment deleteAllChannelDialog = new DeleteAllChannelDialog();
+                deleteAllChannelDialog.show(getSupportFragmentManager(), DELETE_ALL_CHANNEL_DIALOG);
+                break;
+            case LANGUAGE_SELECTION:
+                DialogFragment languageSelectionDialog = new LanguageSelectionDialog();
+                languageSelectionDialog.show(getSupportFragmentManager(), LANGUAGE_SELECTION_DIALOG);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void actionAboveApplicationParameters(final Command command) {
+        switch (command) {
+            case SELECTION_EN:
+                settingsPresenter.setLanguage(this, LANGUAGE_EN);
+                break;
+            case SELECTION_RU:
+                settingsPresenter.setLanguage(this, LANGUAGE_RU);
+                break;
+            default:
+                settingsPresenter.setLanguage(this, LANGUAGE_EN);
+                break;
+        }
     }
 
     @Override
@@ -119,5 +163,6 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
     public void onDestroy() {
         super.onDestroy();
         compositeDisposable.dispose();
+        publisher.unsubscribe(this);
     }
 }

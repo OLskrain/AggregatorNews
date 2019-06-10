@@ -1,6 +1,7 @@
 package com.olskrain.aggregatornews.abctractFactory.factory;
 
-import com.olskrain.aggregatornews.Common.myObserver.CustomPublisher;
+import com.olskrain.aggregatornews.Common.myObserver.ActionAboveAppParameters;
+import com.olskrain.aggregatornews.Common.myObserver.ActionAboveList;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.abctractFactory.interfaceFactory.ICustomPublisherFactory;
 
@@ -11,7 +12,12 @@ import com.olskrain.aggregatornews.abctractFactory.interfaceFactory.ICustomPubli
 public class CustomPublisherFactory implements ICustomPublisherFactory {
 
     @Override
-    public ICustomPublisher createCustomPublisher() {
-        return new CustomPublisher();
+    public ICustomPublisher.IActionAboveList createActionAboveList() {
+        return new ActionAboveList();
+    }
+
+    @Override
+    public ICustomPublisher.IActionAppParameters createActionAppParameters() {
+        return new ActionAboveAppParameters();
     }
 }

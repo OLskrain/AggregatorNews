@@ -1,12 +1,13 @@
 package com.olskrain.aggregatornews.presentation.ui.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.olskrain.aggregatornews.Common.LocaleHelper;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.presentation.presenter.BasePresenter;
-import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IBasePresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.IBaseView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -33,5 +34,10 @@ public class BaseActivity extends AppCompatActivity implements IBaseView {
     @Override
     public void applyTheme(final int themeId) {
         setTheme(themeId);
+    }
+
+    @Override
+    protected void attachBaseContext(final Context base) {
+        super.attachBaseContext(LocaleHelper.onAttach(base));
     }
 }

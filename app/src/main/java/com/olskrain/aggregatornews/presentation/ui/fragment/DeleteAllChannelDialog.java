@@ -19,13 +19,13 @@ import timber.log.Timber;
  */
 
 public class DeleteAllChannelDialog extends DialogFragment {
-    private ICustomPublisher publisher;
+    private ICustomPublisher.IActionAboveList publisher;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        publisher = App.getInstance().getPublisher();
+        publisher = App.getInstance().getPublisherActionAboveList();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setMessage(R.string.delete_all_channel_dialog)

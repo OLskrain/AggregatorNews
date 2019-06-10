@@ -9,7 +9,15 @@
     <!--Menu-->
     <string name="settings_button_title">Settings</string>
     <string name="send_button_menu">SEND</string>
+
+    <!--delete Dialog-->
     <string name="button_action_delete_channels">Delete channels</string>
+
+    <!--language dialog-->
+    <string name="title_language_dialog">Choose your language:</string>
+    <string name="default_language">Default language</string>
+    <string name="english_language">English</string>
+    <string name="russian_language">Русский</string>
 
     <!--Title Fragment-->
     <string name="channels_list_tab_title">All</string>
@@ -36,9 +44,10 @@
 
     <!--Settings-->
     <string name="theme_color">Theme color</string>
-    <string name="theme1">Default theme</string>
-    <string name="theme2">Dark theme</string>
-    <string name="theme3">Purple theme</string>
+    <string name="default_theme">Default theme</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="purple_theme">Purple theme</string>
+    <string name="language">Language</string>
     <string name="delete_all_channel">Delete all channel</string>
     <string name="delete_all_channel_dialog">Delete all channel?</string>
     <string name="delete_cache_channel">Delete cache channel</string>

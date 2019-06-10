@@ -1,5 +1,8 @@
 package com.olskrain.aggregatornews.presentation.presenter;
 
+import android.content.Context;
+
+import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.usecase.interfaceUseCase.ISettingsUseCase;
 import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ISettingsPresenter;
@@ -36,7 +39,7 @@ public class SettingsPresenter extends SettingsPresenterNullCheck implements ISe
         disposable = responseRepository
                 .observeOn(mainThreadScheduler)
                 .subscribe(() -> {
-                    getView().setAppTheme();
+                    getView().restartActivity();
                 }, throwable -> {
 
                 });
@@ -46,7 +49,36 @@ public class SettingsPresenter extends SettingsPresenterNullCheck implements ISe
     }
 
     @Override
-    public void saveIndexRadioButton(int indexRadioButton) {
+    public void saveIndexRadioButton(final int indexRadioButton) {
         settingsUseCase.saveIndexRadioButton(indexRadioButton);
+    }
+
+    @Override
+    public void setLanguage(final Context context, final String language) {
+        Completable responseRepository = settingsUseCase.setLanguage(context, language);
+
+        disposable = responseRepository
+                .observeOn(mainThreadScheduler)
+                .subscribe(() -> {
+                    getView().restartActivity();
+                }, throwable -> {
+
+                });
+
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void showDialog(final Command command) {
+        switch (command) {
+            case DELETE_ALL_CHANNELS:
+                getView().showDialog(command);
+                break;
+            case LANGUAGE_SELECTION:
+                getView().showDialog(command);
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.olskrain.aggregatornews.presentation.presenter.presenterNullCheck;
 
+import com.olskrain.aggregatornews.Common.Command;
 import com.olskrain.aggregatornews.presentation.presenter.DefaultPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ISettingsView;
 
@@ -13,7 +14,12 @@ public abstract class SettingsPresenterNullCheck extends DefaultPresenter<ISetti
     public ISettingsView createFakeView() {
         return new ISettingsView() {
             @Override
-            public void setAppTheme() {
+            public void restartActivity() {
+
+            }
+
+            @Override
+            public void showDialog(Command command) {
 
             }
         };
