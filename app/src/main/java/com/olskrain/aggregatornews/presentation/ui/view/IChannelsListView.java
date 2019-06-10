@@ -23,7 +23,7 @@ public interface IChannelsListView {
 
     void refreshChannelsListRVAdapter();
 
-    void goToChannelDetailFragment(String urlChannel);
+    void goToNewsListFragment(String urlChannel);
 
     void goToAddChannelActivity();
 }

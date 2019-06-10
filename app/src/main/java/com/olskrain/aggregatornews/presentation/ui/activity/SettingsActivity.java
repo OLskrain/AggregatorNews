@@ -4,20 +4,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import com.olskrain.aggregatornews.Common.App;
+import com.olskrain.aggregatornews.Common.Command;
+import com.olskrain.aggregatornews.Common.myObserver.CustomPublisher;
+import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.cache.SettingsSharedPref;
 import com.olskrain.aggregatornews.presentation.presenter.SettingsPresenter;
-import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ISettingsPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ISettingsView;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 /**
  * Created by Andrey Ievlev on 06,Июнь,2019
@@ -30,15 +34,20 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
     private SettingsPresenter settingsPresenter;
     private CompositeDisposable compositeDisposable;
     private RadioGroup radioGroup;
+    private TextView deleteAllChannels;
+    private ICustomPublisher publisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 
+        publisher = App.getInstance().getPublisher();
+
         compositeDisposable = new CompositeDisposable();
         settingsPresenter = FactoryProvider.providerPresenterFactory().createSettingsPresenter(this, compositeDisposable, AndroidSchedulers.mainThread());
         initUi();
+        initOnClick();
     }
 
     private void initUi() {
@@ -55,6 +64,14 @@ public class SettingsActivity extends BaseActivity implements ISettingsView {
         savedCheckedRadioButton.setChecked(true);
 
         checkSelectionAppTheme();
+
+        deleteAllChannels = findViewById(R.id.delete_all_channels);
+    }
+
+    private void initOnClick() {
+        deleteAllChannels.setOnClickListener(view -> {
+            publisher.notify(Command.DELETE_ALL_CHANNELS);
+        });
     }
 
     private void checkSelectionAppTheme() {

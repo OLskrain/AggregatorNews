@@ -35,7 +35,9 @@
     <string name="hint_to_user">Введите URL адресс RSS ресурса</string>
 
     <string name="theme_color">Цвет темы</string>
-    <string name="theme1">Theme 1</string>
-    <string name="theme2">Theme 2</string>
-    <string name="theme3">Theme 3</string>
+    <string name="theme1">Тема по умолчанию</string>
+    <string name="theme2">Темная тема</string>
+    <string name="theme3">Пурпурная тема</string>
+    <string name="delete_all_channel">Удалить все каналы</string>
+    <string name="delete_cache_channel">Удалить кеш каналов</string>
 </resources>

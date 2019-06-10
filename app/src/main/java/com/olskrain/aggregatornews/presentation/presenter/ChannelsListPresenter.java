@@ -78,7 +78,7 @@ public class ChannelsListPresenter extends ChannelsListPresenterNullCheck implem
     @Override
     public void attachView() {
         channelRecycleListPresenter.clickItem.subscribe(iChannelListItemView ->
-                getView().goToChannelDetailFragment(channelsListLocal.get(iChannelListItemView.getCurrentPosition()).getUrl()));
+                getView().goToNewsListFragment(channelsListLocal.get(iChannelListItemView.getCurrentPosition()).getUrl()));
 
         channelRecycleListPresenter.clickMenu.subscribe(iChannelListItemView -> {
             currentUrlChannel = channelsListLocal.get(iChannelListItemView.getCurrentPosition()).getUrl();

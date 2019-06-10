@@ -29,6 +29,7 @@
             android:layout_marginStart="@dimen/margin_8dp"
             android:layout_marginTop="@dimen/margin_8dp"
             android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_marginBottom="@dimen/margin_8dp"
             android:theme="?attr/radioButtonStyle">
 
             <RadioButton
@@ -54,6 +55,40 @@
                 android:text="@string/theme3" />
 
         </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_separator_sa_cl"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:background="?attr/myColorPrimary" />
+
+        <TextView
+            android:id="@+id/delete_cache"
+            style="?attr/textStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_marginBottom="@dimen/margin_8dp"
+            android:paddingTop="@dimen/margin_4dp"
+            android:paddingBottom="@dimen/margin_4dp"
+            android:text="@string/delete_cache_channel" />
+
+        <TextView
+            android:id="@+id/delete_all_channels"
+            style="?attr/textStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_marginBottom="@dimen/margin_8dp"
+            android:paddingTop="@dimen/margin_4dp"
+            android:paddingBottom="@dimen/margin_4dp"
+            android:text="@string/delete_all_channel" />
+
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

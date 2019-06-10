@@ -1,31 +1,31 @@
 package com.olskrain.aggregatornews.presentation.ui.activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.olskrain.aggregatornews.Common.myObserver.ICustomPublishGetter;
+import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.presentation.presenter.MainActivityPresenter;
-import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.IMainActivityPresenter;
 import com.olskrain.aggregatornews.presentation.ui.adapter.CustomFragmentPA;
 import com.olskrain.aggregatornews.presentation.ui.fragment.ChannelsListFragment;
 import com.olskrain.aggregatornews.presentation.ui.fragment.FavoriteChannelsListFragment;
 import com.olskrain.aggregatornews.presentation.ui.view.IMainView;
 
+import timber.log.Timber;
+
 /**
  * Created by Andrey Ievlev on 22,Апрель,2019
  */
 
-public class MainActivity extends BaseActivity implements IMainView, ICustomPublishGetter {
+public class MainActivity extends BaseActivity implements IMainView {
     private static final int PERMISSION_REQUEST_CODE = 156;
     private ViewPager mainViewPager;
     private CustomFragmentPA customFragmentPA;
@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity implements IMainView, ICustomPubl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        publisher = FactoryProvider.providerCustomPublisherFactory().createCustomPublisher();
+        publisher = App.getInstance().getPublisher();
         mainPresenter = FactoryProvider.providerPresenterFactory().createMainActivityPresenter(this);
 
         if (savedInstanceState == null) {
@@ -187,11 +187,6 @@ public class MainActivity extends BaseActivity implements IMainView, ICustomPubl
     public void goToSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivityForResult(intent, 2);
-    }
-
-    @Override
-    public ICustomPublisher getPublisher() {
-        return publisher;
     }
 
     @Override

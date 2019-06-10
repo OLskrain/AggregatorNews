@@ -3,6 +3,7 @@ package com.olskrain.aggregatornews.Common;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.data.cache.DBHelper;
 
@@ -15,6 +16,7 @@ public class App extends Application {
     private static App instance;
     private DBHelper dbHelper;
     private SharedPreferences sharedPreferences;
+    private ICustomPublisher publisher;
 
     @Override
     public void onCreate() {
@@ -24,6 +26,7 @@ public class App extends Application {
         Timber.plant(new Timber.DebugTree());
         dbHelper = FactoryProvider.providerDBHelperFactory().createDBHelper(instance, NAME_DB, null, 1);
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_TAG, MODE_PRIVATE);
+        publisher = FactoryProvider.providerCustomPublisherFactory().createCustomPublisher();
     }
 
     public static App getInstance() {
@@ -38,4 +41,7 @@ public class App extends Application {
         return sharedPreferences;
     }
 
+    public ICustomPublisher getPublisher (){
+        return publisher;
+    }
 }

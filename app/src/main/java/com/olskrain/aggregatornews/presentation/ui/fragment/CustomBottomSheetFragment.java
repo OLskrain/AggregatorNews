@@ -11,14 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.olskrain.aggregatornews.Common.App;
 import com.olskrain.aggregatornews.Common.Command;
-import com.olskrain.aggregatornews.Common.myObserver.ICustomPublishGetter;
 import com.olskrain.aggregatornews.Common.myObserver.ICustomPublisher;
 import com.olskrain.aggregatornews.R;
 import com.olskrain.aggregatornews.abctractFactory.FactoryProvider;
 import com.olskrain.aggregatornews.domain.entities.Feed;
 import com.olskrain.aggregatornews.presentation.presenter.CustomBottomSheetPresenter;
-import com.olskrain.aggregatornews.presentation.presenter.interfacePresenter.ICustomBottomSheetPresenter;
 import com.olskrain.aggregatornews.presentation.ui.view.ICustomBottomSheetView;
 
 /**
@@ -44,7 +43,7 @@ public class CustomBottomSheetFragment extends BottomSheetDialogFragment impleme
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        publisher = ((ICustomPublishGetter) context).getPublisher(); // получим обработчика подписок
+        publisher = App.getInstance().getPublisher();
     }
 
     @Nullable

@@ -47,7 +47,7 @@ public abstract class ChannelsListPresenterNullCheck extends DefaultPresenter<IC
             }
 
             @Override
-            public void goToChannelDetailFragment(String urlChannel) {
+            public void goToNewsListFragment(String urlChannel) {
 
             }
 

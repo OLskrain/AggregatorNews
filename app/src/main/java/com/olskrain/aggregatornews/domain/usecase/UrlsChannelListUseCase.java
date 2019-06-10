@@ -44,6 +44,7 @@ public class UrlsChannelListUseCase implements IUrlsChannelListUseCase {
     @Override
     public List<String> deleteAllUrlsChannel(final List<String> urlsChannelsList) {
         urlsChannelsList.clear();
+        urlsChannelListRepository.putUrlsChannelsList(urlsChannelsList);
         return urlsChannelsList;
     }
 }

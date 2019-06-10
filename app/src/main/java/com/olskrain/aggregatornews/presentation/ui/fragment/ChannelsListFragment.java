@@ -67,7 +67,6 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     private Button addChannelOne;
     private Button addChannelTwo;
     private Button addChannelThree;
-    private Button deleteAllChannels;
     private FloatingActionButton addNewChannel;
     private CustomBottomSheetFragment customBottomSheetFragment;
     private CompositeDisposable compositeDisposable;
@@ -114,8 +113,6 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         addChannelOne = view.findViewById(R.id.add_channel_one);
         addChannelTwo = view.findViewById(R.id.add_channel_two);
         addChannelThree = view.findViewById(R.id.add_channel_three);
-
-        deleteAllChannels = view.findViewById(R.id.delete_all_channels);
     }
 
     public void initOnClick() {
@@ -123,7 +120,6 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
         addChannelOne.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_ONE));
         addChannelTwo.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_TWO));
         addChannelThree.setOnClickListener(view -> channelsListPresenter.checkDuplicate(CHANNEL_THREE));
-        deleteAllChannels.setOnClickListener(view -> channelsListPresenter.deleteAllChannels());
 
         swipeRefreshLayout.setOnRefreshListener(() -> channelsListPresenter.refreshChannelsList());
         snackbarOnClickListener = view -> Timber.d("");
@@ -141,7 +137,7 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
     }
 
     @Override
-    public void goToChannelDetailFragment(final String urlChannel) {
+    public void goToNewsListFragment(final String urlChannel) {
         Intent intent = new Intent(getContext(), NewsListActivity.class);
         intent.putExtra(NewsListFragment.ARG_CDF_ID, urlChannel);
         Objects.requireNonNull(getContext()).startActivity(intent);
@@ -246,6 +242,9 @@ public class ChannelsListFragment extends Fragment implements IChannelsListView,
                 break;
             case DELETE_CHANNEL:
                 channelsListPresenter.showDeletionWarning(command);
+                break;
+            case DELETE_ALL_CHANNELS:
+                channelsListPresenter.deleteAllChannels();
                 break;
             default:
                 break;

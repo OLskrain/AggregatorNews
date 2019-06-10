@@ -33,9 +33,12 @@
     <string name="warning_delete_channel">Delete channel?</string>
     <string name="hint_to_user">Enter the URL address of the RSS resource</string>
 
+    <!--Settings-->
     <string name="theme_color">Theme color</string>
-    <string name="theme1">Theme 1</string>
-    <string name="theme2">Theme 2</string>
-    <string name="theme3">Theme 3</string>
+    <string name="theme1">Default theme</string>
+    <string name="theme2">Dark theme</string>
+    <string name="theme3">Purple theme</string>
+    <string name="delete_all_channel">Delete all channel</string>
+    <string name="delete_cache_channel">Delete cache channel</string>
 
 </resources>
